@@ -1,0 +1,27 @@
+PODS:
+  - Nimble (10.0.0)
+  - Quick (5.0.1)
+  - SpiralSDK (1.0.0)
+
+DEPENDENCIES:
+  - Nimble (~> 10.0.0)
+  - Quick (~> 5.0.1)
+  - SpiralSDK (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Nimble
+    - Quick
+
+EXTERNAL SOURCES:
+  SpiralSDK:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Nimble: 5316ef81a170ce87baf72dd961f22f89a602ff84
+  Quick: 749aa754fd1e7d984f2000fe051e18a3a9809179
+  SpiralSDK: f91d5ca8b3ed862283e8c7344a294ee96355168f
+
+PODFILE CHECKSUM: 79306829452a9c87257ee2cf6d85293b032fbe8a
+
+COCOAPODS: 1.11.3

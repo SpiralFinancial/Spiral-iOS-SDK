@@ -1,0 +1,12 @@
+use_frameworks!
+
+target 'SpiralSDK_Example' do
+  pod 'SpiralSDK', :path => '../'
+
+  target 'SpiralSDK_Tests' do
+    inherit! :search_paths
+
+    pod 'Quick', '~> 5.0.1'
+    pod 'Nimble', '~> 10.0.0'
+  end
+end
