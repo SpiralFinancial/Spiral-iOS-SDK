@@ -130,20 +130,19 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         
         let script = getScript(token: self.token)
         let wkScript = WKUserScript(source: script, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-        
+                
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.userContentController.addUserScript(wkScript)
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.uiDelegate = self
+        webView.backgroundColor = .white
         
         let contentController = webView.configuration.userContentController
         let scriptHandlerDelegate = SpiralWebKitScriptMessageHandler(delegate:self)
         for handler in SpiralEventHandler.allCases {
             contentController.add(scriptHandlerDelegate, name: handler.rawValue)
         }
-        
-        view = webView
-        
+                
         guard let url = URL(string: url) else {
             print("Error constructing link URL")
             return
@@ -203,11 +202,22 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     }
     
     public override func loadView() {
-        
+        super.loadView()
+        view.backgroundColor = .white
     }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        
+        webView.frame = CGRect(x: 0,
+                               y: statusBarHeight,
+                               width: view.frame.width,
+                               height: view.frame.height - statusBarHeight)
+        webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.clipsToBounds = true
+        view.addSubview(webView)
     }
     
     public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {

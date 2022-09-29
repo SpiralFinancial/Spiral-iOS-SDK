@@ -131,6 +131,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
 extension SpiralConfigTableViewController: SpiralTokenDelegate {
     func onComplete(spiralToken: String) {
         spiralVC = SpiralViewController(token: spiralToken, delegate: self)
+        spiralVC?.modalPresentationStyle = .fullScreen        
     }
 }
 
