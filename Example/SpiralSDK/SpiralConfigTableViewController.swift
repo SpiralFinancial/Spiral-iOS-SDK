@@ -25,7 +25,6 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         ConfigField(label:"skip_intro_screen", value:"false"),
     ]
     let st = SpiralToken()
-    var spiralVC: SpiralViewController?
     var selected: Int = 0
     
     private var events = Array<EventData>()
@@ -130,8 +129,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
 
 extension SpiralConfigTableViewController: SpiralTokenDelegate {
     func onComplete(spiralToken: String) {
-        spiralVC = SpiralViewController(token: spiralToken, delegate: self)
-        spiralVC?.modalPresentationStyle = .fullScreen        
+        Spiral.shared.startDonationFlow(token: spiralToken, delegate: self)
     }
 }
 
@@ -142,7 +140,6 @@ extension SpiralConfigTableViewController: SpiralDelegate {
         
         switch name {
         case .open:
-            self.present(spiralVC!, animated: true)
             print("onEvent(name: .open")
         case .exit:
             print("onEvent(name: .exit")
@@ -157,6 +154,10 @@ extension SpiralConfigTableViewController: SpiralDelegate {
         case .initialized:
             print("onEvent(name: .initialized")
         }
+    }
+    
+    func onReady(controller: SpiralViewController) {
+        self.present(controller, animated: true)
     }
     
     func onExit(_ error: SpiralError?) {

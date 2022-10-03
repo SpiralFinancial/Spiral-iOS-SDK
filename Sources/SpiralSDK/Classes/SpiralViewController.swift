@@ -10,21 +10,6 @@ import Foundation
 import UIKit
 import WebKit
 
-public protocol SpiralDelegate: AnyObject {
-    func onEvent(name: SpiralEventType, event: SpiralEventPayload?)
-    func onExit(_ error: SpiralError?)
-    func onSuccess(_ result: SpiralSuccessPayload)
-    func onError(_ error: SpiralError)
-}
-
-// These empty implementations are to make them optional to implement
-public extension SpiralDelegate {
-    func onEvent(name: SpiralEventType, event: SpiralEventPayload?) {}
-    func onExit(_ error: SpiralError?) {}
-    func onSuccess(_ result: SpiralSuccessPayload) {}
-    func onError(_ error: SpiralError) {}
-}
-
 class SpiralWebKitScriptMessageHandler: NSObject, WKScriptMessageHandler {
     weak private var delegate: WKScriptMessageHandler?
     
@@ -37,95 +22,22 @@ class SpiralWebKitScriptMessageHandler: NSObject, WKScriptMessageHandler {
     }
 }
 
-public enum SpiralMode: String, CaseIterable {
-    case development
-    case sandbox
-    case production
-}
-
-public enum SpiralEnvironment {
-    case local(url: String)
-    case staging
-    case production
-}
-
-extension SpiralEnvironment {
-    public init(value: String) {
-        if value == "local" {
-            self = .local(url: "")
-        } else if value == "staging" {
-            self = .staging
-        } else if value == "production" {
-            self = .production
-        } else {
-            self = .staging
-        }
-    }
-    
-    public init(value: String, url: String?) {
-        if value == "local" {
-            self = .local(url: url ?? "")
-        } else if value == "staging" {
-            self = .staging
-        } else if value == "production" {
-            self = .production
-        } else {
-            self = .staging
-        }
-    }
-    
-    public var rawValue: String {
-        switch self {
-        case .local(let url):
-            return "local@\(url)"
-        case .staging:
-            return "staging"
-        case .production:
-            return "production"
-        }
-    }
-}
-
-public struct SpiralConfig {
-    public let mode: SpiralMode
-    public let environment: SpiralEnvironment
-    public var url: String {
-        get {
-            switch environment {
-            case .local(let _url):
-                return _url
-            case .staging:
-                return "https://integration-sdk.spiral.us/v0.0.1/apps/donate/index.html"
-            case .production:
-                return "https://cdn.getspiral.com/link-v2.3.0.html"
-            }
-        }
-    }
-    public init(mode: SpiralMode, environment: SpiralEnvironment) {
-        self.mode = mode
-        self.environment = environment
-    }
-}
-
 public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler {
     var webView: WKWebView!
     weak var delegate: SpiralDelegate?
     private var token: String
-    private var config: SpiralConfig?
+    private var config: SpiralConfig
     private var url: String {
-        get {
-            if let config = self.config {
-                return config.url
-            } else {
-                return "https://cdn.getspiral.com/link-v2.3.0.html"
-            }
-        }
+        return config.url
     }
     
-    public init(token: String, delegate: SpiralDelegate, config: SpiralConfig) {
+    private var onExit: (() -> Void)?
+    
+    public init(token: String, delegate: SpiralDelegate, config: SpiralConfig? = nil, onExit: ( () -> Void)? = nil ) {
         self.delegate = delegate
         self.token = token
-        self.config = config
+        self.config = config ?? SpiralConfig(mode: .sandbox, environment: .staging)
+        self.onExit = onExit
         super.init(nibName: nil, bundle: nil)
         
         let script = getScript(token: self.token)
@@ -151,11 +63,6 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         webView.load(linkRequest)
     }
     
-    public convenience init(token: String, delegate: SpiralDelegate) {
-        let config = SpiralConfig(mode: .sandbox, environment: .staging)
-        self.init(token: token, delegate: delegate, config: config)
-    }
-    
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -167,6 +74,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         switch message.name {
         case SpiralEventHandler.openEventHandler.rawValue:
             self.delegate?.onEvent(name: .open, event: nil)
+            self.delegate?.onReady(controller: self)
         case SpiralEventHandler.closeEventHandler.rawValue:
             self.delegate?.onEvent(name: .close, event: nil)
         case SpiralEventHandler.initEventHandler.rawValue:
@@ -181,6 +89,8 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
                 
                 self.delegate?.onEvent(name: .exit, event: event.payload?.error)
                 self.delegate?.onExit(event.payload?.error)
+                
+                self.onExit?()
             }
         case SpiralEventHandler.successEventHandler.rawValue:
             if let bodyData = bodyDataFromMessage(message),
