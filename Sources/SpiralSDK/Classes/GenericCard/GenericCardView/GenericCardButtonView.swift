@@ -22,9 +22,12 @@ class GenericCardButtonView: GenericCardComponentView {
         
         guard let buttonComponentData = data.componentModel.content as? GenericCardButtonComponent else { return }
         
-        button.applyCardLayout(colorScheme: .black,
-                               edgeInset: 0,
-                               cornerRadius: button.frame.height / 2)
+        button.borderColor = .black
+        button.borderWidth = borderWidth
+        button.setTitleColor(.black, for: .normal)
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        button.cornerRadius = button.frame.height / 2
+        button.titleLabel?.font = AppFont.medium(size: 14)
         
         if let borderColorHex = buttonComponentData.borderColor,
            let borderColor = UIColor(hexString: borderColorHex) {

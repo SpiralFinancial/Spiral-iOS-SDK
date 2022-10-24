@@ -20,11 +20,11 @@ class GenericModalScrollContainer: UIScrollView {
     let initialContentOffset: CGFloat = 0
 }
 
-class GenericCardModalViewController: BaseViewController {
+public class GenericCardModalViewController: BaseViewController {
     
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     
-    override var showsNavigationBar: Bool { false }
+    public override var showsNavigationBar: Bool { false }
     
     var viewModel: GenericCardModalViewModelType?
     private var card: GenericCardDisplayModel?
@@ -36,7 +36,7 @@ class GenericCardModalViewController: BaseViewController {
     
     @IBOutlet weak var tapView: UIView!
         
-    override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         guard let card = card else { return }
@@ -60,7 +60,7 @@ class GenericCardModalViewController: BaseViewController {
         scrollView.isScrollEnabled = height > scrollView.frame.size.height
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         bindEvents()
         
         super.viewDidLoad()
@@ -94,9 +94,13 @@ class GenericCardModalViewController: BaseViewController {
 }
 
 extension GenericCardModalViewController {
-    class func create(with genericCard: GenericCardPayloadModel,
+    public class func create(with genericCard: GenericCardPayloadModel,
                       delegate: GenericCardModalSceneDelegate) -> GenericCardModalViewController {
-        let vc = GenericCardModalViewController()
+        
+        let bundle = Bundle(for: self)
+        let vc = GenericCardModalViewController(nibName: "\(self)", bundle: bundle)
+        
+//        let vc = GenericCardModalViewController()
         
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve

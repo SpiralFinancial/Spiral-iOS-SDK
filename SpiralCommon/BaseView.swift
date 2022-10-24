@@ -8,22 +8,22 @@
 import UIKit
 
 /// Custom abstract `UIView` used for loading custom `xib`s.
-class BaseView: UIView {
+public class BaseView: UIView {
     
     /// Should be used to access the actual visible view.
     var contentView: UIView?
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
     
-    override func prepareForInterfaceBuilder() {
+    public override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
         setupView()
         contentView?.prepareForInterfaceBuilder()

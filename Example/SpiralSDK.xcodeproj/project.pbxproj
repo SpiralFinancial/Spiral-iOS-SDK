@@ -20,6 +20,18 @@
 		D5C130E226B857F8009AE1F9 /* SpiralSDK_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C130E126B857F8009AE1F9 /* SpiralSDK_ExampleUITests.swift */; };
 		D5F789CD25675E84003E6485 /* SpiralConfigTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F789CC25675E84003E6485 /* SpiralConfigTableViewController.swift */; };
 		D5F789D725677CF8003E6485 /* ConfigEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F789D625677CF8003E6485 /* ConfigEntryViewController.swift */; };
+		F5BD6D702901C18200A5E5CE /* TestModalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */; };
+		F5BD6D712901C18200A5E5CE /* TestModalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */; };
+		F5BD6D722901C18200A5E5CE /* TestHtmlCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6B2901C18100A5E5CE /* TestHtmlCard.swift */; };
+		F5BD6D732901C18200A5E5CE /* TestHtmlCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6B2901C18100A5E5CE /* TestHtmlCard.swift */; };
+		F5BD6D742901C18200A5E5CE /* StJudeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6C2901C18100A5E5CE /* StJudeCard.swift */; };
+		F5BD6D752901C18200A5E5CE /* StJudeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6C2901C18100A5E5CE /* StJudeCard.swift */; };
+		F5BD6D762901C18200A5E5CE /* stJudeCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5BD6D6D2901C18100A5E5CE /* stJudeCard.json */; };
+		F5BD6D772901C18200A5E5CE /* stJudeCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5BD6D6D2901C18100A5E5CE /* stJudeCard.json */; };
+		F5BD6D782901C18200A5E5CE /* testHtmlCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5BD6D6E2901C18100A5E5CE /* testHtmlCard.json */; };
+		F5BD6D792901C18200A5E5CE /* testHtmlCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5BD6D6E2901C18100A5E5CE /* testHtmlCard.json */; };
+		F5BD6D7A2901C18200A5E5CE /* GenericCardTestFacility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6F2901C18100A5E5CE /* GenericCardTestFacility.swift */; };
+		F5BD6D7B2901C18200A5E5CE /* GenericCardTestFacility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6F2901C18100A5E5CE /* GenericCardTestFacility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -84,6 +96,12 @@
 		D5F789D625677CF8003E6485 /* ConfigEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigEntryViewController.swift; sourceTree = "<group>"; };
 		EDF1E1A86E177030EBD5A21E /* Pods-SpiralSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpiralSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-SpiralSDK_Example/Pods-SpiralSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F0459245F3C7850DA8DB35F2 /* SpiralSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SpiralSDK.podspec; path = ../SpiralSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestModalCard.swift; sourceTree = "<group>"; };
+		F5BD6D6B2901C18100A5E5CE /* TestHtmlCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHtmlCard.swift; sourceTree = "<group>"; };
+		F5BD6D6C2901C18100A5E5CE /* StJudeCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StJudeCard.swift; sourceTree = "<group>"; };
+		F5BD6D6D2901C18100A5E5CE /* stJudeCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stJudeCard.json; sourceTree = "<group>"; };
+		F5BD6D6E2901C18100A5E5CE /* testHtmlCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = testHtmlCard.json; sourceTree = "<group>"; };
+		F5BD6D6F2901C18100A5E5CE /* GenericCardTestFacility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericCardTestFacility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +204,7 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F5BD6D692901C18100A5E5CE /* GenericCardTest */,
 				607FACEB1AFB9204008FA782 /* Tests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
@@ -218,6 +237,19 @@
 				D5C130E326B857F8009AE1F9 /* Info.plist */,
 			);
 			path = SpiralSDK_ExampleUITests;
+			sourceTree = "<group>";
+		};
+		F5BD6D692901C18100A5E5CE /* GenericCardTest */ = {
+			isa = PBXGroup;
+			children = (
+				F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */,
+				F5BD6D6B2901C18100A5E5CE /* TestHtmlCard.swift */,
+				F5BD6D6C2901C18100A5E5CE /* StJudeCard.swift */,
+				F5BD6D6D2901C18100A5E5CE /* stJudeCard.json */,
+				F5BD6D6E2901C18100A5E5CE /* testHtmlCard.json */,
+				F5BD6D6F2901C18100A5E5CE /* GenericCardTestFacility.swift */,
+			);
+			path = GenericCardTest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -337,9 +369,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5BD6D762901C18200A5E5CE /* stJudeCard.json in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				F5BD6D782901C18200A5E5CE /* testHtmlCard.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +381,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5BD6D792901C18200A5E5CE /* testHtmlCard.json in Resources */,
+				F5BD6D772901C18200A5E5CE /* stJudeCard.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,9 +487,13 @@
 			files = (
 				D5F789D725677CF8003E6485 /* ConfigEntryViewController.swift in Sources */,
 				D5F789CD25675E84003E6485 /* SpiralConfigTableViewController.swift in Sources */,
+				F5BD6D7A2901C18200A5E5CE /* GenericCardTestFacility.swift in Sources */,
 				D50E5BFA26B9F4E200593628 /* EventData.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				F5BD6D722901C18200A5E5CE /* TestHtmlCard.swift in Sources */,
 				D50E5BF826B9F43800593628 /* EventsTableViewController.swift in Sources */,
+				F5BD6D742901C18200A5E5CE /* StJudeCard.swift in Sources */,
+				F5BD6D702901C18200A5E5CE /* TestModalCard.swift in Sources */,
 				D516B5FA2564C86600380041 /* SpiralToken.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -462,7 +502,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5BD6D752901C18200A5E5CE /* StJudeCard.swift in Sources */,
+				F5BD6D732901C18200A5E5CE /* TestHtmlCard.swift in Sources */,
+				F5BD6D7B2901C18200A5E5CE /* GenericCardTestFacility.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				F5BD6D712901C18200A5E5CE /* TestModalCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,7 +602,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -608,7 +652,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -625,7 +669,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 9382682MKT;
 				INFOPLIST_FILE = SpiralSDK/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "us.spiral.sdk-example";
@@ -645,7 +689,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 9382682MKT;
 				INFOPLIST_FILE = SpiralSDK/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "us.spiral.sdk-example";
@@ -724,7 +768,7 @@
 				DEVELOPMENT_TEAM = 9382682MKT;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SpiralSDK_ExampleUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -756,7 +800,7 @@
 				DEVELOPMENT_TEAM = 9382682MKT;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SpiralSDK_ExampleUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "us.spiral.SpiralSDK-ExampleUITests";

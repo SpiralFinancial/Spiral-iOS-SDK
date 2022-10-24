@@ -14,7 +14,7 @@ enum GenericCardError: Error {
     case unknownComponentType
 }
 
-enum GenericCardComponentType: String, Codable {
+public enum GenericCardComponentType: String, Codable {
     case container
     case zContainer = "z_container"
     case scrollContainer = "scroll_container"
@@ -26,7 +26,7 @@ enum GenericCardComponentType: String, Codable {
     case html
 }
 
-enum GenericCardContainerAxis: String, Codable {
+public enum GenericCardContainerAxis: String, Codable {
     case horizontal
     case vertical
     
@@ -36,28 +36,35 @@ enum GenericCardContainerAxis: String, Codable {
     }
 }
 
-struct GenericCardContentPadding: Codable {
+public struct GenericCardContentPadding: Codable {
     let left: CGFloat
     let right: CGFloat
     let top: CGFloat
     let bottom: CGFloat
+    
+    public init(left: CGFloat, right: CGFloat, top: CGFloat, bottom: CGFloat) {
+        self.left = left
+        self.right = right
+        self.top = top
+        self.bottom = bottom
+    }
 }
 
-enum GenericCardSnapEdge: String, Codable {
+public enum GenericCardSnapEdge: String, Codable {
     case left
     case right
     case top
     case bottom
 }
 
-enum GenericCardContentAlignment: String, Codable {
+public enum GenericCardContentAlignment: String, Codable {
     case left
     case center
     case right
     case justified
 }
 
-enum GenericCardContentMode: String, Codable {
+public enum GenericCardContentMode: String, Codable {
     case aspectFit
     case aspectFill
     case left
@@ -75,7 +82,7 @@ enum GenericCardContentMode: String, Codable {
     }
 }
 
-enum GenericCardTextWeight: String, Codable {
+public enum GenericCardTextWeight: String, Codable {
     case ultrathin
     case thin
     case light
@@ -90,9 +97,9 @@ enum GenericCardTextWeight: String, Codable {
     case greycliffBold
 }
 
-protocol GenericCardComponentContent: Codable {}
+public protocol GenericCardComponentContent: Codable {}
 
-struct GenericCardModel: Codable {
+public struct GenericCardModel: Codable {
     let backgroundColor: String?
     let backgroundImage: String?
     let link: String?
@@ -106,7 +113,7 @@ struct GenericCardModel: Codable {
         case root
     }
     
-    init(backgroundColor: String? = nil,
+    public init(backgroundColor: String? = nil,
          backgroundImage: String? = nil,
          link: String? = nil,
          root: GenericCardComponent) {
@@ -117,7 +124,7 @@ struct GenericCardModel: Codable {
     }
 }
 
-class GenericCardComponent: Codable {
+public class GenericCardComponent: Codable {
     let type: GenericCardComponentType
     let backgroundColor: String?
     let alpha: CGFloat?
@@ -144,7 +151,7 @@ class GenericCardComponent: Codable {
         case content
     }
     
-    init(type: GenericCardComponentType,
+    public init(type: GenericCardComponentType,
          backgroundColor: String? = nil,
          alpha: CGFloat? = nil,
          blur: Bool? = nil,
@@ -168,7 +175,7 @@ class GenericCardComponent: Codable {
         self.content = content
     }
     
-    required init(from decoder: Decoder) throws {
+    required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         type = try container.decode(GenericCardComponentType.self, forKey: .type)
         backgroundColor = try container.decodeIfPresent(String.self, forKey: .backgroundColor)
@@ -202,7 +209,7 @@ class GenericCardComponent: Codable {
         }
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .type)
         try container.encodeIfPresent(padding, forKey: .padding)
@@ -235,7 +242,7 @@ class GenericCardComponent: Codable {
     }
 }
 
-class GenericCardComponentContainer: GenericCardComponentContent {
+public class GenericCardComponentContainer: GenericCardComponentContent {
     let axis: GenericCardContainerAxis?
     let children: [GenericCardComponent]?
     
@@ -244,37 +251,37 @@ class GenericCardComponentContainer: GenericCardComponentContent {
         case children
     }
     
-    init(axis: GenericCardContainerAxis? = nil, children: [GenericCardComponent]?) {
+    public init(axis: GenericCardContainerAxis? = nil, children: [GenericCardComponent]?) {
         self.axis = axis
         self.children = children
     }
 }
 
-class GenericCardZComponentContainer: GenericCardComponentContent {
+public class GenericCardZComponentContainer: GenericCardComponentContent {
     let children: [GenericCardComponent]?
     
     private enum CodingKeys: String, CodingKey {
         case children
     }
     
-    init(children: [GenericCardComponent]?) {
+    public init(children: [GenericCardComponent]?) {
         self.children = children
     }
 }
 
-class GenericCardScrollComponentContainer: GenericCardComponentContent {
+public class GenericCardScrollComponentContainer: GenericCardComponentContent {
     let children: [GenericCardComponent]?
     
     private enum CodingKeys: String, CodingKey {
         case children
     }
     
-    init(children: [GenericCardComponent]?) {
+    public init(children: [GenericCardComponent]?) {
         self.children = children
     }
 }
 
-class GenericCardHeaderComponent: GenericCardComponentContent {
+public class GenericCardHeaderComponent: GenericCardComponentContent {
     let icon: String?
     let title: String
     let titleColor: String?
@@ -289,7 +296,7 @@ class GenericCardHeaderComponent: GenericCardComponentContent {
         case subtitleColor
     }
     
-    init(icon: String?, title: String, titleColor: String? = nil, subtitle: String, subtitleColor: String? = nil) {
+    public init(icon: String?, title: String, titleColor: String? = nil, subtitle: String, subtitleColor: String? = nil) {
         self.icon = icon
         self.title = title
         self.titleColor = titleColor
@@ -298,7 +305,7 @@ class GenericCardHeaderComponent: GenericCardComponentContent {
     }
 }
 
-class GenericCardImageComponent: GenericCardComponentContent {
+public class GenericCardImageComponent: GenericCardComponentContent {
     let url: String
     let fixedWidth: CGFloat?
     let fixedHeight: CGFloat?
@@ -313,7 +320,7 @@ class GenericCardImageComponent: GenericCardComponentContent {
         case contentMode
     }
     
-    init(url: String,
+    public init(url: String,
          fixedWidth: CGFloat? = nil,
          fixedHeight: CGFloat? = nil,
          aspectRatio: String? = nil,
@@ -326,7 +333,7 @@ class GenericCardImageComponent: GenericCardComponentContent {
     }
 }
 
-class GenericCardTextComponent: GenericCardComponentContent {
+public class GenericCardTextComponent: GenericCardComponentContent {
     let html: String?
     let text: String?
     let textColor: String?
@@ -345,7 +352,7 @@ class GenericCardTextComponent: GenericCardComponentContent {
         case lineHeight
     }
     
-    init(html: String? = nil,
+    public init(html: String? = nil,
          text: String? = nil,
          textColor: String? = nil,
          textSize: CGFloat? = nil,
@@ -362,7 +369,7 @@ class GenericCardTextComponent: GenericCardComponentContent {
     }
 }
 
-class GenericCardButtonComponent: GenericCardComponentContent {
+public class GenericCardButtonComponent: GenericCardComponentContent {
     let text: String
     let textColor: String?
     let textSize: CGFloat?
@@ -381,7 +388,7 @@ class GenericCardButtonComponent: GenericCardComponentContent {
         case fixedHeight
     }
     
-    init(text: String,
+    public init(text: String,
          textColor: String? = nil,
          textSize: CGFloat? = nil,
          textWeight: GenericCardTextWeight? = nil,
@@ -398,14 +405,14 @@ class GenericCardButtonComponent: GenericCardComponentContent {
     }
 }
 
-class GenericCardHtmlComponent: GenericCardComponentContent {
+public class GenericCardHtmlComponent: GenericCardComponentContent {
     let html: String?
     
     private enum CodingKeys: String, CodingKey {
         case html
     }
     
-    init(html: String? = nil) {
+    public init(html: String? = nil) {
         self.html = html
     }
 }

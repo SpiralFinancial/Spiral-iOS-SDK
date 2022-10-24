@@ -8,12 +8,19 @@
 
 import Foundation
 
-struct GenericCardPayloadModel: Codable {
+public struct GenericCardPayloadModel: Codable, SpiralCardPayloadModel {
     let identifier: Int
     let type: String
     var data: GenericCardModel
 
     let isNew: Bool
+    
+    public init(identifier: Int, type: String, data: GenericCardModel, isNew: Bool) {
+        self.identifier = identifier
+        self.type = type
+        self.data = data
+        self.isNew = isNew
+    }
 }
 
 struct GenericPayloadVersionModel: Codable {

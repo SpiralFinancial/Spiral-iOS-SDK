@@ -9,58 +9,32 @@
 import Foundation
 import SwiftUI
 
+import SpiralSDK
+
 protocol GenericCardTestModelProtocol {
     var cardModel: GenericCardModel? { get }
 }
 
 enum GenericCardTestModelType: String {
-    case xmasCard
-    case xmasCardWithModalDeepLink
-    case exceededMonthlyLimitCard
-    case transferLimitRequestInProgressCard
-    case veteransDayCard
-    case sameDayMDVerifyCard
-    case bottomSheetPresentableCard
     case stJudeCard
-    case walimuCard
-    case finishSetupCard
-    case testCardFromJSON
-    case catalogTestCard
-    case endOfYearReportCard
-    case referFriendCard
-    case referMoreFriendsCard
-    case referalCelebrationCard
-    case MLKCard
     case testModalCard
-    case activateDebitMarketing
-    case srRewardsIntroPopup
-    case fundAccountMarketing
     case testHtmlCard
-    case addMoneyCard
-    case directDepositCard
-    case pinwheelV1Scene
-    case pinwheelV2Scene
-    case pinwheelV3Scene
-    case pinwheelV4Scene
 }
 
 // swiftlint:disable all
 class GenericCardTestFacility {
 
     static var shouldDisplayTestCard: Bool {
-        #if !DEBUG
-            return false
-        #endif
         
-        if ContainerFactory.isPreviewEnvironment() {
+        if SpiralEnvironment.isPreviewEnvironment() {
             return true
         }
 
-        return false
+        return true
     }
 
     static var testCardToDisplay: GenericCardTestModelType {
-        return .veteransDayCard
+        return .stJudeCard
     }
 
     static var shouldReadFromJSON: Bool {
@@ -71,9 +45,7 @@ class GenericCardTestFacility {
         guard let cardPayload = genericCardTestPayloadModel() else { return nil }
 
         let card = CardModel(payloadType: .generic,
-                             payload: cardPayload,
-                             colorSchema: .none,
-                             header: nil)
+                             payload: cardPayload)
         return card
     }
     
@@ -84,73 +56,23 @@ class GenericCardTestFacility {
         
         return GenericCardPayloadModel(identifier: 1,
                                        type: "test",
-                                       data: cardData)
+                                       data: cardData,
+                                       isNew: false)
     }
 
     private static func getCardModel(for type: GenericCardTestModelType, shouldReadFromJSON: Bool = false) -> GenericCardModel? {
-#if DEBUG
         if shouldReadFromJSON {
             return readFromJSON(for: type)
         }
 
         var card: GenericCardTestModelProtocol? = nil
         switch(type) {
-        case .veteransDayCard:
-            card = VeteransDayCard()
-        case .sameDayMDVerifyCard:
-            card = SameDayMDVerifyCard()
-        case .bottomSheetPresentableCard:
-            card = BottomSheetPresentableCard()
         case .stJudeCard:
             card = StJudeCard()
-        case .walimuCard:
-            card = WalimuCard()
-        case .finishSetupCard:
-            card = FinishSetupCard()
-        case .testCardFromJSON:
-            card = TestFromJSONCard()
-        case .catalogTestCard:
-            card = CatalogTestCard()
-        case .transferLimitRequestInProgressCard:
-            card = TransferLimitRequestInProgressCard()
-        case .exceededMonthlyLimitCard:
-            card = ExceededMonthlyLimitCard()
-        case .endOfYearReportCard:
-            card = EndOfYearReportCard()
-        case .referFriendCard:
-            card = ReferFriendCard()
-        case .referMoreFriendsCard:
-            card = ReferMoreFriendsCard()
-        case .referalCelebrationCard:
-            card = ReferalCelebrationCard()
-        case .xmasCard:
-            card = XmasCard()
-        case .xmasCardWithModalDeepLink:
-            card = XmasCardWithModalDeepLink()
-        case .MLKCard:
-            card = MLKCard()
         case .testModalCard:
             card = TestModalCard()
-        case .activateDebitMarketing:
-            card = ActivateDebitCardMarketing()
-        case .srRewardsIntroPopup:
-            card = SocialRewardIntroPopUp()
-        case .fundAccountMarketing:
-            card = FundAccountMarketing()
         case .testHtmlCard:
             card = TestHtmlCard()
-        case .addMoneyCard:
-            card = AddMoneyCard()
-        case .directDepositCard:
-            card = DirectDepositCard()
-        case .pinwheelV1Scene:
-            card = PinwheelV1Scene()
-        case .pinwheelV2Scene:
-            card = PinwheelV2Scene()
-        case .pinwheelV3Scene:
-            card = PinwheelV3Scene()
-        case .pinwheelV4Scene:
-            card = PinwheelV4Scene()
         }
 
         if let json = jsonValueForTestCard(model: card?.cardModel) {
@@ -158,9 +80,6 @@ class GenericCardTestFacility {
         }
 
         return card?.cardModel
-#else
-        return nil
-#endif
     }
 
     private static func readFromJSON(for type: GenericCardTestModelType) -> GenericCardModel? {
@@ -232,7 +151,7 @@ class GenericCardTestFacility {
             genericCardView.configureWith(displayModel)
             
             let height = genericCardView.systemLayoutSizeFitting(CGSize(width: width,
-                                                                        height: UIView.layoutFittingCompressedSize.height),
+                                                                        height: UILayoutFittingCompressedSize.height),
                                                                  withHorizontalFittingPriority: .required,
                                                                  verticalFittingPriority: .defaultLow).height
             return height

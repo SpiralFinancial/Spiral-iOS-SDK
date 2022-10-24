@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {
+public class BaseViewController: UIViewController {
     
     var name: String {
         return String(describing: classForCoder)
@@ -17,14 +17,14 @@ class BaseViewController: UIViewController {
         return true
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         setNeedsStatusBarAppearanceUpdate()
         navigationController?.setNavigationBarHidden(!showsNavigationBar, animated: false)
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         // register for keyboard notifications

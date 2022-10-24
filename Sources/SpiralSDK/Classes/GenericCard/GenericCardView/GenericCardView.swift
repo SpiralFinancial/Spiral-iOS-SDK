@@ -9,13 +9,19 @@
 import Foundation
 import UIKit
 
-struct GenericCardDisplayModel {
+public struct GenericCardDisplayModel {
     let cardData: GenericCardPayloadModel
     weak var deepLinker: DeepLinkable?
     let layoutUpdateHandler: (_ constraintUpdater: @escaping () -> Void) -> Void
+    
+    public init(cardData: GenericCardPayloadModel, deepLinker: DeepLinkable? = nil, layoutUpdateHandler: @escaping (@escaping () -> Void) -> Void) {
+        self.cardData = cardData
+        self.deepLinker = deepLinker
+        self.layoutUpdateHandler = layoutUpdateHandler
+    }
 }
 
-struct GenericCardComponentDisplayModel {
+public struct GenericCardComponentDisplayModel {
     let componentModel: GenericCardComponent
     weak var deepLinker: DeepLinkable?
     let layoutUpdateHandler: (_ constraintUpdater: @escaping () -> Void) -> Void
@@ -148,17 +154,25 @@ class GenericCardComponentView: BaseView, Configurable {
     }
 }
 
-class GenericCardView: BaseView, Configurable, UIGestureRecognizerDelegate {
+public class GenericCardView: BaseView, Configurable, UIGestureRecognizerDelegate {
     @IBOutlet private var containerView: UIView!
     @IBOutlet private var backgroundImageView: UIImageView!
     
-    let imageDownloader: SpiralImageDownloadService = ContainerFactory.getContainer().resolve()
+    let imageDownloader: SpiralImageDownloadService = SpiralImageDownloadManager()
     
     private var tapGestureRecognizer: BindableTapGestureRecognizer?
     
     private var data: GenericCardDisplayModel?
     
-    func configureWith(_ data: GenericCardDisplayModel) {
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    public func configureWith(_ data: GenericCardDisplayModel) {
         self.data = data
         
         let cardDisplayData = data.cardData.data
@@ -215,7 +229,7 @@ class GenericCardView: BaseView, Configurable, UIGestureRecognizerDelegate {
         addGestureRecognizer(tapRecognizer)
     }
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return false
     }
@@ -232,7 +246,7 @@ class GenericCardView: BaseView, Configurable, UIGestureRecognizerDelegate {
         }
     }
     
-    func refreshDisplay() {
+    public func refreshDisplay() {
         if let cardData = data {
             configureWith(cardData)
         }
@@ -251,8 +265,6 @@ class GenericCardViewBuilder {
             componentView = GenericCardScrollContainerView()
         } else if componentModel.content is GenericCardZComponentContainer {
             componentView = GenericCardZComponentContainerView()
-        } else if componentModel.content is GenericCardHeaderComponent {
-            componentView = GenericCardHeaderView()
         } else if componentModel.content is GenericCardImageComponent {
             componentView = GenericCardImageView()
         } else if componentModel.content is GenericCardButtonComponent {

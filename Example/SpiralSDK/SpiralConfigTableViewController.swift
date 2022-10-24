@@ -45,7 +45,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 3
+        return 4
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -57,7 +57,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section >= data.count {
-            let buttonCell = tableView.dequeueReusableCell(withIdentifier: "button", for: indexPath)
+            let buttonCell = tableView.dequeueReusableCell(withIdentifier: "button-" + String(indexPath.section - data.count + 1), for: indexPath)
             return buttonCell
         }
         
@@ -121,6 +121,12 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         onComplete(spiralToken: "some_token")
     }
     
+    @IBAction func handleGenericModalTap() {
+        if let genericModel = GenericCardTestFacility.genericCardTestPayloadModel() {
+            showModal(with: genericModel)
+        }
+    }
+    
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
         self.tableView.reloadData()
@@ -157,6 +163,7 @@ extension SpiralConfigTableViewController: SpiralDelegate {
     }
     
     func onReady(controller: SpiralViewController) {
+        controller.modalPresentationStyle = .fullScreen
         self.present(controller, animated: true)
     }
     
@@ -176,4 +183,31 @@ extension SpiralConfigTableViewController: SpiralDelegate {
     func onSuccess(_ result: SpiralSuccessPayload) {
         print("onSuccess")
     }
+    
+    private func showModal(with genericCard: GenericCardPayloadModel) {
+        // Handle deeplink at login
+        let vc = GenericCardModalViewController.create(with: genericCard, delegate: self)
+        UIApplication.topViewController()?.present(vc, animated: true)
+    }
+    
+    func genericCardModalSceneDidRequestDismiss() {
+        UIApplication.topViewController()?.dismiss(animated: true)
+    }
+}
+
+extension SpiralConfigTableViewController: GenericCardModalSceneDelegate {
+    var deepLinkHandlers: [DeepLinkHandler]? {
+        get {
+            return nil
+        }
+        set(newValue) {
+            
+        }
+    }
+    
+    func goToDeepLink(_ deepLink: DeepLink) {
+        
+    }
+    
+    
 }

@@ -8,14 +8,28 @@
 import Foundation
 
 public class Spiral {
+    
     public static let shared = Spiral()
     
     private var _donationViewController: SpiralViewController?
     
+    private var _token: String?
+    private var _config: SpiralConfig?
+    
     public func startDonationFlow(token: String, delegate: SpiralDelegate, config: SpiralConfig? = nil) {
+        _token = token
+        _config = config
         _donationViewController = SpiralViewController(token: token, delegate: delegate, config: config, onExit: { [weak self] in
             self?._donationViewController = nil
         })
+    }
+    
+    public func token() -> String? {
+        return _token
+    }
+    
+    public func config() -> SpiralConfig? {
+        return _config
     }
 }
 
@@ -82,6 +96,14 @@ extension SpiralEnvironment {
         case .production:
             return "production"
         }
+    }
+    
+    public static func isTestEnvironment() -> Bool {
+        return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
+    
+    public static func isPreviewEnvironment() -> Bool {
+        return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 }
 

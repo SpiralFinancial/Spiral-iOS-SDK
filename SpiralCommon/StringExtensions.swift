@@ -379,18 +379,9 @@ extension String {
                 return String(self[range])
             }
         } catch let error {
-            Log.debug("Invalid regex: \(error.localizedDescription)")
+            print("Invalid regex: \(error.localizedDescription)")
             return nil
         }
-    }
-    
-    func toTimeInterval(dateFormat: DateFormat, atNight: Bool = false, dateFormatter: DateFormatter? = nil) -> TimeInterval? {
-        let dateFormatter = dateFormatter ?? DateFormatter()
-        var date = dateFormatter.stringToDate(self, dateFormat: dateFormat)
-        if atNight, let strongDate = date {
-            date = Calendar.current.date(byAdding: .hour, value: 23, to: strongDate)
-        }
-        return date?.timeIntervalSince1970
     }
     
     func height(withConstrainedWidth width: CGFloat, font: UIFont, lineHeight: CGFloat? = nil) -> CGFloat {
@@ -505,5 +496,52 @@ extension String {
         }
         
         return phone
+    }
+    
+    // Converts an aspect ratio string with format "16:9" to
+    // a float value representing the height multiplier relative to width
+    // (i.e 2:1 returns 0.5)
+    var toHeightAspectRatio: CGFloat? {
+        let values = split(separator: ":")
+        if let widthSlice = values[safeAt: 0],
+           let heightSlice = values[safeAt: 1] {
+            let widthStr = String(widthSlice).trimmed
+            let heightStr = String(heightSlice).trimmed
+            
+            if let widthVal = widthStr.asCGFloat,
+               let heightVal = heightStr.asCGFloat {
+                return (heightVal / widthVal)
+            }
+        }
+        return nil
+    }
+    
+    var asCGFloat: CGFloat? {
+        if let num = NumberFormatter().number(from: self) {
+            let floatVal = CGFloat(truncating: num)
+            return floatVal
+        }
+        return nil
+    }
+    
+    func spiralSafeUrl() -> String {
+        if hasPrefix("http") {
+            return self
+        }
+
+        let apiURL = Spiral.shared.config()?.url ?? .empty
+        let newURL = apiURL + self
+        return newURL
+    }
+    
+    static var empty: Self {
+        return ""
+    }
+    
+}
+
+extension Optional where Wrapped == String {
+    var orEmpty: String {
+        return self ?? .empty
     }
 }

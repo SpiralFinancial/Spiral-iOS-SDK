@@ -105,8 +105,6 @@ extension GenericCardTextView: UITextViewDelegate {
         handleTextTapped(fullText: textView.text,
                          characterRange: characterRange,
                          url: URL,
-                         fullAnalyticsIdentifier: fullAnalyticsIdentifier,
-                         analyticsService: analyticsService,
                          deepLinker: deepLinker)
         
         return false
@@ -204,8 +202,6 @@ extension UITextViewDelegate {
     func handleTextTapped(fullText: String,
                           characterRange: NSRange,
                           url: URL,
-                          fullAnalyticsIdentifier: String,
-                          analyticsService: AnalyticsService,
                           deepLinker: DeepLinkable) {
         let urlString = url.urlStringWithoutLocalScheme
         

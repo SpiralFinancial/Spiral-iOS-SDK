@@ -1,0 +1,72 @@
+{
+  "root": {
+    "type": "container",
+    "content": {
+      "children": [
+        {
+          "type": "container",
+          "padding": {
+            "bottom": 0,
+            "top": 0,
+            "right": 0,
+            "left": 0
+          },
+          "content": {
+            "children": [
+              {
+                "type": "html",
+                "content": {
+                  "html": "<div><style>.test{color: red;}<\/style><div style=\"border: 1px solid blue; max-width: 200px; margin: 0px auto; font-family: greycliff-regular;\">Max Width 200 - Center<\/div><div style=\"border: 1px solid green; display: flex; margin-top: 24px; align-items: center;\"><div style=\"border: 1px solid red;\">Left<\/div><div style=\"border: 1px solid blue; flex: 1 1 0%; padding: 24px;\">Left - Fill space<\/div><\/div><div style=\"margin-top: 24px; background: blue; color: white;\">Hi<\/div><div style=\"border: 1px solid black; margin-top: 24px;\" class=\"test\">This text should be red - from CSS<\/div><\/div><div><a href=\"/payAndTransfer/moveFunds\">test link</a></div>"
+                }
+              },
+              {
+                "type": "text",
+                "padding": {
+                  "bottom": 16,
+                  "top": 0,
+                  "right": 0,
+                  "left": 0
+                },
+                "content": {
+                  "html": "<span style=\"font-family: greycliff-bold; font-size:20px; line-height: 14px; color:black;\">Set up online in minutes</span>",
+                  "alignment": "center"
+                }
+              },
+              {
+                "links": [
+                  "/profileAndSettings/directDeposit"
+                ],
+                "content": {
+                  "text_color": "#D73275",
+                  "border_color": "#D73275",
+                  "fixed_width": 207,
+                  "text": "Set up direct deposit"
+                },
+                "padding": {
+                  "bottom": 16,
+                  "top": 0,
+                  "right": 0,
+                  "left": 0
+                },
+                "type": "button"
+              },
+              {
+                "type": "text",
+                "padding": {
+                  "bottom": 33,
+                  "top": 0,
+                  "right": 0,
+                  "left": 0
+                },
+                "content": {
+                  "html": "<span style=\"font-family: sfpro-regular; font-size:12px; line-height: 14px; color:black;\">See full details at <a href='http://www.spiral.us'>www.spiral.us/</a></span>",
+                  "alignment": "center"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

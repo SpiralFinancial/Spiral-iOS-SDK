@@ -22,7 +22,7 @@ class GenericCardImageView: GenericCardComponentView {
         
         let keepAroundImgView: UIImageView = imageView
         
-        let delayTime = 5
+        let delayTime: Double = 5
         
         DispatchQueue
             .main

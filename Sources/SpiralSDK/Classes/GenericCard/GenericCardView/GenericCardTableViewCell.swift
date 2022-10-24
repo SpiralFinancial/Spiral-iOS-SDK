@@ -8,9 +8,9 @@
 
 import Foundation
 
-typealias GenericCardConfigurator = SpiralViewConfigurator<GenericCardTableViewCell>
+public typealias GenericCardConfigurator = BaseViewConfigurator<GenericCardTableViewCell>
 
-class GenericCardTableViewCell: UITableViewCell, Configurable {
+public class GenericCardTableViewCell: UITableViewCell, Configurable {
 
     // MARK: - Outlets
     
@@ -37,7 +37,7 @@ class GenericCardTableViewCell: UITableViewCell, Configurable {
     }
 
     // MARK: - Configurable
-    func configureWith(_ data: GenericCardDisplayModel) {
+    public func configureWith(_ data: GenericCardDisplayModel) {
         genericCardView.configureWith(data)
     }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol GenericCardModalSceneDelegate: DeepLinkable {
+public protocol GenericCardModalSceneDelegate: DeepLinkable {
     func genericCardModalSceneDidRequestDismiss()
 }
 

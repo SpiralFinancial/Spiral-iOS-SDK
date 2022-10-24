@@ -119,12 +119,14 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
+        let statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        let yOffset: CGFloat = modalPresentationStyle == .fullScreen ? statusBarHeight : 0
         
         webView.frame = CGRect(x: 0,
-                               y: statusBarHeight,
+                               y: yOffset,
                                width: view.frame.width,
-                               height: view.frame.height - statusBarHeight)
+                               height: view.frame.height - yOffset)
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.clipsToBounds = true
         view.addSubview(webView)

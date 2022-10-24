@@ -1,0 +1,52 @@
+{
+  "root" : {
+    "content" : {
+      "children" : [
+        {
+          "content" : {
+            "title" : "ST Jude",
+            "icon" : "https:\/\/cdn.zeplin.io\/5e3b1c818f31c4b3e2064abd\/assets\/6E542A66-1F6B-4D5D-BFC3-DFBE5100EE44.png",
+            "subtitle" : "Your giving impact"
+          },
+          "type" : "header",
+          },
+        {
+          "content" : {
+            "url" : "https:\/\/cdn.zeplin.io\/5e3b1c818f31c4b3e2064abd\/assets\/D14203EE-A7F1-48F3-9136-6E254779F1BA.png",
+            "fixed_height" : 184
+          },
+          "type" : "image",
+          },
+        {
+          "content" : {
+            "html" : "<span style=\"font-family: sfpro-regular; font-size:16px; line-height: 22px; color:black;\">Danny, Your donation helped four amazing kids got much-needed cancer surgery, thanks for being amazing!<\/span>"
+          },
+          "padding" : {
+            "bottom" : 20,
+            "top" : 15,
+            "right" : 16,
+            "left" : 16
+          },
+          "type" : "text",
+          },
+        {
+          "content" : {
+            "text_color" : "#D73275",
+            "border_color" : "#D73275",
+            "fixed_width" : 200,
+            "text" : "Ok, got it"
+          },
+          "padding" : {
+            "bottom" : 25,
+            "top" : 0,
+            "right" : 0,
+            "left" : 0
+          },
+          "type" : "button",
+          "link" : "\/home\/hideCard?id=1&option=test&type=test"
+        }
+      ]
+    },
+    "type" : "container",
+    }
+}
