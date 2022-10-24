@@ -122,8 +122,19 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     }
     
     @IBAction func handleGenericModalTap() {
-        if let genericModel = GenericCardTestFacility.genericCardTestPayloadModel() {
-            showModal(with: genericModel)
+//        if let genericModel = GenericCardTestFacility.genericCardTestPayloadModel() {
+//            showModal(with: genericModel)
+//        }
+        
+        SocialResponsibilityAPI.getSocialResponsibilityImpactCard(type: "instantImpact", X_SPIRAL_SDK_VERSION: "ios-1.0.0", X_SPIRAL_CUSTOMER_ID: nil, X_SPIRAL_REQUEST_ID: nil, apiResponseQueue: DispatchQueue.global()) { [weak self] data, error in
+            DispatchQueue.main.async {
+                if let data = data {
+                    let cardData = data.card
+                    let payload = GenericCardPayloadModel(identifier: 0, type: "instantImpact", data: cardData, isNew: false)
+                    self?.showModal(with: payload)
+                    
+                }
+            }
         }
     }
     

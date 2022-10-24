@@ -19,7 +19,6 @@ public enum GenericCardComponentType: String, Codable {
     case zContainer = "z_container"
     case scrollContainer = "scroll_container"
     case modal = "modal_container"
-    case header
     case image
     case text
     case button
@@ -196,8 +195,6 @@ public class GenericCardComponent: Codable {
             content = try container.decode(GenericCardZComponentContainer.self, forKey: .content)
         case .scrollContainer:
             content = try container.decode(GenericCardScrollComponentContainer.self, forKey: .content)
-        case .header:
-            content = try container.decode(GenericCardHeaderComponent.self, forKey: .content)
         case .image:
             content = try container.decode(GenericCardImageComponent.self, forKey: .content)
         case .text:
@@ -228,8 +225,6 @@ public class GenericCardComponent: Codable {
             try container.encodeIfPresent(content as? GenericCardZComponentContainer, forKey: .content)
         case .scrollContainer:
             try container.encodeIfPresent(content as? GenericCardScrollComponentContainer, forKey: .content)
-        case .header:
-            try container.encodeIfPresent(content as? GenericCardHeaderComponent, forKey: .content)
         case .image:
             try container.encodeIfPresent(content as? GenericCardImageComponent, forKey: .content)
         case .text:
@@ -278,30 +273,6 @@ public class GenericCardScrollComponentContainer: GenericCardComponentContent {
     
     public init(children: [GenericCardComponent]?) {
         self.children = children
-    }
-}
-
-public class GenericCardHeaderComponent: GenericCardComponentContent {
-    let icon: String?
-    let title: String
-    let titleColor: String?
-    let subtitle: String
-    let subtitleColor: String?
-    
-    private enum CodingKeys: String, CodingKey {
-        case icon
-        case title
-        case titleColor
-        case subtitle
-        case subtitleColor
-    }
-    
-    public init(icon: String?, title: String, titleColor: String? = nil, subtitle: String, subtitleColor: String? = nil) {
-        self.icon = icon
-        self.title = title
-        self.titleColor = titleColor
-        self.subtitle = subtitle
-        self.subtitleColor = subtitleColor
     }
 }
 
