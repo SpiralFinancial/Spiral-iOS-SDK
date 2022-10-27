@@ -22,6 +22,8 @@ public class Spiral {
         _donationViewController = SpiralViewController(token: token, delegate: delegate, config: config, onExit: { [weak self] in
             self?._donationViewController = nil
         })
+        
+        SpiralCustomFonts.loadFonts()
     }
     
     public func token() -> String? {

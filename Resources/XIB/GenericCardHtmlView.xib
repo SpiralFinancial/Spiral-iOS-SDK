@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GenericCardHtmlView" customModule="Spiral" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomPaddingConstraint" destination="vks-mC-vmR" id="6Ro-2p-L7s"/>
+                <outlet property="genericContentView" destination="AJZ-Wg-2DR" id="JFi-VQ-Bv6"/>
+                <outlet property="heightConstraint" destination="m3p-3a-YTg" id="a7t-JQ-QmW"/>
+                <outlet property="leftPaddingConstraint" destination="O7a-bU-9Mb" id="A83-os-jnd"/>
+                <outlet property="rightPaddingConstraint" destination="wWl-Qz-Q9z" id="8uW-Nx-AlL"/>
+                <outlet property="topPaddingConstraint" destination="ym6-B7-Sw9" id="q7I-3W-cCH"/>
+                <outlet property="widthConstraint" destination="9Nh-hb-V1b" id="rsm-aW-lrC"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iS5-Eb-38z">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AJZ-Wg-2DR">
+                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="9Nh-hb-V1b"/>
+                        <constraint firstAttribute="height" constant="200" id="m3p-3a-YTg"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="9Nh-hb-V1b"/>
+                            <exclude reference="m3p-3a-YTg"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="gHI-DM-DZn"/>
+            <constraints>
+                <constraint firstItem="AJZ-Wg-2DR" firstAttribute="leading" secondItem="iS5-Eb-38z" secondAttribute="leading" id="O7a-bU-9Mb"/>
+                <constraint firstAttribute="bottom" secondItem="AJZ-Wg-2DR" secondAttribute="bottom" id="vks-mC-vmR"/>
+                <constraint firstAttribute="trailing" secondItem="AJZ-Wg-2DR" secondAttribute="trailing" id="wWl-Qz-Q9z"/>
+                <constraint firstItem="AJZ-Wg-2DR" firstAttribute="top" secondItem="iS5-Eb-38z" secondAttribute="top" id="ym6-B7-Sw9"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="89.855072463768124" y="-87.388392857142847"/>
+        </view>
+    </objects>
+</document>

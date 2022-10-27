@@ -50,7 +50,10 @@ public class BaseView: UIView {
     ///
     /// - Returns: The actual visible view in the interface builder
     private func loadViewFromNib() -> UIView? {
-        let bundle = Bundle(for: type(of: self))
+        guard let bundleURL = Bundle(for: type(of: self)).url(forResource: "Resources", withExtension: "bundle"),
+              let bundle = Bundle(url: bundleURL) else { return nil }
+        
+//        let bundle = Bundle(for: type(of: self))
         let nib = UINib(nibName: String(describing: type(of: self)), bundle: bundle)
         return nib.instantiate(withOwner: self, options: nil).first as? UIView
     }

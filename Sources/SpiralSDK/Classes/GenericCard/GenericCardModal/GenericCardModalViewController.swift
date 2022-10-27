@@ -97,7 +97,10 @@ extension GenericCardModalViewController {
     public class func create(with genericCard: GenericCardPayloadModel,
                       delegate: GenericCardModalSceneDelegate) -> GenericCardModalViewController {
         
-        let bundle = Bundle(for: self)
+//        let bundle = Bundle(for: self)
+        guard let bundleURL = Bundle(for: self).url(forResource: "Resources", withExtension: "bundle"),
+              let bundle = Bundle(url: bundleURL) else { return GenericCardModalViewController() }
+        
         let vc = GenericCardModalViewController(nibName: "\(self)", bundle: bundle)
         
 //        let vc = GenericCardModalViewController()
