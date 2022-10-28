@@ -20,7 +20,7 @@ struct StJudeCard: GenericCardTestModelProtocol {
         
         let text = GenericCardTextComponent(html:
                                                 """
-                                                <span style=\"font-family: sfpro-regular; font-size:16px; line-height: 22px; color:black;\">Danny, Your donation helped four amazing kids got much-needed cancer surgery, thanks for being amazing!</span>
+                                                <span style=\"font-family: SFProRounded-Regular; font-size:16px; line-height: 22px; color:black;\">Danny, Your donation helped four amazing kids got much-needed cancer surgery, thanks for being amazing!</span>
                                                 """
         )
         let textComponent = GenericCardComponent(type: .text,

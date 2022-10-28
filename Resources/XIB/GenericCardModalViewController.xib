@@ -33,7 +33,7 @@
                         <action selector="didTapCloseButton:" destination="-1" eventType="touchUpInside" id="RtR-0z-sqk"/>
                     </connections>
                 </button>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5v5-mx-QJL" customClass="GenericModalScrollContainer" customModule="Resources" customModuleProvider="target">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5v5-mx-QJL" customClass="GenericModalScrollContainer" customModule="SpiralSDK">
                     <rect key="frame" x="16" y="103" width="382" height="700"/>
                     <subviews>
                         <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bQp-1Q-7U2" customClass="GenericCardView" customModule="SpiralSDK">

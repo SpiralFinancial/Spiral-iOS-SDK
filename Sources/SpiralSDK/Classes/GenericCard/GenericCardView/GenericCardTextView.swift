@@ -83,7 +83,27 @@ class GenericCardTextView: GenericCardComponentView {
     func wrapWithHTMLFontStyles(html: String) -> String {
         var wrappedHtml = html
         if !wrappedHtml.hasPrefix("<html>") {
-            wrappedHtml.insert(contentsOf: Constants.fontStyleHtmlStartTag, at: wrappedHtml.startIndex)
+
+            // Register available fonts
+            SpiralCustomFonts.registerFontsIfNeeded()
+            
+            var prefixHtml = "<html><style>"
+            UIFont.familyNames.forEach({ familyName in
+                let fontNames = UIFont.fontNames(forFamilyName: familyName)
+                fontNames.forEach { fontName in
+                    prefixHtml.append("""
+                    @font-face {
+                        font-family: \(fontName);
+                        font-style: normal;
+                        font-weight: 300;
+                        src: local("\(fontName)");
+                    }
+                    """)
+                }
+            })
+            prefixHtml.append("</style>")
+            
+            wrappedHtml.insert(contentsOf: prefixHtml, at: wrappedHtml.startIndex)
         }
         if !wrappedHtml.hasSuffix("</html>") {
             wrappedHtml.append("</html>")
@@ -114,86 +134,6 @@ extension GenericCardTextView: UITextViewDelegate {
 
 extension Constants {
     static let defaultTextSize: CGFloat = 20
-    
-    fileprivate static let fontStyleHtmlStartTag =
-        """
-        <html>
-        <style>
-        @font-face {
-          font-family: sfpro-ultrathin;
-          font-style: normal;
-          font-weight: 100;
-          src: local("SFProRounded-Ultralight");
-        }
-        @font-face {
-          font-family: sfpro-thin;
-          font-style: normal;
-          font-weight: 100;
-          src: local("SFProRounded-Thin");
-        }
-        @font-face {
-          font-family: sfpro-light;
-          font-style: normal;
-          font-weight: 300;
-          src: local("SFProRounded-Light");
-        }
-        @font-face {
-          font-family: sfpro-regular;
-          font-style: normal;
-          font-weight: 300;
-          src: local("SFProRounded-Regular");
-        }
-        @font-face {
-          font-family: sfpro-medium;
-          font-style: normal;
-          font-weight: 300;
-          src: local("SFProRounded-Medium");
-        }
-        @font-face {
-          font-family: sfpro-semibold;
-          font-style: normal;
-          font-weight: 300;
-          src: local("SFProRounded-Semibold");
-        }
-        @font-face {
-          font-family: sfpro-bold;
-          font-style: normal;
-          font-weight: 300;
-          src: local("SFProRounded-Bold");
-        }
-        @font-face {
-          font-family: sfpro-heavy;
-          font-style: normal;
-          font-weight: 300;
-          src: local("SFProRounded-Heavy");
-        }
-        @font-face {
-          font-family: sfpro-black;
-          font-style: normal;
-          font-weight: 300;
-          src: local("SFProRounded-Black");
-        }
-        @font-face {
-          font-family: signpainter-signature;
-          font-style: normal;
-          font-weight: 300;
-          src: local("SignPainter-HouseScript");
-        }
-        @font-face {
-          font-family: greycliff-regular;
-          font-style: normal;
-          font-weight: 300;
-          src: local("GreycliffCF-Regular");
-        }
-        @font-face {
-          font-family: greycliff-bold;
-          font-style: normal;
-          font-weight: 300;
-          src: local("GreycliffCF-Bold");
-        }
-        </style>
-        """
-    
 }
 
 extension UITextViewDelegate {

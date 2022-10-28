@@ -40,11 +40,16 @@ public class SpiralCustomFonts: NSObject {
         }
     }
 
-    public static func loadFonts() {
+    static var didRegisterFonts = false
+    public static func registerFontsIfNeeded() {
+        guard !didRegisterFonts else { return }
+        
         let fontNames = Style.allCases.map { $0.value }
         for fontName in fontNames {
             loadFont(withName: fontName)
         }
+        
+        didRegisterFonts = true
     }
     
     private static func loadFont(withName fontName: String) {
