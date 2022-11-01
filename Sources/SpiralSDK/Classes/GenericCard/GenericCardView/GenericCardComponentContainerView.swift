@@ -15,7 +15,7 @@ class GenericCardComponentContainerView: GenericCardComponentView {
     override func configureWith(_ data: GenericCardComponentDisplayModel) {
         super.configureWith(data)
         
-        guard let containerComponentData = data.componentModel.content as? GenericCardComponentContainer else { return }
+        guard let containerComponentData = data.componentModel.content as? SpiralGenericCardComponentContainer else { return }
         
         if let axis = containerComponentData.axis {
             stackView.axis = axis.asStackViewAxis

@@ -199,7 +199,7 @@ extension DeepLinkable {
     }
     
     func dismissModal(completion: EmptyOptionalClosure) {
-        guard let topViewController = UIApplication.topViewController() as? GenericCardModalViewController else {
+        guard let topViewController = UIApplication.topViewController() as? SpiralGenericCardModalViewController else {
             return
         }
         

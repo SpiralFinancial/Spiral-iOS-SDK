@@ -20,7 +20,7 @@ class GenericModalScrollContainer: UIScrollView {
     let initialContentOffset: CGFloat = 0
 }
 
-public class GenericCardModalViewController: BaseViewController {
+public class SpiralGenericCardModalViewController: BaseViewController {
     
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     
@@ -93,15 +93,16 @@ public class GenericCardModalViewController: BaseViewController {
     }
 }
 
-extension GenericCardModalViewController {
+extension SpiralGenericCardModalViewController {
     public class func create(with genericCard: GenericCardPayloadModel,
-                      delegate: GenericCardModalSceneDelegate) -> GenericCardModalViewController {
+                      delegate: GenericCardModalSceneDelegate) -> SpiralGenericCardModalViewController {
         
 //        let bundle = Bundle(for: self)
-        guard let bundleURL = Bundle(for: self).url(forResource: "Resources", withExtension: "bundle"),
-              let bundle = Bundle(url: bundleURL) else { return GenericCardModalViewController() }
+//        guard let bundleURL = Bundle(for: self).url(forResource: "Resources", withExtension: "bundle"),
+//              let bundle = Bundle(url: bundleURL) else { return SpiralGenericCardModalViewController() }
+        guard let bundle = Bundle.spiralResourcesBundle else { return SpiralGenericCardModalViewController() }
         
-        let vc = GenericCardModalViewController(nibName: "\(self)", bundle: bundle)
+        let vc = SpiralGenericCardModalViewController(nibName: "\(self)", bundle: bundle)
         
 //        let vc = GenericCardModalViewController()
         

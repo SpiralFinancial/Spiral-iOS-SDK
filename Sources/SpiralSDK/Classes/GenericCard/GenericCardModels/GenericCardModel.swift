@@ -10,11 +10,11 @@ import Foundation
 
 // swiftlint:disable file_length
 
-enum GenericCardError: Error {
+enum SpiralGenericCardError: Error {
     case unknownComponentType
 }
 
-public enum GenericCardComponentType: String, Codable {
+public enum SpiralGenericCardComponentType: String, Codable {
     case container
     case zContainer = "z_container"
     case scrollContainer = "scroll_container"
@@ -25,7 +25,7 @@ public enum GenericCardComponentType: String, Codable {
     case html
 }
 
-public enum GenericCardContainerAxis: String, Codable {
+public enum SpiralGenericCardContainerAxis: String, Codable {
     case horizontal
     case vertical
     
@@ -35,7 +35,7 @@ public enum GenericCardContainerAxis: String, Codable {
     }
 }
 
-public struct GenericCardContentPadding: Codable {
+public struct SpiralGenericCardContentPadding: Codable {
     let left: CGFloat
     let right: CGFloat
     let top: CGFloat
@@ -49,21 +49,21 @@ public struct GenericCardContentPadding: Codable {
     }
 }
 
-public enum GenericCardSnapEdge: String, Codable {
+public enum SpiralGenericCardSnapEdge: String, Codable {
     case left
     case right
     case top
     case bottom
 }
 
-public enum GenericCardContentAlignment: String, Codable {
+public enum SpiralGenericCardContentAlignment: String, Codable {
     case left
     case center
     case right
     case justified
 }
 
-public enum GenericCardContentMode: String, Codable {
+public enum SpiralGenericCardContentMode: String, Codable {
     case aspectFit
     case aspectFill
     case left
@@ -81,7 +81,7 @@ public enum GenericCardContentMode: String, Codable {
     }
 }
 
-public enum GenericCardTextWeight: String, Codable {
+public enum SpiralGenericCardTextWeight: String, Codable {
     case ultrathin
     case thin
     case light
@@ -96,14 +96,14 @@ public enum GenericCardTextWeight: String, Codable {
     case greycliffBold
 }
 
-public protocol GenericCardComponentContent: Codable {}
+public protocol SpiralGenericCardComponentContent: Codable {}
 
 public struct GenericCardModel: Codable {
     let backgroundColor: String?
     let backgroundImage: String?
     let link: String?
     
-    let root: GenericCardComponent
+    let root: SpiralGenericCardComponent
     
     private enum CodingKeys: String, CodingKey {
         case backgroundColor
@@ -115,7 +115,7 @@ public struct GenericCardModel: Codable {
     public init(backgroundColor: String? = nil,
          backgroundImage: String? = nil,
          link: String? = nil,
-         root: GenericCardComponent) {
+         root: SpiralGenericCardComponent) {
         self.backgroundColor = backgroundColor
         self.backgroundImage = backgroundImage
         self.link = link
@@ -123,18 +123,18 @@ public struct GenericCardModel: Codable {
     }
 }
 
-public class GenericCardComponent: Codable {
-    let type: GenericCardComponentType
+public class SpiralGenericCardComponent: Codable {
+    let type: SpiralGenericCardComponentType
     let backgroundColor: String?
     let alpha: CGFloat?
     let blur: Bool?
     let fixedWidth: CGFloat?
     let fixedHeight: CGFloat?
-    let padding: GenericCardContentPadding?
-    let snapToEdges: [GenericCardSnapEdge]?
+    let padding: SpiralGenericCardContentPadding?
+    let snapToEdges: [SpiralGenericCardSnapEdge]?
     let link: String?
     let links: [String]?
-    let content: GenericCardComponentContent?
+    let content: SpiralGenericCardComponentContent?
     
     private enum CodingKeys: String, CodingKey {
         case type
@@ -150,17 +150,17 @@ public class GenericCardComponent: Codable {
         case content
     }
     
-    public init(type: GenericCardComponentType,
+    public init(type: SpiralGenericCardComponentType,
          backgroundColor: String? = nil,
          alpha: CGFloat? = nil,
          blur: Bool? = nil,
          fixedWidth: CGFloat? = nil,
          fixedHeight: CGFloat? = nil,
-         padding: GenericCardContentPadding? = nil,
-         snapToEdges: [GenericCardSnapEdge]? = nil,
+         padding: SpiralGenericCardContentPadding? = nil,
+         snapToEdges: [SpiralGenericCardSnapEdge]? = nil,
          link: String? = nil,
          links: [String]? = nil,
-         content: GenericCardComponentContent?) {
+         content: SpiralGenericCardComponentContent?) {
         self.type = type
         self.backgroundColor = backgroundColor
         self.alpha = alpha
@@ -176,33 +176,33 @@ public class GenericCardComponent: Codable {
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        type = try container.decode(GenericCardComponentType.self, forKey: .type)
+        type = try container.decode(SpiralGenericCardComponentType.self, forKey: .type)
         backgroundColor = try container.decodeIfPresent(String.self, forKey: .backgroundColor)
         alpha = try container.decodeIfPresent(CGFloat.self, forKey: .alpha)
         blur = try container.decodeIfPresent(Bool.self, forKey: .blur)
         fixedWidth = try container.decodeIfPresent(CGFloat.self, forKey: .fixedWidth)
         fixedHeight = try container.decodeIfPresent(CGFloat.self, forKey: .fixedHeight)
-        padding = try container.decodeIfPresent(GenericCardContentPadding.self, forKey: .padding)
-        snapToEdges = try container.decodeIfPresent([GenericCardSnapEdge].self, forKey: .snapToEdges)
+        padding = try container.decodeIfPresent(SpiralGenericCardContentPadding.self, forKey: .padding)
+        snapToEdges = try container.decodeIfPresent([SpiralGenericCardSnapEdge].self, forKey: .snapToEdges)
         link = try container.decodeIfPresent(String.self, forKey: .link)
         links = try container.decodeIfPresent([String].self, forKey: .links)
 
         // Dynamically decode content
         switch type {
         case .container, .modal:
-            content = try container.decode(GenericCardComponentContainer.self, forKey: .content)
+            content = try container.decode(SpiralGenericCardComponentContainer.self, forKey: .content)
         case .zContainer:
-            content = try container.decode(GenericCardZComponentContainer.self, forKey: .content)
+            content = try container.decode(SpiralGenericCardZComponentContainer.self, forKey: .content)
         case .scrollContainer:
-            content = try container.decode(GenericCardScrollComponentContainer.self, forKey: .content)
+            content = try container.decode(SpiralGenericCardScrollComponentContainer.self, forKey: .content)
         case .image:
-            content = try container.decode(GenericCardImageComponent.self, forKey: .content)
+            content = try container.decode(SpiralGenericCardImageComponent.self, forKey: .content)
         case .text:
-            content = try container.decode(GenericCardTextComponent.self, forKey: .content)
+            content = try container.decode(SpiralGenericCardTextComponent.self, forKey: .content)
         case .button:
-            content = try container.decode(GenericCardButtonComponent.self, forKey: .content)
+            content = try container.decode(SpiralGenericCardButtonComponent.self, forKey: .content)
         case .html:
-            content = try container.decode(GenericCardHtmlComponent.self, forKey: .content)
+            content = try container.decode(SpiralGenericCardHtmlComponent.self, forKey: .content)
         }
     }
     
@@ -220,68 +220,68 @@ public class GenericCardComponent: Codable {
         try container.encodeIfPresent(links, forKey: .links)
         switch type {
         case .container, .modal:
-            try container.encodeIfPresent(content as? GenericCardComponentContainer, forKey: .content)
+            try container.encodeIfPresent(content as? SpiralGenericCardComponentContainer, forKey: .content)
         case .zContainer:
-            try container.encodeIfPresent(content as? GenericCardZComponentContainer, forKey: .content)
+            try container.encodeIfPresent(content as? SpiralGenericCardZComponentContainer, forKey: .content)
         case .scrollContainer:
-            try container.encodeIfPresent(content as? GenericCardScrollComponentContainer, forKey: .content)
+            try container.encodeIfPresent(content as? SpiralGenericCardScrollComponentContainer, forKey: .content)
         case .image:
-            try container.encodeIfPresent(content as? GenericCardImageComponent, forKey: .content)
+            try container.encodeIfPresent(content as? SpiralGenericCardImageComponent, forKey: .content)
         case .text:
-            try container.encodeIfPresent(content as? GenericCardTextComponent, forKey: .content)
+            try container.encodeIfPresent(content as? SpiralGenericCardTextComponent, forKey: .content)
         case .button:
-            try container.encodeIfPresent(content as? GenericCardButtonComponent, forKey: .content)
+            try container.encodeIfPresent(content as? SpiralGenericCardButtonComponent, forKey: .content)
         case .html:
-            try container.encodeIfPresent(content as? GenericCardHtmlComponent, forKey: .content)
+            try container.encodeIfPresent(content as? SpiralGenericCardHtmlComponent, forKey: .content)
         }
     }
 }
 
-public class GenericCardComponentContainer: GenericCardComponentContent {
-    let axis: GenericCardContainerAxis?
-    let children: [GenericCardComponent]?
+public class SpiralGenericCardComponentContainer: SpiralGenericCardComponentContent {
+    let axis: SpiralGenericCardContainerAxis?
+    let children: [SpiralGenericCardComponent]?
     
     private enum CodingKeys: String, CodingKey {
         case axis
         case children
     }
     
-    public init(axis: GenericCardContainerAxis? = nil, children: [GenericCardComponent]?) {
+    public init(axis: SpiralGenericCardContainerAxis? = nil, children: [SpiralGenericCardComponent]?) {
         self.axis = axis
         self.children = children
     }
 }
 
-public class GenericCardZComponentContainer: GenericCardComponentContent {
-    let children: [GenericCardComponent]?
+public class SpiralGenericCardZComponentContainer: SpiralGenericCardComponentContent {
+    let children: [SpiralGenericCardComponent]?
     
     private enum CodingKeys: String, CodingKey {
         case children
     }
     
-    public init(children: [GenericCardComponent]?) {
+    public init(children: [SpiralGenericCardComponent]?) {
         self.children = children
     }
 }
 
-public class GenericCardScrollComponentContainer: GenericCardComponentContent {
-    let children: [GenericCardComponent]?
+public class SpiralGenericCardScrollComponentContainer: SpiralGenericCardComponentContent {
+    let children: [SpiralGenericCardComponent]?
     
     private enum CodingKeys: String, CodingKey {
         case children
     }
     
-    public init(children: [GenericCardComponent]?) {
+    public init(children: [SpiralGenericCardComponent]?) {
         self.children = children
     }
 }
 
-public class GenericCardImageComponent: GenericCardComponentContent {
+public class SpiralGenericCardImageComponent: SpiralGenericCardComponentContent {
     let url: String
     let fixedWidth: CGFloat?
     let fixedHeight: CGFloat?
     let aspectRatio: String?
-    let contentMode: GenericCardContentMode?
+    let contentMode: SpiralGenericCardContentMode?
     
     private enum CodingKeys: String, CodingKey {
         case url
@@ -295,7 +295,7 @@ public class GenericCardImageComponent: GenericCardComponentContent {
          fixedWidth: CGFloat? = nil,
          fixedHeight: CGFloat? = nil,
          aspectRatio: String? = nil,
-         contentMode: GenericCardContentMode? = nil) {
+         contentMode: SpiralGenericCardContentMode? = nil) {
         self.url = url
         self.fixedWidth = fixedWidth
         self.fixedHeight = fixedHeight
@@ -304,13 +304,13 @@ public class GenericCardImageComponent: GenericCardComponentContent {
     }
 }
 
-public class GenericCardTextComponent: GenericCardComponentContent {
+public class SpiralGenericCardTextComponent: SpiralGenericCardComponentContent {
     let html: String?
     let text: String?
     let textColor: String?
     let textSize: CGFloat?
-    let textWeight: GenericCardTextWeight?
-    let alignment: GenericCardContentAlignment?
+    let textWeight: SpiralGenericCardTextWeight?
+    let alignment: SpiralGenericCardContentAlignment?
     let lineHeight: CGFloat?
     
     private enum CodingKeys: String, CodingKey {
@@ -327,8 +327,8 @@ public class GenericCardTextComponent: GenericCardComponentContent {
          text: String? = nil,
          textColor: String? = nil,
          textSize: CGFloat? = nil,
-         textWeight: GenericCardTextWeight? = nil,
-         alignment: GenericCardContentAlignment? = nil,
+         textWeight: SpiralGenericCardTextWeight? = nil,
+         alignment: SpiralGenericCardContentAlignment? = nil,
          lineHeight: CGFloat? = nil) {
         self.html = html
         self.text = text
@@ -340,11 +340,11 @@ public class GenericCardTextComponent: GenericCardComponentContent {
     }
 }
 
-public class GenericCardButtonComponent: GenericCardComponentContent {
+public class SpiralGenericCardButtonComponent: SpiralGenericCardComponentContent {
     let text: String
     let textColor: String?
     let textSize: CGFloat?
-    let textWeight: GenericCardTextWeight?
+    let textWeight: SpiralGenericCardTextWeight?
     let borderColor: String?
     let fixedWidth: CGFloat?
     let fixedHeight: CGFloat?
@@ -362,7 +362,7 @@ public class GenericCardButtonComponent: GenericCardComponentContent {
     public init(text: String,
          textColor: String? = nil,
          textSize: CGFloat? = nil,
-         textWeight: GenericCardTextWeight? = nil,
+         textWeight: SpiralGenericCardTextWeight? = nil,
          borderColor: String? = nil,
          fixedWidth: CGFloat? = nil,
          fixedHeight: CGFloat? = nil) {
@@ -376,7 +376,7 @@ public class GenericCardButtonComponent: GenericCardComponentContent {
     }
 }
 
-public class GenericCardHtmlComponent: GenericCardComponentContent {
+public class SpiralGenericCardHtmlComponent: SpiralGenericCardComponentContent {
     let html: String?
     
     private enum CodingKeys: String, CodingKey {

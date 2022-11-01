@@ -57,7 +57,7 @@ class ActionsCoordinator: Coordinator, DeepLinkable {
     }
     
     func showModal(with genericCard: GenericCardPayloadModel) {
-        let vc = GenericCardModalViewController.create(with: genericCard, delegate: self)
+        let vc = SpiralGenericCardModalViewController.create(with: genericCard, delegate: self)
         navigationController.present(vc, animated: true, completion: nil)
     }
 }

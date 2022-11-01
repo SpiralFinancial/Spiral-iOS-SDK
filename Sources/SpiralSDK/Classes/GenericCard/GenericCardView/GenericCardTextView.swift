@@ -20,7 +20,7 @@ class GenericCardTextView: GenericCardComponentView {
     override func configureWith(_ data: GenericCardComponentDisplayModel) {
         super.configureWith(data)
         
-        guard let textComponentData = data.componentModel.content as? GenericCardTextComponent else { return }
+        guard let textComponentData = data.componentModel.content as? SpiralGenericCardTextComponent else { return }
         
         if let html = textComponentData.html {
             let fontWrappedHtml = wrapWithHTMLFontStyles(html: html)

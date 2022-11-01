@@ -15,7 +15,7 @@ class GenericCardZComponentContainerView: GenericCardComponentView {
     override func configureWith(_ data: GenericCardComponentDisplayModel) {
         super.configureWith(data)
         
-        guard let containerComponentData = data.componentModel.content as? GenericCardZComponentContainer else { return }
+        guard let containerComponentData = data.componentModel.content as? SpiralGenericCardZComponentContainer else { return }
         
         containerView.subviews.forEach { $0.removeFromSuperview() }
         

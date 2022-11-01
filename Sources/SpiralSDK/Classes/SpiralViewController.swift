@@ -119,9 +119,16 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        var yOffset: CGFloat = 0
+        
         let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
-        let statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-        let yOffset: CGFloat = modalPresentationStyle == .fullScreen ? statusBarHeight : 0
+        if #available(iOS 13.0, *) {
+            let statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+            yOffset = modalPresentationStyle == .fullScreen ? statusBarHeight : 0
+        } else {
+            yOffset = UIApplication.shared.statusBarFrame.height
+        }
+        
         
         webView.frame = CGRect(x: 0,
                                y: yOffset,

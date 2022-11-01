@@ -35,7 +35,7 @@ class GenericCardImageView: GenericCardComponentView {
     override func configureWith(_ data: GenericCardComponentDisplayModel) {
         super.configureWith(data)
         
-        guard let imageComponentData = data.componentModel.content as? GenericCardImageComponent else { return }
+        guard let imageComponentData = data.componentModel.content as? SpiralGenericCardImageComponent else { return }
         
         imageView.image = nil
         imageDownloader.populateImageView(imageView, urlString: imageComponentData.url, placeholderImage: nil)
@@ -57,7 +57,7 @@ class GenericCardImageView: GenericCardComponentView {
     
     override func applyFixedDimensions() {
         
-        guard let imageComponentData = componentModel?.content as? GenericCardImageComponent else { return }
+        guard let imageComponentData = componentModel?.content as? SpiralGenericCardImageComponent else { return }
         
         if let fixedWidth = imageComponentData.fixedWidth {
             widthConstraint.constant = fixedWidth

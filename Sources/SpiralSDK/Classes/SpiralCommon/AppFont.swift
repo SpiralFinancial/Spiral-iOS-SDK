@@ -60,7 +60,7 @@ struct AppFont {
     }
     
     // swiftlint:disable cyclomatic_complexity
-    static func textAttributesToFont(weight: GenericCardTextWeight, size: CGFloat) -> UIFont {
+    static func textAttributesToFont(weight: SpiralGenericCardTextWeight, size: CGFloat) -> UIFont {
         switch weight {
         case .ultrathin: return AppFont.ultrathin(size: size)
         case .thin: return AppFont.thin(size: size)

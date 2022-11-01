@@ -66,7 +66,7 @@ class SerialOperationQueue: OperationQueue {
     }
 }
 
-public protocol ViewConfigurator {
+public protocol SpiralViewConfigurator {
     /// In the case of cells it is the reuseId, in the case of views it can be the nibName if needed
     var reuseIdentifier: String { get }
     
@@ -79,7 +79,7 @@ public protocol ViewConfigurator {
     func configure(_ view: UIView)
 }
 
-public class BaseViewConfigurator<ConfigurableType: Configurable>: ViewConfigurator {
+public class SpiralBaseViewConfigurator<ConfigurableType: Configurable>: SpiralViewConfigurator {
     class var reuseIdentifier: String { return String(describing: ConfigurableType.self) }
     public var reuseIdentifier: String { return Self.reuseIdentifier }
     public var didSelectAction: (() -> Void)?
@@ -157,7 +157,7 @@ extension UITableView {
     ///   - configurator: The configurator for the cell (from the viewModel)
     ///   - indexPath: The indexPath for the cell (from the dataSourceMethod - cellForRow)
     /// - Returns: An already configured UITableViewCell
-    func configureCell(for configurator: ViewConfigurator, at indexPath: IndexPath) -> UITableViewCell {
+    func configureCell(for configurator: SpiralViewConfigurator, at indexPath: IndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCell(withIdentifier: configurator.reuseIdentifier, for: indexPath)
         configurator.configure(cell)
         return cell
@@ -186,7 +186,7 @@ extension UITableView {
     ///
     /// - Parameter configurator: The configurator for the header/footer (from the viewModel)
     /// - Returns: An already configured UITableViewHeaderFooterView
-    func configureHeaderFooter(for configurator: ViewConfigurator) -> UITableViewHeaderFooterView? {
+    func configureHeaderFooter(for configurator: SpiralViewConfigurator) -> UITableViewHeaderFooterView? {
         guard let headerFooterView = dequeueReusableHeaderFooterView(withIdentifier: configurator.reuseIdentifier) else { return nil }
         configurator.configure(headerFooterView)
         return headerFooterView
@@ -209,7 +209,7 @@ extension UICollectionView {
     ///   - configurator: The configurator for the cell (from the viewModel)
     ///   - indexPath: The indexPath for the cell (from the dataSourceMethod - cellForRow)
     /// - Returns: An already configured UICollectionViewCell
-    func configureCell(for configurator: ViewConfigurator, at indexPath: IndexPath) -> UICollectionViewCell {
+    func configureCell(for configurator: SpiralViewConfigurator, at indexPath: IndexPath) -> UICollectionViewCell {
         let cell = self.dequeueReusableCell(withReuseIdentifier: configurator.reuseIdentifier, for: indexPath)
         configurator.configure(cell)
         return cell

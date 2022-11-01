@@ -54,8 +54,7 @@ public class SpiralCustomFonts: NSObject {
     
     private static func loadFont(withName fontName: String) {
         guard
-            let bundleURL = Bundle(for: self).url(forResource: "Resources", withExtension: "bundle"),
-            let bundle = Bundle(url: bundleURL),
+            let bundle = Bundle.spiralResourcesBundle,
             let fontURL = bundle.url(forResource: fontName, withExtension: "otf"),
             let fontData = try? Data(contentsOf: fontURL) as CFData,
             let provider = CGDataProvider(data: fontData),

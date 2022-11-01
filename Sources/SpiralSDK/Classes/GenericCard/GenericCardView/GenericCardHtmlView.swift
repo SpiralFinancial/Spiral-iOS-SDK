@@ -82,7 +82,7 @@ class GenericCardHtmlView: GenericCardComponentView {
         
         setupInitialLayout()
         
-        guard let htmlComponentData = data.componentModel.content as? GenericCardHtmlComponent else { return }
+        guard let htmlComponentData = data.componentModel.content as? SpiralGenericCardHtmlComponent else { return }
         
         clearContent()
         
@@ -211,7 +211,7 @@ class GenericCardHtmlView: GenericCardComponentView {
                 if self.heightConstraint?.constant != height {
                     print("Finished loading webcontent with content size: \(height)")
                     
-                    if let htmlComponentData = self.componentModel?.content as? GenericCardHtmlComponent {
+                    if let htmlComponentData = self.componentModel?.content as? SpiralGenericCardHtmlComponent {
                         WebContentLayoutHelper.shared.setLastKnownContentHeight(for: htmlComponentData.html, height: height)
                     }
                     

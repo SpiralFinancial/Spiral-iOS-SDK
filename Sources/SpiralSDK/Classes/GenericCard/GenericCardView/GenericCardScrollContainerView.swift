@@ -16,7 +16,7 @@ class GenericCardScrollContainerView: GenericCardComponentView {
     override func configureWith(_ data: GenericCardComponentDisplayModel) {
         super.configureWith(data)
         
-        guard let containerComponentData = data.componentModel.content as? GenericCardScrollComponentContainer else { return }
+        guard let containerComponentData = data.componentModel.content as? SpiralGenericCardScrollComponentContainer else { return }
         
         containerView.subviews.forEach { $0.removeFromSuperview() }
         

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public typealias GenericCardConfigurator = BaseViewConfigurator<GenericCardTableViewCell>
+public typealias GenericCardConfigurator = SpiralBaseViewConfigurator<GenericCardTableViewCell>
 
 public class GenericCardTableViewCell: UITableViewCell, Configurable {
 

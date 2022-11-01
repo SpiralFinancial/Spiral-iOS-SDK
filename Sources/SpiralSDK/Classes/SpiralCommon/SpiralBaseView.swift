@@ -8,7 +8,7 @@
 import UIKit
 
 /// Custom abstract `UIView` used for loading custom `xib`s.
-public class BaseView: UIView {
+public class SpiralBaseView: UIView {
     
     /// Should be used to access the actual visible view.
     var contentView: UIView?
@@ -50,8 +50,7 @@ public class BaseView: UIView {
     ///
     /// - Returns: The actual visible view in the interface builder
     private func loadViewFromNib() -> UIView? {
-        guard let bundleURL = Bundle(for: type(of: self)).url(forResource: "Resources", withExtension: "bundle"),
-              let bundle = Bundle(url: bundleURL) else { return nil }
+        guard let bundle = Bundle.spiralResourcesBundle else { return nil }
         
 //        let bundle = Bundle(for: type(of: self))
         let nib = UINib(nibName: String(describing: type(of: self)), bundle: bundle)

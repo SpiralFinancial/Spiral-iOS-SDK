@@ -22,12 +22,12 @@ public struct GenericCardDisplayModel {
 }
 
 public struct GenericCardComponentDisplayModel {
-    let componentModel: GenericCardComponent
+    let componentModel: SpiralGenericCardComponent
     weak var deepLinker: DeepLinkable?
     let layoutUpdateHandler: (_ constraintUpdater: @escaping () -> Void) -> Void
 }
 
-class GenericCardComponentView: BaseView, Configurable {
+class GenericCardComponentView: SpiralBaseView, Configurable {
     @IBOutlet var genericContentView: UIView!
     @IBOutlet var leftPaddingConstraint: NSLayoutConstraint!
     @IBOutlet var rightPaddingConstraint: NSLayoutConstraint!
@@ -36,7 +36,7 @@ class GenericCardComponentView: BaseView, Configurable {
     @IBOutlet var widthConstraint: NSLayoutConstraint!
     @IBOutlet var heightConstraint: NSLayoutConstraint!
     
-    var componentModel: GenericCardComponent?
+    var componentModel: SpiralGenericCardComponent?
     var componentDisplayData: GenericCardComponentDisplayModel?
     var deepLinks = [DeepLink]()
     
@@ -154,7 +154,7 @@ class GenericCardComponentView: BaseView, Configurable {
     }
 }
 
-public class GenericCardView: BaseView, Configurable, UIGestureRecognizerDelegate {
+public class GenericCardView: SpiralBaseView, Configurable, UIGestureRecognizerDelegate {
     @IBOutlet private var containerView: UIView!
     @IBOutlet private var backgroundImageView: UIImageView!
     
@@ -254,24 +254,24 @@ public class GenericCardView: BaseView, Configurable, UIGestureRecognizerDelegat
 }
 
 class GenericCardViewBuilder {
-    static func componentViewForModel(componentModel: GenericCardComponent,
+    static func componentViewForModel(componentModel: SpiralGenericCardComponent,
                                       deepLinker: DeepLinkable?,
                                       layoutUpdateHandler: @escaping (_ constraintUpdater: @escaping () -> Void) -> Void) -> GenericCardComponentView? {
         var componentView: GenericCardComponentView?
         
-        if componentModel.content is GenericCardComponentContainer {
+        if componentModel.content is SpiralGenericCardComponentContainer {
             componentView = GenericCardComponentContainerView()
-        } else if componentModel.content is GenericCardScrollComponentContainer {
+        } else if componentModel.content is SpiralGenericCardScrollComponentContainer {
             componentView = GenericCardScrollContainerView()
-        } else if componentModel.content is GenericCardZComponentContainer {
+        } else if componentModel.content is SpiralGenericCardZComponentContainer {
             componentView = GenericCardZComponentContainerView()
-        } else if componentModel.content is GenericCardImageComponent {
+        } else if componentModel.content is SpiralGenericCardImageComponent {
             componentView = GenericCardImageView()
-        } else if componentModel.content is GenericCardButtonComponent {
+        } else if componentModel.content is SpiralGenericCardButtonComponent {
             componentView = GenericCardButtonView()
-        } else if componentModel.content is GenericCardTextComponent {
+        } else if componentModel.content is SpiralGenericCardTextComponent {
             componentView = GenericCardTextView()
-        } else if componentModel.content is GenericCardHtmlComponent {
+        } else if componentModel.content is SpiralGenericCardHtmlComponent {
             componentView = GenericCardHtmlView()
         }
         
@@ -283,7 +283,7 @@ class GenericCardViewBuilder {
         return componentView
     }
     
-    static func installEdgeSnapConstraints(view: UIView, superview: UIView, edges: [GenericCardSnapEdge]?) {
+    static func installEdgeSnapConstraints(view: UIView, superview: UIView, edges: [SpiralGenericCardSnapEdge]?) {
         let edges = edges ?? [.left, .right, .top, .bottom]
         
         if edges.contains(.left) {

@@ -20,7 +20,7 @@ class GenericCardButtonView: GenericCardComponentView {
     override func configureWith(_ data: GenericCardComponentDisplayModel) {
         super.configureWith(data)
         
-        guard let buttonComponentData = data.componentModel.content as? GenericCardButtonComponent else { return }
+        guard let buttonComponentData = data.componentModel.content as? SpiralGenericCardButtonComponent else { return }
         
         button.borderColor = .black
         button.borderWidth = borderWidth
@@ -51,7 +51,7 @@ class GenericCardButtonView: GenericCardComponentView {
     
     override func applyFixedDimensions() {
         
-        guard let buttonComponentData = componentModel?.content as? GenericCardButtonComponent else { return }
+        guard let buttonComponentData = componentModel?.content as? SpiralGenericCardButtonComponent else { return }
         
         if let fixedWidth = buttonComponentData.fixedWidth {
             widthConstraint.constant = fixedWidth
