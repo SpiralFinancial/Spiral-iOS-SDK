@@ -32,7 +32,7 @@ public class SpiralGenericCardModalViewController: BaseViewController {
     
     @IBOutlet weak var scrollView: GenericModalScrollContainer!
     @IBOutlet weak var closeButton: UIButton!
-    @IBOutlet weak var genericCardView: GenericCardView!
+    @IBOutlet weak var genericCardView: SpiralGenericCardView!
     
     @IBOutlet weak var tapView: UIView!
         
@@ -94,8 +94,8 @@ public class SpiralGenericCardModalViewController: BaseViewController {
 }
 
 extension SpiralGenericCardModalViewController {
-    public class func create(with genericCard: GenericCardPayloadModel,
-                      delegate: GenericCardModalSceneDelegate) -> SpiralGenericCardModalViewController {
+    public class func create(with genericCard: SpiralGenericCardPayloadModel,
+                      delegate: SpiralGenericCardModalSceneDelegate) -> SpiralGenericCardModalViewController {
         
 //        let bundle = Bundle(for: self)
 //        guard let bundleURL = Bundle(for: self).url(forResource: "Resources", withExtension: "bundle"),
@@ -109,7 +109,7 @@ extension SpiralGenericCardModalViewController {
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         
-        let vm = GenericCardModalViewModel(genericCard: genericCard,
+        let vm = SpiralGenericCardModalViewModel(genericCard: genericCard,
                                            delegate: delegate)
         vc.viewModel = vm
         

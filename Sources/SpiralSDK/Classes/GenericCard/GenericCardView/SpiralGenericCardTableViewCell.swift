@@ -8,9 +8,9 @@
 
 import Foundation
 
-public typealias GenericCardConfigurator = SpiralBaseViewConfigurator<GenericCardTableViewCell>
+public typealias GenericCardConfigurator = SpiralBaseViewConfigurator<SpiralGenericCardTableViewCell>
 
-public class GenericCardTableViewCell: UITableViewCell, Configurable {
+public class SpiralGenericCardTableViewCell: UITableViewCell, Configurable {
 
     // MARK: - Outlets
     
@@ -23,7 +23,7 @@ public class GenericCardTableViewCell: UITableViewCell, Configurable {
         }
     }
     
-    @IBOutlet private weak var genericCardView: GenericCardView! {
+    @IBOutlet private weak var genericCardView: SpiralGenericCardView! {
         didSet {
             genericCardView.layer.masksToBounds = true
             genericCardView.layer.cornerRadius = Constants.Styles.Corners.homeSceneCellRadius

@@ -130,7 +130,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
             DispatchQueue.main.async {
                 if let data = data {
                     let cardData = data.card
-                    let payload = GenericCardPayloadModel(identifier: 0, type: "instantImpact", data: cardData, isNew: false)
+                    let payload = SpiralGenericCardPayloadModel(identifier: 0, type: "instantImpact", data: cardData, isNew: false)
                     self?.showModal(with: payload)
 
                 }
@@ -206,7 +206,7 @@ extension SpiralConfigTableViewController: SpiralDelegate {
         print("onSuccess")
     }
     
-    private func showModal(with genericCard: GenericCardPayloadModel) {
+    private func showModal(with genericCard: SpiralGenericCardPayloadModel) {
         // Handle deeplink at login
         let vc = SpiralGenericCardModalViewController.create(with: genericCard, delegate: self)
         UIApplication.topViewController()?.present(vc, animated: true)
@@ -217,7 +217,7 @@ extension SpiralConfigTableViewController: SpiralDelegate {
     }
 }
 
-extension SpiralConfigTableViewController: GenericCardModalSceneDelegate {
+extension SpiralConfigTableViewController: SpiralGenericCardModalSceneDelegate {
     var deepLinkHandlers: [DeepLinkHandler]? {
         get {
             return nil

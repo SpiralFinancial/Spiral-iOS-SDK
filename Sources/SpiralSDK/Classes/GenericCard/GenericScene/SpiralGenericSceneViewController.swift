@@ -8,13 +8,13 @@
 
 import UIKit
 
-class GenericSceneViewController: BaseViewController {
+class SpiralGenericSceneViewController: BaseViewController {
     
     private var sceneData: GenericCardDisplayModel?
     private var currentFrame = CGRect.zero
     
     @IBOutlet weak var scrollView: GenericModalScrollContainer!
-    @IBOutlet weak var genericContentView: GenericCardView!
+    @IBOutlet weak var genericContentView: SpiralGenericCardView!
     @IBOutlet weak var genericContentConstraint: NSLayoutConstraint!
         
     override func viewDidLayoutSubviews() {
@@ -43,9 +43,9 @@ class GenericSceneViewController: BaseViewController {
 
 }
 
-extension GenericSceneViewController {
-    class func create(with genericScene: GenericCardDisplayModel) -> GenericSceneViewController {
-        let vc = GenericSceneViewController()
+extension SpiralGenericSceneViewController {
+    class func create(with genericScene: GenericCardDisplayModel) -> SpiralGenericSceneViewController {
+        let vc = SpiralGenericSceneViewController()
         vc.sceneData = genericScene
         
         return vc

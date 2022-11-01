@@ -49,12 +49,12 @@ class GenericCardTestFacility {
         return card
     }
     
-    static func genericCardTestPayloadModel() -> GenericCardPayloadModel? {
+    static func genericCardTestPayloadModel() -> SpiralGenericCardPayloadModel? {
         guard shouldDisplayTestCard,
               let cardData = getCardModel(for: testCardToDisplay, shouldReadFromJSON: shouldReadFromJSON)
         else { return nil }
         
-        return GenericCardPayloadModel(identifier: 1,
+        return SpiralGenericCardPayloadModel(identifier: 1,
                                        type: "test",
                                        data: cardData,
                                        isNew: false)
@@ -134,9 +134,9 @@ class GenericCardTestFacility {
     }
     
     struct GenericCardSwiftUIView: UIViewRepresentable {
-        let genericCardPayloadModel: GenericCardPayloadModel
+        let genericCardPayloadModel: SpiralGenericCardPayloadModel
         
-        var genericCardView: GenericCardView = GenericCardView(frame: .zero)
+        var genericCardView: SpiralGenericCardView = SpiralGenericCardView(frame: .zero)
 
         private func displayModel() -> GenericCardDisplayModel? {
             let cardConfigurator = GenericCardConfigurator(data: GenericCardDisplayModel(cardData: genericCardPayloadModel,
@@ -157,7 +157,7 @@ class GenericCardTestFacility {
             return height
         }
         
-        func makeUIView(context: Context) -> GenericCardView {
+        func makeUIView(context: Context) -> SpiralGenericCardView {
                         
             guard let displayModel = displayModel() else { return genericCardView }
             
@@ -165,7 +165,7 @@ class GenericCardTestFacility {
             return genericCardView
         }
 
-        func updateUIView(_ uiView: GenericCardView, context: Context) {
+        func updateUIView(_ uiView: SpiralGenericCardView, context: Context) {
             guard let displayModel = displayModel() else { return }
             uiView.configureWith(displayModel)
         }

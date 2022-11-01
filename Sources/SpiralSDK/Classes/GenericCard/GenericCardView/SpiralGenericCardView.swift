@@ -10,11 +10,11 @@ import Foundation
 import UIKit
 
 public struct GenericCardDisplayModel {
-    let cardData: GenericCardPayloadModel
+    let cardData: SpiralGenericCardPayloadModel
     weak var deepLinker: DeepLinkable?
     let layoutUpdateHandler: (_ constraintUpdater: @escaping () -> Void) -> Void
     
-    public init(cardData: GenericCardPayloadModel, deepLinker: DeepLinkable? = nil, layoutUpdateHandler: @escaping (@escaping () -> Void) -> Void) {
+    public init(cardData: SpiralGenericCardPayloadModel, deepLinker: DeepLinkable? = nil, layoutUpdateHandler: @escaping (@escaping () -> Void) -> Void) {
         self.cardData = cardData
         self.deepLinker = deepLinker
         self.layoutUpdateHandler = layoutUpdateHandler
@@ -154,7 +154,7 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
     }
 }
 
-public class GenericCardView: SpiralBaseView, Configurable, UIGestureRecognizerDelegate {
+public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecognizerDelegate {
     @IBOutlet private var containerView: UIView!
     @IBOutlet private var backgroundImageView: UIImageView!
     

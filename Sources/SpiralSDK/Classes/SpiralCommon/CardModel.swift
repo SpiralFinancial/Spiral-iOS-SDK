@@ -49,7 +49,7 @@ public struct CardModel: Decodable {
 
         switch payloadType {
         case .generic:
-            return try values.decode(GenericCardPayloadModel.self, forKey: .payload)
+            return try values.decode(SpiralGenericCardPayloadModel.self, forKey: .payload)
         default:
             return nil
         }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct GenericCardPayloadModel: Codable, SpiralCardPayloadModel {
+public struct SpiralGenericCardPayloadModel: Codable, SpiralCardPayloadModel {
     let identifier: Int
     let type: String
     var data: GenericCardModel
@@ -23,7 +23,7 @@ public struct GenericCardPayloadModel: Codable, SpiralCardPayloadModel {
     }
 }
 
-struct GenericPayloadVersionModel: Codable {
+struct SpiralGenericPayloadVersionModel: Codable {
     let id: String
     
     let created: TimeInterval
