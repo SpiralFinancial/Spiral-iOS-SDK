@@ -24,6 +24,31 @@ public class Spiral {
         })
     }
     
+    public func loadInstantImpactCard(into view: UIView,
+                                      success: EmptyOptionalClosure,
+                                      failure: EmptyOptionalClosure,
+                                      updateLayout: EmptyOptionalClosure) {
+        SocialResponsibilityAPI.getSocialResponsibilityImpactCard(type: "instantImpact", X_SPIRAL_SDK_VERSION: "ios-1.0.0", X_SPIRAL_CUSTOMER_ID: nil, X_SPIRAL_REQUEST_ID: nil, apiResponseQueue: DispatchQueue.global()) { data, error in
+            DispatchQueue.main.async {
+                if let data = data {
+                    let cardData = data.card
+                    let payload = SpiralGenericCardPayloadModel(identifier: 0, type: "instantImpact", data: cardData, isNew: false)
+                    let genericCardView = SpiralGenericCardView()
+                    genericCardView.configureWith(GenericCardDisplayModel(cardData: payload, deepLinker: nil, layoutUpdateHandler: { handler in
+                        updateLayout?()
+                        handler()
+                    }))
+                    
+                    genericCardView.embed(in: view)
+                    
+                    success?()
+                } else {
+                    failure?()
+                }
+            }
+        }
+    }
+    
     public func token() -> String? {
         return _token
     }

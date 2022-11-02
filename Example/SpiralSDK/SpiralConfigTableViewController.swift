@@ -19,6 +19,12 @@ class ConfigField {
     }
 }
 
+enum SectionIndex: Int {
+    case config
+    case buttons
+    case impact
+}
+
 class SpiralConfigTableViewController: UITableViewController, UINavigationControllerDelegate {
     var data = [
         ConfigField(label:"mode", value:"sandbox"),
@@ -45,38 +51,70 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 4
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1
+        switch section {
+        case SectionIndex.config.rawValue: return data.count
+        case SectionIndex.buttons.rawValue: return 2
+        case SectionIndex.impact.rawValue: return 1
+        default:
+            return 0
+        }
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.section >= data.count {
-            let buttonCell = tableView.dequeueReusableCell(withIdentifier: "button-" + String(indexPath.section - data.count + 1), for: indexPath)
+        if indexPath.section == SectionIndex.config.rawValue {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "basicStyle", for: indexPath)
+
+            if let textLabel = cell.textLabel {
+                textLabel.text = data[indexPath.row].label + ":"
+            }
+            
+            if let detailTextLabel = cell.detailTextLabel {
+                detailTextLabel.text = data[indexPath.row].value
+            }
+            return cell
+        }
+        
+        if indexPath.section == SectionIndex.buttons.rawValue {
+            let buttonCell = tableView.dequeueReusableCell(withIdentifier: "button-" + String(indexPath.row), for: indexPath)
             return buttonCell
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "basicStyle", for: indexPath)
-
-        if let textLabel = cell.textLabel {
-            textLabel.text = data[indexPath.section].value
+        if indexPath.section == SectionIndex.impact.rawValue {
+            let impactCell = tableView.dequeueReusableCell(withIdentifier: "impactCell", for: indexPath)
+            
+            if impactCell.contentView.subviews.isEmpty {
+                Spiral.shared.loadInstantImpactCard(into: impactCell.contentView) {
+                    tableView.reloadData()
+                } failure: {
+                    print("failure!")
+                } updateLayout: {
+//                    tableView.reloadData()
+                    tableView.beginUpdates()
+                    tableView.endUpdates()
+                }
+            }
+                        
+            return impactCell
         }
-
-        return cell
+        
+        return UITableViewCell()
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        guard section < data.count else {
-            return nil
-        }
+//        guard section < data.count else {
+//            return nil
+//        }
+//
+//        return data[section].label
         
-        return data[section].label
+        return nil
     }
 
     
@@ -138,15 +176,6 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         }
         
         
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        UIFont.familyNames.forEach({ familyName in
-            let fontNames = UIFont.fontNames(forFamilyName: familyName)
-            print(familyName, fontNames)
-        })
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {

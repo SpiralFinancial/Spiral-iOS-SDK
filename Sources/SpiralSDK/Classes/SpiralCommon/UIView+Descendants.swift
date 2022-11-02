@@ -28,7 +28,7 @@ extension UIView {
         return superviews().first(where: { $0 is T }) as? T
     }
     
-    func embed(in container: UIView!) {
+    public func embed(in container: UIView!) {
         translatesAutoresizingMaskIntoConstraints = false
         frame = container.frame
         container.addSubview(self)
