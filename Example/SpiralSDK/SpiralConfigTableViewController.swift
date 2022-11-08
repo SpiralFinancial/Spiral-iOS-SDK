@@ -91,8 +91,8 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
             if impactCell.contentView.subviews.isEmpty {
                 Spiral.shared.loadInstantImpactCard(into: impactCell.contentView) {
                     tableView.reloadData()
-                } failure: {
-                    print("failure!")
+                } failure: { error in
+                    print("failure: " + (error?.localizedDescription ?? ""))
                 } updateLayout: {
 //                    tableView.reloadData()
                     tableView.beginUpdates()
@@ -108,13 +108,14 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-//        guard section < data.count else {
-//            return nil
-//        }
-//
-//        return data[section].label
-        
-        return nil
+        switch section {
+        case SectionIndex.config.rawValue: return "Config"
+        case SectionIndex.buttons.rawValue: return "Actions"
+        case SectionIndex.impact.rawValue: return "Impact Card"
+        default:
+            return nil
+        }
+
     }
 
     
@@ -160,22 +161,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     }
     
     @IBAction func handleGenericModalTap() {
-//        if let genericModel = GenericCardTestFacility.genericCardTestPayloadModel() {
-//            showModal(with: genericModel)
-//        }
-        
-        SocialResponsibilityAPI.getSocialResponsibilityImpactCard(type: "instantImpact", X_SPIRAL_SDK_VERSION: "ios-1.0.0", X_SPIRAL_CUSTOMER_ID: nil, X_SPIRAL_REQUEST_ID: nil, apiResponseQueue: DispatchQueue.global()) { [weak self] data, error in
-            DispatchQueue.main.async {
-                if let data = data {
-                    let cardData = data.card
-                    let payload = SpiralGenericCardPayloadModel(identifier: 0, type: "instantImpact", data: cardData, isNew: false)
-                    self?.showModal(with: payload)
-
-                }
-            }
-        }
-        
-        
+        Spiral.shared.showModalContent(type: "SR_SUMMARY", delegate: self, success: nil, failure: nil)
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
@@ -235,25 +221,12 @@ extension SpiralConfigTableViewController: SpiralDelegate {
         print("onSuccess")
     }
     
-    private func showModal(with genericCard: SpiralGenericCardPayloadModel) {
-        // Handle deeplink at login
-        let vc = SpiralGenericCardModalViewController.create(with: genericCard, delegate: self)
-        UIApplication.topViewController()?.present(vc, animated: true)
-    }
-    
-    func genericCardModalSceneDidRequestDismiss() {
-        UIApplication.topViewController()?.dismiss(animated: true)
-    }
 }
 
 extension SpiralConfigTableViewController: SpiralGenericCardModalSceneDelegate {
-    var deepLinkHandlers: [DeepLinkHandler]? {
-        get {
-            return nil
-        }
-        set(newValue) {
-            
-        }
+    
+    func genericCardModalSceneDidRequestDismiss() {
+        UIApplication.topViewController()?.dismiss(animated: true)
     }
     
     func goToDeepLink(_ deepLink: DeepLink) {

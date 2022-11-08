@@ -26,9 +26,10 @@ public class Spiral {
     
     public func loadInstantImpactCard(into view: UIView,
                                       success: EmptyOptionalClosure,
-                                      failure: EmptyOptionalClosure,
+                                      failure: ((Error?) -> Void)?,
                                       updateLayout: EmptyOptionalClosure) {
-        SocialResponsibilityAPI.getSocialResponsibilityImpactCard(type: "instantImpact", X_SPIRAL_SDK_VERSION: "ios-1.0.0", X_SPIRAL_CUSTOMER_ID: nil, X_SPIRAL_REQUEST_ID: nil, apiResponseQueue: DispatchQueue.global()) { data, error in
+                
+        SocialResponsibilityAPI.getSocialResponsibilityImpactCard(type: "SR_SUMMARY", X_SPIRAL_SDK_VERSION: "ios-1.0.0", X_SPIRAL_CUSTOMER_ID: "CUST12345", X_SPIRAL_CLIENT_ID: "9e2484b6-1d4b-4cc3-b5cf-a48790bb18ad", X_SPIRAL_REQUEST_ID: nil, apiResponseQueue: DispatchQueue.global()) { data, error in
             DispatchQueue.main.async {
                 if let data = data {
                     let cardData = data.card
@@ -43,10 +44,33 @@ public class Spiral {
                     
                     success?()
                 } else {
-                    failure?()
+                    failure?(error)
                 }
             }
         }
+    }
+    
+    public func showModalContent(type: String,
+                                 delegate: SpiralGenericCardModalSceneDelegate,
+                                 success: EmptyOptionalClosure,
+                                 failure: ((Error?) -> Void)?) {
+        
+        SocialResponsibilityAPI.getSocialResponsibilityImpactCard(type: "SR_SUMMARY", X_SPIRAL_SDK_VERSION: "ios-1.0.0", X_SPIRAL_CUSTOMER_ID: "CUST12345", X_SPIRAL_CLIENT_ID: "9e2484b6-1d4b-4cc3-b5cf-a48790bb18ad", X_SPIRAL_REQUEST_ID: nil, apiResponseQueue: DispatchQueue.global()) { data, error in
+            DispatchQueue.main.async {
+                if let data = data {
+                    let cardData = data.card
+                    let payload = SpiralGenericCardPayloadModel(identifier: 0, type: "instantImpact", data: cardData, isNew: false)
+                    
+                    let vc = SpiralGenericCardModalViewController.create(with: payload, delegate: delegate)
+                    UIApplication.topViewController()?.present(vc, animated: true)
+                    
+                    success?()
+                } else {
+                    failure?(error)
+                }
+            }
+        }
+
     }
     
     public func token() -> String? {

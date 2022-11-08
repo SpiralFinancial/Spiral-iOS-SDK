@@ -13,7 +13,7 @@ import AnyCodable
 public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
 
     /** Unique Charity Reward Unit ID */
-    public var id: String?
+    public var id: String
     /** Charity ID this reward unit is assigned to */
     public var charityId: String
     /** Name of the charity (used in reply of enriched transactions). */
@@ -23,7 +23,7 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
     /** Reward Unit key */
     public var unit: String
 
-    public init(id: String? = nil, charityId: String, charityName: String? = nil, internalCostInCents: Int, unit: String) {
+    public init(id: String, charityId: String, charityName: String? = nil, internalCostInCents: Int, unit: String) {
         self.id = id
         self.charityId = charityId
         self.charityName = charityName
@@ -43,7 +43,7 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(id, forKey: .id)
+        try container.encode(id, forKey: .id)
         try container.encode(charityId, forKey: .charityId)
         try container.encodeIfPresent(charityName, forKey: .charityName)
         try container.encode(internalCostInCents, forKey: .internalCostInCents)

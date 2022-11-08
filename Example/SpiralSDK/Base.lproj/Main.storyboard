@@ -144,7 +144,7 @@
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r37-CN-wtu">
                                             <rect key="frame" x="23.5" y="7" width="367" height="30"/>
-                                            <state key="normal" title="Fetch Spiral Token"/>
+                                            <state key="normal" title="Start Donation Flow"/>
                                             <connections>
                                                 <action selector="handleFetchTap" destination="g4a-YX-SBb" eventType="touchUpInside" id="6cJ-lv-Krc"/>
                                             </connections>

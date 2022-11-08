@@ -104,7 +104,7 @@ enum SceneType: String {
 
 public protocol DeepLinkable: AnyObject {
 //    var navigationController: UINavigationController { get }
-    var deepLinkHandlers: [DeepLinkHandler]? { get set }
+//    var deepLinkHandlers: [DeepLinkHandler]? { get set }
 //    init(navigationController: UINavigationController)
 //    func start(with deepLink: DeepLink)
     func goToDeepLink(_ deepLink: DeepLink)
@@ -186,11 +186,7 @@ extension DeepLinkable {
                     self.handleDeepLinks(linksAfterDismiss)
                 })
             } else {
-                var deepLink: DeepLink? = $0
-                if let deepLinkHandler = deepLinkHandlers?.first {
-                    deepLink = deepLinkHandler.handle($0)
-                }
-                
+                let deepLink: DeepLink? = $0
                 if let deepLink = deepLink {
                     goToDeepLink(deepLink)
                 }
@@ -208,22 +204,6 @@ extension DeepLinkable {
         })
     }
     
-    func addDeepLinkHandler(_ handler: DeepLinkHandler) {
-        if deepLinkHandlers == nil {
-            deepLinkHandlers = []
-        }
-        
-        deepLinkHandlers?.last?.setNext(handler: handler)
-        deepLinkHandlers?.append(handler)
-    }
-    
-    func removeDeepLinkHandler(_ handler: DeepLinkHandler) {
-        deepLinkHandlers?.removeFirst { $0 === handler }
-    }
-    
-    func removeAllDeepLinkHandlers(for owner: AnyObject) {
-        deepLinkHandlers?.removeAll { $0.owner == ObjectIdentifier(owner) }
-    }
 }
 
 protocol DeepLinkRequestHandler {
