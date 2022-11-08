@@ -46,3 +46,7 @@ fastlane/README.md
 fastlane/report.xml
 fastlane/test_output/report.junit
 swiftlint_report.xml
+
+# OpenAPI
+OpenAPI/open-api
+OpenAPI/src
