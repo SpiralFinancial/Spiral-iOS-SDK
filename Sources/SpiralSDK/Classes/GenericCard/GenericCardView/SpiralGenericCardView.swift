@@ -46,7 +46,11 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
         self.componentModel = data.componentModel
         self.componentDisplayData = data
         
-        setBackgroundColor(colorHex: componentModel?.backgroundColor)
+        if let gradient = componentModel?.backgroundGradient {
+            
+        } else {
+            setBackgroundColor(colorHex: componentModel?.backgroundColor)
+        }
         setAlpha(alpha: componentModel?.alpha)
         setBlur(componentModel?.blur)
         
@@ -131,6 +135,10 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
         } else {
             genericContentView.backgroundColor = .clear
         }
+    }
+    
+    open func setBackgroundGradient(gradient: SpiralGenericCardGradient) {
+        
     }
     
     open func setAlpha(alpha: CGFloat?) {

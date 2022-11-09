@@ -20,6 +20,8 @@
 		D5C130E226B857F8009AE1F9 /* SpiralSDK_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C130E126B857F8009AE1F9 /* SpiralSDK_ExampleUITests.swift */; };
 		D5F789CD25675E84003E6485 /* SpiralConfigTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F789CC25675E84003E6485 /* SpiralConfigTableViewController.swift */; };
 		D5F789D725677CF8003E6485 /* ConfigEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F789D625677CF8003E6485 /* ConfigEntryViewController.swift */; };
+		F53B63CF291AF61000A76C5F /* ImpactSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */; };
+		F53B63D0291AF61000A76C5F /* ImpactSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */; };
 		F5BD6D702901C18200A5E5CE /* TestModalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */; };
 		F5BD6D712901C18200A5E5CE /* TestModalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */; };
 		F5BD6D722901C18200A5E5CE /* TestHtmlCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6B2901C18100A5E5CE /* TestHtmlCard.swift */; };
@@ -96,6 +98,7 @@
 		D5F789D625677CF8003E6485 /* ConfigEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigEntryViewController.swift; sourceTree = "<group>"; };
 		EDF1E1A86E177030EBD5A21E /* Pods-SpiralSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpiralSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-SpiralSDK_Example/Pods-SpiralSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F0459245F3C7850DA8DB35F2 /* SpiralSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SpiralSDK.podspec; path = ../SpiralSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpactSummaryCard.swift; sourceTree = "<group>"; };
 		F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestModalCard.swift; sourceTree = "<group>"; };
 		F5BD6D6B2901C18100A5E5CE /* TestHtmlCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHtmlCard.swift; sourceTree = "<group>"; };
 		F5BD6D6C2901C18100A5E5CE /* StJudeCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StJudeCard.swift; sourceTree = "<group>"; };
@@ -248,6 +251,7 @@
 				F5BD6D6D2901C18100A5E5CE /* stJudeCard.json */,
 				F5BD6D6E2901C18100A5E5CE /* testHtmlCard.json */,
 				F5BD6D6F2901C18100A5E5CE /* GenericCardTestFacility.swift */,
+				F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */,
 			);
 			path = GenericCardTest;
 			sourceTree = "<group>";
@@ -487,6 +491,7 @@
 			files = (
 				D5F789D725677CF8003E6485 /* ConfigEntryViewController.swift in Sources */,
 				D5F789CD25675E84003E6485 /* SpiralConfigTableViewController.swift in Sources */,
+				F53B63CF291AF61000A76C5F /* ImpactSummaryCard.swift in Sources */,
 				F5BD6D7A2901C18200A5E5CE /* GenericCardTestFacility.swift in Sources */,
 				D50E5BFA26B9F4E200593628 /* EventData.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
@@ -506,6 +511,7 @@
 				F5BD6D732901C18200A5E5CE /* TestHtmlCard.swift in Sources */,
 				F5BD6D7B2901C18200A5E5CE /* GenericCardTestFacility.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				F53B63D0291AF61000A76C5F /* ImpactSummaryCard.swift in Sources */,
 				F5BD6D712901C18200A5E5CE /* TestModalCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

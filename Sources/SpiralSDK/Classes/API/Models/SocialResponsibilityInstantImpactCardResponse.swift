@@ -14,9 +14,9 @@ import AnyCodable
 public struct SocialResponsibilityInstantImpactCardResponse: Codable, JSONEncodable {
 
     /** Generic card JSON */
-    public var card: GenericCardModel
+    public var card: AnyCodable
 
-    public init(card: GenericCardModel) {
+    public init(card: AnyCodable) {
         self.card = card
     }
 

@@ -23,7 +23,6 @@ class GenericCardButtonView: GenericCardComponentView {
         guard let buttonComponentData = data.componentModel.content as? SpiralGenericCardButtonComponent else { return }
         
         button.borderColor = .black
-        button.borderWidth = borderWidth
         button.setTitleColor(.black, for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         button.cornerRadius = button.frame.height / 2

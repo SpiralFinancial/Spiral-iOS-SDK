@@ -95,8 +95,11 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
                     print("failure: " + (error?.localizedDescription ?? ""))
                 } updateLayout: {
 //                    tableView.reloadData()
-                    tableView.beginUpdates()
-                    tableView.endUpdates()
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.beginUpdates()
+                        self.tableView.endUpdates()
+                    }
                 }
             }
                         
@@ -161,7 +164,12 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     }
     
     @IBAction func handleGenericModalTap() {
-        Spiral.shared.showModalContent(type: "SR_SUMMARY", delegate: self, success: nil, failure: nil)
+//        Spiral.shared.showModalContent(type: "SR_SUMMARY", delegate: self, success: nil, failure: nil)
+        
+        guard let cardModel = GenericCardTestFacility.genericCardTestPayloadModel() else { return }
+        
+        let vc = SpiralGenericCardModalViewController.create(with: cardModel, delegate: self)
+        UIApplication.topViewController()?.present(vc, animated: true)
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {

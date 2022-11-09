@@ -81,6 +81,19 @@ public enum SpiralGenericCardContentMode: String, Codable {
     }
 }
 
+public enum SpiralGenericGradientDirection: String, Codable {
+    case leftToRight
+    case rightToLeft
+    case topToBottom
+    case bottomToTop
+    case topLeftToBottomRight
+}
+
+public struct SpiralGenericCardGradient: Codable {
+    let direction: SpiralGenericGradientDirection
+    let colors: [String]
+}
+
 public enum SpiralGenericCardTextWeight: String, Codable {
     case ultrathin
     case thin
@@ -98,7 +111,8 @@ public enum SpiralGenericCardTextWeight: String, Codable {
 
 public protocol SpiralGenericCardComponentContent: Codable {}
 
-public struct GenericCardModel: Codable {
+public struct GenericCardModel: Codable, Hashable {
+    
     let backgroundColor: String?
     let backgroundImage: String?
     let link: String?
@@ -121,11 +135,20 @@ public struct GenericCardModel: Codable {
         self.link = link
         self.root = root
     }
+    
+    public static func == (lhs: GenericCardModel, rhs: GenericCardModel) -> Bool {
+        return false
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(0)
+    }
 }
 
 public class SpiralGenericCardComponent: Codable {
     let type: SpiralGenericCardComponentType
     let backgroundColor: String?
+    let backgroundGradient: SpiralGenericCardGradient?
     let alpha: CGFloat?
     let blur: Bool?
     let fixedWidth: CGFloat?
@@ -139,6 +162,7 @@ public class SpiralGenericCardComponent: Codable {
     private enum CodingKeys: String, CodingKey {
         case type
         case backgroundColor
+        case backgroundGradient
         case alpha
         case blur
         case fixedWidth
@@ -152,6 +176,7 @@ public class SpiralGenericCardComponent: Codable {
     
     public init(type: SpiralGenericCardComponentType,
          backgroundColor: String? = nil,
+         backgroundGradient: SpiralGenericCardGradient? = nil,
          alpha: CGFloat? = nil,
          blur: Bool? = nil,
          fixedWidth: CGFloat? = nil,
@@ -163,6 +188,7 @@ public class SpiralGenericCardComponent: Codable {
          content: SpiralGenericCardComponentContent?) {
         self.type = type
         self.backgroundColor = backgroundColor
+        self.backgroundGradient = backgroundGradient
         self.alpha = alpha
         self.blur = blur
         self.fixedWidth = fixedWidth
@@ -178,6 +204,7 @@ public class SpiralGenericCardComponent: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         type = try container.decode(SpiralGenericCardComponentType.self, forKey: .type)
         backgroundColor = try container.decodeIfPresent(String.self, forKey: .backgroundColor)
+        backgroundGradient = try container.decodeIfPresent(SpiralGenericCardGradient.self, forKey: .backgroundGradient)
         alpha = try container.decodeIfPresent(CGFloat.self, forKey: .alpha)
         blur = try container.decodeIfPresent(Bool.self, forKey: .blur)
         fixedWidth = try container.decodeIfPresent(CGFloat.self, forKey: .fixedWidth)
@@ -212,6 +239,7 @@ public class SpiralGenericCardComponent: Codable {
         try container.encodeIfPresent(padding, forKey: .padding)
         try container.encodeIfPresent(snapToEdges, forKey: .snapToEdges)
         try container.encodeIfPresent(backgroundColor, forKey: .backgroundColor)
+        try container.encodeIfPresent(backgroundGradient, forKey: .backgroundGradient)
         try container.encodeIfPresent(alpha, forKey: .alpha)
         try container.encodeIfPresent(blur, forKey: .blur)
         try container.encodeIfPresent(fixedWidth, forKey: .fixedWidth)

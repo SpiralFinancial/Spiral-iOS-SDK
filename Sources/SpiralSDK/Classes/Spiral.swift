@@ -31,8 +31,9 @@ public class Spiral {
                 
         SocialResponsibilityAPI.getSocialResponsibilityImpactCard(type: "SR_SUMMARY", X_SPIRAL_SDK_VERSION: "ios-1.0.0", X_SPIRAL_CUSTOMER_ID: "CUST12345", X_SPIRAL_CLIENT_ID: "9e2484b6-1d4b-4cc3-b5cf-a48790bb18ad", X_SPIRAL_REQUEST_ID: nil, apiResponseQueue: DispatchQueue.global()) { data, error in
             DispatchQueue.main.async {
-                if let data = data {
-                    let cardData = data.card
+                if let data = data,
+                    let cardData = data.card.value as? GenericCardModel {
+                    
                     let payload = SpiralGenericCardPayloadModel(identifier: 0, type: "instantImpact", data: cardData, isNew: false)
                     let genericCardView = SpiralGenericCardView()
                     genericCardView.configureWith(GenericCardDisplayModel(cardData: payload, deepLinker: nil, layoutUpdateHandler: { handler in
@@ -57,8 +58,8 @@ public class Spiral {
         
         SocialResponsibilityAPI.getSocialResponsibilityImpactCard(type: "SR_SUMMARY", X_SPIRAL_SDK_VERSION: "ios-1.0.0", X_SPIRAL_CUSTOMER_ID: "CUST12345", X_SPIRAL_CLIENT_ID: "9e2484b6-1d4b-4cc3-b5cf-a48790bb18ad", X_SPIRAL_REQUEST_ID: nil, apiResponseQueue: DispatchQueue.global()) { data, error in
             DispatchQueue.main.async {
-                if let data = data {
-                    let cardData = data.card
+                if let data = data,
+                   let cardData = data.card.value as? GenericCardModel {
                     let payload = SpiralGenericCardPayloadModel(identifier: 0, type: "instantImpact", data: cardData, isNew: false)
                     
                     let vc = SpiralGenericCardModalViewController.create(with: payload, delegate: delegate)
