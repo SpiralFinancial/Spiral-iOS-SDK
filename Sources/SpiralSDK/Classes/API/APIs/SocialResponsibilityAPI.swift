@@ -15,7 +15,7 @@ open class SocialResponsibilityAPI {
     /**
      Load a customer's Social Impact details for a single transaction
      
-     - parameter transactionId: (path) Permanent, unique transaction id to retrieve the Social Responsibility Impact details for. Must survive changes to pending status or amount.
+     - parameter transactionId: (path) Permanent, unique transaction id to retrieve the Social Responsibility Impact details for. Must survive changes to pending status or amount. 
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
@@ -37,10 +37,13 @@ open class SocialResponsibilityAPI {
      Load a customer's Social Impact details for a single transaction
      - GET /social/instant/impact/{transactionId}
      - Load that customer's Social Responsibility Impact details for a single transaction
-     - parameter transactionId: (path) Permanent, unique transaction id to retrieve the Social Responsibility Impact details for. Must survive changes to pending status or amount.
+     - API Key:
+       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - name: ClientID
+     - parameter transactionId: (path) Permanent, unique transaction id to retrieve the Social Responsibility Impact details for. Must survive changes to pending status or amount. 
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
-     - returns: RequestBuilder<SocialResponsibilityTransactionInstantImpactResponse>
+     - returns: RequestBuilder<SocialResponsibilityTransactionInstantImpactResponse> 
      */
     open class func getInstantImpactByTransactionIdWithRequestBuilder(transactionId: String, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<SocialResponsibilityTransactionInstantImpactResponse> {
         var localVariablePath = "/social/instant/impact/{transactionId}"
@@ -61,64 +64,7 @@ open class SocialResponsibilityAPI {
 
         let localVariableRequestBuilder: RequestBuilder<SocialResponsibilityTransactionInstantImpactResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
-    }
-
-    /**
-     Load a specific UI card template
-     
-     - parameter type: (path) Unique type for the UI card. The type enum value is defined via InstantImpactCardType.
-     - parameter X_SPIRAL_SDK_VERSION: (header) Unique version of the SDK that makes the call (ie. ios-1.2.3 or web-1.2.3) (optional)
-     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    @discardableResult
-    open class func getSocialResponsibilityImpactCard(type: String, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_CLIENT_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: SocialResponsibilityInstantImpactCardResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getSocialResponsibilityImpactCardWithRequestBuilder(type: type, X_SPIRAL_SDK_VERSION: X_SPIRAL_SDK_VERSION, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_CLIENT_ID: X_SPIRAL_CLIENT_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
-    }
-
-    /**
-     Load a specific UI card template
-     - GET /social/instant/impact/card/{type}
-     - Load a specific UI card template
-     - parameter type: (path) Unique type for the UI card. The type enum value is defined via InstantImpactCardType.
-     - parameter X_SPIRAL_SDK_VERSION: (header) Unique version of the SDK that makes the call (ie. ios-1.2.3 or web-1.2.3) (optional)
-     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_CLIENT_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
-     - returns: RequestBuilder<SocialResponsibilityInstantImpactCardResponse>
-     */
-    open class func getSocialResponsibilityImpactCardWithRequestBuilder(type: String, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_CLIENT_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<SocialResponsibilityInstantImpactCardResponse> {
-        var localVariablePath = "/social/instant/impact/card/{type}"
-        let typePreEscape = "\(APIHelper.mapValueToPathItem(type))"
-        let typePostEscape = typePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{type}", with: typePostEscape, options: .literal, range: nil)
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            "X-SPIRAL-SDK-VERSION": X_SPIRAL_SDK_VERSION?.encodeToJSON(),
-            "X-SPIRAL-CLIENT-ID": X_SPIRAL_CLIENT_ID?.encodeToJSON(),
-            "X-SPIRAL-CUSTOMER-ID": X_SPIRAL_CUSTOMER_ID?.encodeToJSON(),
-            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<SocialResponsibilityInstantImpactCardResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**
@@ -145,9 +91,12 @@ open class SocialResponsibilityAPI {
      Load a customer's Social Impact
      - GET /social/instant/impact
      - Load total customer's Social Responsibility Impact
+     - API Key:
+       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - name: ClientID
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
-     - returns: RequestBuilder<SocialResponsibilityInstantImpactSummaryResponse>
+     - returns: RequestBuilder<SocialResponsibilityInstantImpactSummaryResponse> 
      */
     open class func getSocialResponsibilityImpactSummaryWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<SocialResponsibilityInstantImpactSummaryResponse> {
         let localVariablePath = "/social/instant/impact"
@@ -165,6 +114,6 @@ open class SocialResponsibilityAPI {
 
         let localVariableRequestBuilder: RequestBuilder<SocialResponsibilityInstantImpactSummaryResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 }

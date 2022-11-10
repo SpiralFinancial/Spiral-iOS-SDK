@@ -14,7 +14,11 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
     
     var cardModel: GenericCardModel? {
         
-        let header = SpiralGenericCardComponentContainer(children: [])
+        let header = SpiralGenericCardZComponentContainer(children: [])
+        let headerComponent = SpiralGenericCardComponent(type: .zContainer,
+                                                         backgroundGradient: SpiralGenericCardGradient(direction: .topLeftToBottomRight, colors: ["", ""]),
+                                                         fixedHeight: 65,
+                                                         content: header)
         
         let image = SpiralGenericCardImageComponent(url: "https://cdn.zeplin.io/5e3b1c818f31c4b3e2064abd/assets/D14203EE-A7F1-48F3-9136-6E254779F1BA.png",
                                               fixedHeight: 184)

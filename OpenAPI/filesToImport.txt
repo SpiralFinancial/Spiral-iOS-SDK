@@ -10,7 +10,9 @@ OpenISO8601DateFormatter.swift
 SynchronizedDictionary.swift
 URLSessionImplementations.swift
 APIs/SocialResponsibilityAPI.swift
-Models/SocialResponsibilityInstantImpactCardResponse.swift
+APIs/CmsAPI.swift
+Models/GenericCardResponse.swift
+Models/GenericCardType.swift
 Models/SocialResponsibilityInstantImpactSummaryResponse.swift
 Models/SocialResponsibilityTransactionInstantImpactResponse.swift
 Models/TransactionInstantImpactSummary.swift

@@ -138,7 +138,15 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
     }
     
     open func setBackgroundGradient(gradient: SpiralGenericCardGradient) {
+        genericContentView.backgroundColor = .clear
         
+        let existing = findViews(subclassOf: SpiralGradientView.self).first
+        existing?.removeFromSuperview()
+        
+        let gradientView = SpiralGradientView(frame: genericContentView.bounds)
+        gradientView.gradientDirection = gradient.direction.rawValue
+        gradientView.setGradientBackground(colors: gradient.colors.map { UIColor.hexColor($0, fallbackColor: .white) })
+        gradientView.embed(in: genericContentView)
     }
     
     open func setAlpha(alpha: CGFloat?) {
