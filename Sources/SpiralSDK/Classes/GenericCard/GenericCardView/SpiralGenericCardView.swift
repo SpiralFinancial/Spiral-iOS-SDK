@@ -47,7 +47,7 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
         self.componentDisplayData = data
         
         if let gradient = componentModel?.backgroundGradient {
-            
+            setBackgroundGradient(gradient: gradient)
         } else {
             setBackgroundColor(colorHex: componentModel?.backgroundColor)
         }
@@ -145,8 +145,12 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
         
         let gradientView = SpiralGradientView(frame: genericContentView.bounds)
         gradientView.gradientDirection = gradient.direction.rawValue
-        gradientView.setGradientBackground(colors: gradient.colors.map { UIColor.hexColor($0, fallbackColor: .white) })
-        gradientView.embed(in: genericContentView)
+        gradientView.colors = gradient.colors.map { UIColor.hexColor($0, fallbackColor: .white) }
+        if let distribution = gradient.distribution {
+            gradientView.distribution = distribution.map { NSNumber(value: $0) }
+        }
+        gradientView.embed(in: self)
+        sendSubviewToBack(gradientView)
     }
     
     open func setAlpha(alpha: CGFloat?) {

@@ -92,10 +92,12 @@ public enum SpiralGenericGradientDirection: String, Codable {
 public struct SpiralGenericCardGradient: Codable {
     let direction: SpiralGenericGradientDirection
     let colors: [String]
+    let distribution: [Double]?
     
-    public init(direction: SpiralGenericGradientDirection, colors: [String]) {
+    public init(direction: SpiralGenericGradientDirection, colors: [String], distribution: [Double]? = nil) {
         self.direction = direction
         self.colors = colors
+        self.distribution = distribution
     }
 }
 

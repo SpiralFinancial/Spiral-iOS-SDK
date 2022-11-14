@@ -54,6 +54,27 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
         downloadImage(with: url, urlString: safeUrl, completion: completion)
     }
     
+    private func downloadData(with url: URL, urlString: String, completion:  @escaping (Data?) -> Void) {
+        var request = URLRequest(url: url)
+        request.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                let errorDescription = String(describing: error.localizedDescription)
+                let dataAsText = String(describing: String(data: data ?? Data(), encoding: .utf8))
+                print("******Failed to Download image******\n\(url)\n\(errorDescription)\(dataAsText)")
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                completion(data)
+            }
+        }.resume()
+    }
+    
     private func downloadImage(with url: URL, urlString: String, completion: @escaping (UIImage?) -> Void) {
         updateToken()
 //        downloader.downloadImage(with: url) { image, data, error, _ in
@@ -70,25 +91,34 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
 //            completion(image)
 //        }
         
-        var request = URLRequest(url: url)
-        request.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+//        var request = URLRequest(url: url)
+//        request.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+//
+//        URLSession.shared.dataTask(with: request) { (data, response, error) in
+//            if let error = error {
+//                let errorDescription = String(describing: error.localizedDescription)
+//                let dataAsText = String(describing: String(data: data ?? Data(), encoding: .utf8))
+//                print("******Failed to Download image******\n\(url)\n\(errorDescription)\(dataAsText)")
+//                DispatchQueue.main.async {
+//                    completion(nil)
+//                }
+//                return
+//            }
+//
+//            let image = UIImage.init(data: data!)
+//            DispatchQueue.main.async {
+//                completion(image)
+//            }
+//        }.resume()
         
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                let errorDescription = String(describing: error.localizedDescription)
-                let dataAsText = String(describing: String(data: data ?? Data(), encoding: .utf8))
-                print("******Failed to Download image******\n\(url)\n\(errorDescription)\(dataAsText)")
-                DispatchQueue.main.async {
-                    completion(nil)
-                }
-                return
-            }
-            
-            let image = UIImage.init(data: data!)
-            DispatchQueue.main.async {
+        downloadData(with: url, urlString: urlString) { data in
+            if let data = data {
+                let image = UIImage.init(data: data)
                 completion(image)
+            } else {
+                completion(nil)
             }
-        }.resume()
+        }
     }
     
     func populateImageView(_ imageView: UIImageView, urlString: String?, placeholderImage: UIImage?) {
@@ -115,22 +145,40 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
             return
         }
         
+        
+        
         imageView.image = nil
         
         imageViewToUrl[imageView] = urlString
         
-        downloadImage(urlString: urlString) { [weak self] (image) in
-            guard self?.imageViewToUrl[imageView] == urlString else { return }
-            
-            if let image = image {
-                imageView.image = image
-                completion?()
-            } else {
-                setPlaceholderOrClear()
-                completion?()
+        imageView.findViews(subclassOf: SVGView.self).forEach { $0.removeFromSuperview() }
+        if urlString.hasSuffix(".svg"),
+            let url = URL(string: urlString) {
+            downloadData(with: url, urlString: urlString) { [weak self] data in
+                guard self?.imageViewToUrl[imageView] == urlString else { return }
+                if let data = data {
+                    let svgView = SVGView(svgData: data)
+                    svgView.embed(in: imageView)
+                    completion?()
+                } else {
+                    setPlaceholderOrClear()
+                    completion?()
+                }
             }
-            
-            self?.imageViewToUrl.removeValue(forKey: imageView)
+        } else {
+            downloadImage(urlString: urlString) { [weak self] (image) in
+                guard self?.imageViewToUrl[imageView] == urlString else { return }
+                
+                if let image = image {
+                    imageView.image = image
+                    completion?()
+                } else {
+                    setPlaceholderOrClear()
+                    completion?()
+                }
+                
+                self?.imageViewToUrl.removeValue(forKey: imageView)
+            }
         }
     }
     

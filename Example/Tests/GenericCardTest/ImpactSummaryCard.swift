@@ -14,35 +14,111 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
     
     var cardModel: GenericCardModel? {
         
-        let header = SpiralGenericCardZComponentContainer(children: [])
-        let headerComponent = SpiralGenericCardComponent(type: .zContainer,
-                                                         backgroundGradient: SpiralGenericCardGradient(direction: .topLeftToBottomRight, colors: ["", ""]),
-                                                         fixedHeight: 65,
-                                                         content: header)
         
-        let image = SpiralGenericCardImageComponent(url: "https://cdn.zeplin.io/5e3b1c818f31c4b3e2064abd/assets/D14203EE-A7F1-48F3-9136-6E254779F1BA.png",
-                                              fixedHeight: 184)
-        let imageComponent = SpiralGenericCardComponent(type: .image, content: image)
+        let headerImage = SpiralGenericCardImageComponent(url: "https://cdn.zeplin.io/5e3b1c818f31c4b3e2064abd/assets/8a123500-fe5a-4fcc-a674-c8843bfd88d6.svg",
+                                                          fixedWidth: 40,
+                                                          fixedHeight: 40)
+        let headerImageComponent = SpiralGenericCardComponent(type: .image,
+                                                              padding: SpiralGenericCardContentPadding(left: 15, right: 0, top: 12, bottom: 0),
+                                                              snapToEdges: [.top, .left],
+                                                              content: headerImage)
         
-        let text = SpiralGenericCardTextComponent(html:
+        let headerText = SpiralGenericCardTextComponent(html:
                                                 """
-                                                <span style=\"font-family: SFProRounded-Regular; font-size:16px; line-height: 22px; color:black;\">Danny, Your donation helped four amazing kids got much-needed cancer surgery, thanks for being amazing!</span>
+                                                <span style=\"font-family: SFProRounded-Light; font-size:17px; line-height: 22px; color:white;\">Your Social Impact</span>
                                                 """
         )
-        let textComponent = SpiralGenericCardComponent(type: .text,
-                                                 padding: SpiralGenericCardContentPadding(left: 16, right: 16, top: 15, bottom: 20),
-                                                 content: text)
+        let headerTextComponent = SpiralGenericCardComponent(type: .text,
+                                                             padding: SpiralGenericCardContentPadding(left: 70, right: 20, top: 12, bottom: 0),
+                                                             snapToEdges: [.top, .left],
+                                                             content: headerText)
         
-        let button = SpiralGenericCardButtonComponent(text: "Ok, got it", textColor: "#D73275", borderColor: "#D73275", fixedWidth: 200)
+        let headerSubtitleText = SpiralGenericCardTextComponent(html:
+                                                """
+                                                <span style=\"font-family: SFProRounded-Light; font-size:14px; line-height: 18px; color:white;\">From swiping your Spiral debit card</span>
+                                                """
+        )
+        let headerSubtitleTextComponent = SpiralGenericCardComponent(type: .text,
+                                                             padding: SpiralGenericCardContentPadding(left: 70, right: 20, top: 36, bottom: 0),
+                                                             snapToEdges: [.top, .left],
+                                                             content: headerSubtitleText)
+        
+        
+        let header = SpiralGenericCardZComponentContainer(children: [headerImageComponent, headerTextComponent, headerSubtitleTextComponent])
+        let headerComponent = SpiralGenericCardComponent(type: .zContainer,
+                                                         backgroundGradient: SpiralGenericCardGradient(direction: .leftToRight, colors: ["#a9b9f2", "#d55289"], distribution: [0, 0.8]),
+                                                         fixedHeight: 65,
+                                                         padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 0, bottom: 10),
+                                                         content: header)
+        
+        
+        let categoryImage = SpiralGenericCardImageComponent(url: "https://cdn.zeplin.io/5e3b1c818f31c4b3e2064abd/assets/df9e64d8-6f2f-4d67-a3b7-488cbf5de311.svg",
+                                                            fixedWidth: 40,
+                                                            fixedHeight: 40)
+        let categoryImageComponent = SpiralGenericCardComponent(type: .image,
+                                                                padding: SpiralGenericCardContentPadding(left: 15, right: 0, top: 12, bottom: 0),
+                                                                snapToEdges: [.left, .top],
+                                                                content: categoryImage)
+        
+        let categoryCountText = SpiralGenericCardTextComponent(html:
+                                                """
+                                                <span style=\"font-family: SFProRounded-Light; font-size:36px; line-height: 40px; color:#414d54; text-align:center; dispay:block;\">12</span>
+                                                """,
+                                                               alignment: .center
+        )
+        let categoryCountComponent = SpiralGenericCardComponent(type: .text,
+                                                                fixedWidth: 81,
+                                                                padding: SpiralGenericCardContentPadding(left: 65, right: 0, top: 11, bottom: 0),
+                                                                snapToEdges: [.top, .left],
+                                                                content: categoryCountText)
+        
+        let categoryDescriptionText = SpiralGenericCardTextComponent(html:
+                                                """
+                                                <span style=\"font-family: SFProRounded-Medium; font-size:14px; line-height: 17px; color:black;\">Trees planted</span><br />
+                                                <span style=\"font-family: SFProRounded-Regular; font-size:14px; line-height: 17px; color:black;\">to help the enviroment</span>
+                                                """
+        )
+        let categoryDescriptionComponent = SpiralGenericCardComponent(type: .text,
+                                                                      padding: SpiralGenericCardContentPadding(left: 155, right: 15, top: 15, bottom: 15.5),
+                                                                      snapToEdges: [.top, .left, .right, .bottom],
+                                                                      content: categoryDescriptionText)
+        
+        let separator = SpiralGenericCardComponentContainer(children: [])
+        let separatorComponent = SpiralGenericCardComponent(type: .container,
+                                                            backgroundColor: "#ced4da",
+                                                            fixedHeight: 0.5,
+                                                            padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 0, bottom: 0),
+                                                            snapToEdges: [.left, .right, .bottom],
+                                                            content: separator)
+        
+        
+        let categoryContainer = SpiralGenericCardZComponentContainer(children: [categoryImageComponent, categoryCountComponent, categoryDescriptionComponent, separatorComponent])
+        let categoryContainerComponent = SpiralGenericCardComponent(type: .zContainer,
+                                                                    content: categoryContainer)
+        
+//        let image = SpiralGenericCardImageComponent(url: "https://cdn.zeplin.io/5e3b1c818f31c4b3e2064abd/assets/D14203EE-A7F1-48F3-9136-6E254779F1BA.png",
+//                                              fixedHeight: 184)
+//        let imageComponent = SpiralGenericCardComponent(type: .image, content: image)
+//
+//        let text = SpiralGenericCardTextComponent(html:
+//                                                """
+//                                                <span style=\"font-family: SFProRounded-Regular; font-size:16px; line-height: 22px; color:black;\">Danny, Your donation helped four amazing kids got much-needed cancer surgery, thanks for being amazing!</span>
+//                                                """
+//        )
+//        let textComponent = SpiralGenericCardComponent(type: .text,
+//                                                 padding: SpiralGenericCardContentPadding(left: 16, right: 16, top: 15, bottom: 20),
+//                                                 content: text)
+        
+        let button = SpiralGenericCardButtonComponent(text: "Remind me how this works", textColor: "#d83275", textSize: 14, textWeight: .medium, borderColor: "#ffffff")
         let buttonComponent = SpiralGenericCardComponent(type: .button,
-                                                   padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 0, bottom: 25),
-                                                   link: "/home/hideCard?id=1&option=test&type=test",
+                                                   padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 21, bottom: 27),
+                                                   link: "/webview?url=https://spiral.us",
                                                    content: button)
         
         return GenericCardModel(root: SpiralGenericCardComponent(type: .container,
                                                            content: SpiralGenericCardComponentContainer(children:
-                                                                                                    [imageComponent,
-                                                                                                     textComponent,
+                                                                                                    [headerComponent,
+                                                                                                     categoryContainerComponent,
                                                                                                      buttonComponent
                                                                                                     ])))
     }

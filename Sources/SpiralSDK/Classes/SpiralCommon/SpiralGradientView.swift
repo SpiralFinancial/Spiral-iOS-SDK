@@ -31,16 +31,23 @@ import Foundation
     @IBInspectable var gradientColor1: UIColor?
     @IBInspectable var gradientColor2: UIColor?
     
+    var colors: [UIColor]?
+    var distribution: [NSNumber]?
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        guard let gradientColor1 = gradientColor1, let gradientColor2 = gradientColor2 else {
-            return
+        var colors: [UIColor]! = colors
+        if colors == nil {
+            guard let gradientColor1 = gradientColor1, let gradientColor2 = gradientColor2 else {
+                return
+            }
+            colors = [gradientColor1, gradientColor2]
         }
 
         layer.sublayers?.forEach { if $0 is CAGradientLayer { $0.removeFromSuperlayer() } }
-        setGradientBackground(colors: [gradientColor1, gradientColor2],
+        setGradientBackground(colors: colors,
                               direction: GradientDirection(rawValue: gradientDirectionRaw.rawValue),
-                              distribution: nil)
+                              distribution: distribution)
     }
 }
