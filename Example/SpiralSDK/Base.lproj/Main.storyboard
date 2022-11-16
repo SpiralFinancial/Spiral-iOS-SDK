@@ -181,8 +181,31 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="button-2" id="YCM-tS-gIz" userLabel="button-2">
+                                <rect key="frame" x="0.0" y="176" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="YCM-tS-gIz" id="XAn-Du-nMb">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LfR-i1-Be6">
+                                            <rect key="frame" x="23.5" y="7" width="367" height="30"/>
+                                            <state key="normal" title="Get Transaction Impact"/>
+                                            <connections>
+                                                <action selector="getTransactionImpact" destination="g4a-YX-SBb" eventType="touchUpInside" id="iR9-V0-Pnq"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="LfR-i1-Be6" firstAttribute="centerX" secondItem="XAn-Du-nMb" secondAttribute="centerX" id="ObZ-9X-XlR"/>
+                                        <constraint firstItem="LfR-i1-Be6" firstAttribute="centerY" secondItem="XAn-Du-nMb" secondAttribute="centerY" id="fCj-ww-ypZ"/>
+                                        <constraint firstItem="LfR-i1-Be6" firstAttribute="height" secondItem="XAn-Du-nMb" secondAttribute="height" multiplier="0.689655" id="gDn-sB-9Uz"/>
+                                        <constraint firstItem="LfR-i1-Be6" firstAttribute="width" secondItem="XAn-Du-nMb" secondAttribute="width" multiplier="0.885333" id="hNX-Ic-Gg6"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="impactCell" id="hKc-BF-yLa">
-                                <rect key="frame" x="0.0" y="176" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="220" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hKc-BF-yLa" id="qeR-ni-Qoo">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>

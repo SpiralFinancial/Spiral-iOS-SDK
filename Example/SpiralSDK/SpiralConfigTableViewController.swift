@@ -39,12 +39,6 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         super.viewDidLoad()
         st.delegate = self
         navigationController?.delegate = self
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -58,7 +52,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         // #warning Incomplete implementation, return the number of rows
         switch section {
         case SectionIndex.config.rawValue: return data.count
-        case SectionIndex.buttons.rawValue: return 2
+        case SectionIndex.buttons.rawValue: return 3
         case SectionIndex.impact.rawValue: return 1
         default:
             return 0
@@ -170,6 +164,17 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         
         let vc = SpiralGenericCardModalViewController.create(with: cardModel, delegate: self)
         UIApplication.topViewController()?.present(vc, animated: true)
+    }
+    
+    @IBAction func getTransactionImpact() {
+        Spiral.shared.getTransactionImpact(transactionId: "TRX_00100") { [weak self] impact, error in
+            if error == nil {
+                let alertController = UIAlertController(title: "Transaction Impact Results",
+                                                        message: impact.debugDescription,
+                                                        preferredStyle: .alert)
+                self?.present(alertController, animated: true)
+            }
+        }
     }
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {

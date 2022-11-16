@@ -22,6 +22,8 @@
 		D5F789D725677CF8003E6485 /* ConfigEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F789D625677CF8003E6485 /* ConfigEntryViewController.swift */; };
 		F53B63CF291AF61000A76C5F /* ImpactSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */; };
 		F53B63D0291AF61000A76C5F /* ImpactSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */; };
+		F5B6C50429252DDE00086C7F /* impactSummaryCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5B6C50329252DDE00086C7F /* impactSummaryCard.json */; };
+		F5B6C50529252DDE00086C7F /* impactSummaryCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5B6C50329252DDE00086C7F /* impactSummaryCard.json */; };
 		F5BD6D702901C18200A5E5CE /* TestModalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */; };
 		F5BD6D712901C18200A5E5CE /* TestModalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */; };
 		F5BD6D722901C18200A5E5CE /* TestHtmlCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6B2901C18100A5E5CE /* TestHtmlCard.swift */; };
@@ -99,6 +101,7 @@
 		EDF1E1A86E177030EBD5A21E /* Pods-SpiralSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpiralSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-SpiralSDK_Example/Pods-SpiralSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F0459245F3C7850DA8DB35F2 /* SpiralSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SpiralSDK.podspec; path = ../SpiralSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpactSummaryCard.swift; sourceTree = "<group>"; };
+		F5B6C50329252DDE00086C7F /* impactSummaryCard.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = impactSummaryCard.json; sourceTree = "<group>"; };
 		F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestModalCard.swift; sourceTree = "<group>"; };
 		F5BD6D6B2901C18100A5E5CE /* TestHtmlCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHtmlCard.swift; sourceTree = "<group>"; };
 		F5BD6D6C2901C18100A5E5CE /* StJudeCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StJudeCard.swift; sourceTree = "<group>"; };
@@ -250,8 +253,9 @@
 				F5BD6D6C2901C18100A5E5CE /* StJudeCard.swift */,
 				F5BD6D6D2901C18100A5E5CE /* stJudeCard.json */,
 				F5BD6D6E2901C18100A5E5CE /* testHtmlCard.json */,
-				F5BD6D6F2901C18100A5E5CE /* GenericCardTestFacility.swift */,
 				F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */,
+				F5B6C50329252DDE00086C7F /* impactSummaryCard.json */,
+				F5BD6D6F2901C18100A5E5CE /* GenericCardTestFacility.swift */,
 			);
 			path = GenericCardTest;
 			sourceTree = "<group>";
@@ -377,6 +381,7 @@
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				F5B6C50429252DDE00086C7F /* impactSummaryCard.json in Resources */,
 				F5BD6D782901C18200A5E5CE /* testHtmlCard.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -386,6 +391,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5BD6D792901C18200A5E5CE /* testHtmlCard.json in Resources */,
+				F5B6C50529252DDE00086C7F /* impactSummaryCard.json in Resources */,
 				F5BD6D772901C18200A5E5CE /* stJudeCard.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

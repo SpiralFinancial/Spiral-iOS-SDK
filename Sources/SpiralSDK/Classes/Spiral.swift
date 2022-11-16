@@ -19,7 +19,15 @@ public class Spiral {
     private var _apiHeaders: [String: String] {
         return ["X-SPIRAL-SDK-VERSION": "ios-1.0.0",
                 "X-SPIRAL-CUSTOMER-ID": "CUST12345",
-                "X-SPIRAL-CLIENT-ID": "9e2484b6-1d4b-4cc3-b5cf-a48790bb18ad"]
+                "X-SPIRAL-CLIENT-ID": "a327d188-5e7e-4d1c-93bf-2d2b662ee311"]
+    }
+    
+    public func token() -> String? {
+        return _token
+    }
+    
+    public func config() -> SpiralConfig? {
+        return _config
     }
     
     public func startDonationFlow(token: String, delegate: SpiralDelegate, config: SpiralConfig? = nil) {
@@ -107,13 +115,22 @@ public class Spiral {
 
     }
     
-    public func token() -> String? {
-        return _token
+    public func getTransactionImpact(transactionId: String, completion: @escaping (SocialResponsibilityTransactionInstantImpactResponse?, Error?) -> Void) {
+        let requestBuilder = SocialResponsibilityAPI.getInstantImpactByTransactionIdWithRequestBuilder(transactionId: transactionId)
+        requestBuilder.addHeaders(_apiHeaders)
+        requestBuilder.execute { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(response):
+                    let impactResponse = response.body
+                    completion(impactResponse, nil)
+                case let .failure(error):
+                    completion(nil, error)
+                }
+            }
+        }
     }
     
-    public func config() -> SpiralConfig? {
-        return _config
-    }
 }
 
 public protocol SpiralDelegate: AnyObject {
