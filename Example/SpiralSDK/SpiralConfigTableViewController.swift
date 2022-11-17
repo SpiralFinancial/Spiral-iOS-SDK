@@ -82,27 +82,22 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         if indexPath.section == SectionIndex.impact.rawValue {
             let impactCell = tableView.dequeueReusableCell(withIdentifier: "impactCell", for: indexPath)
             
-            if let card = impactCell.contentView.subviews.first as? SpiralGenericCardView {
-                card.refreshDisplay()
-            }
-            
             if impactCell.contentView.subviews.isEmpty {
                 Spiral.shared.loadInstantImpactCard(into: impactCell.contentView) {
-                    tableView.reloadData()
+                    // Instantaneous vs. animated display
+                    // tableView.reloadData()
                     
-//                    self.tableView.beginUpdates()
-//                    self.tableView.endUpdates()
-//                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    self.tableView.beginUpdates()
+                    self.tableView.endUpdates()
                     
                 } failure: { error in
                     print("failure: " + (error?.localizedDescription ?? ""))
                 } updateLayout: {
-//                    tableView.reloadData()
+                    // Instantaneous vs. animated display
+                    // tableView.reloadData()
                     
-                    DispatchQueue.main.async {
-                        self.tableView.beginUpdates()
-                        self.tableView.endUpdates()
-                    }
+                    self.tableView.beginUpdates()
+                    self.tableView.endUpdates()
                 }
             }
                         

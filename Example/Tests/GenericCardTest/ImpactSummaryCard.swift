@@ -30,7 +30,7 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
         )
         let headerTextComponent = SpiralGenericCardComponent(type: .text,
                                                              padding: SpiralGenericCardContentPadding(left: 70, right: 20, top: 12, bottom: 0),
-                                                             snapToEdges: [.top, .left],
+                                                             snapToEdges: [.top, .left, .right],
                                                              content: headerText)
         
         let headerSubtitleText = SpiralGenericCardTextComponent(html:
@@ -40,7 +40,7 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
         )
         let headerSubtitleTextComponent = SpiralGenericCardComponent(type: .text,
                                                              padding: SpiralGenericCardContentPadding(left: 70, right: 20, top: 36, bottom: 0),
-                                                             snapToEdges: [.top, .left],
+                                                                     snapToEdges: [.top, .left, .right],
                                                              content: headerSubtitleText)
         
         
