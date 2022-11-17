@@ -82,9 +82,18 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         if indexPath.section == SectionIndex.impact.rawValue {
             let impactCell = tableView.dequeueReusableCell(withIdentifier: "impactCell", for: indexPath)
             
+            if let card = impactCell.contentView.subviews.first as? SpiralGenericCardView {
+                card.refreshDisplay()
+            }
+            
             if impactCell.contentView.subviews.isEmpty {
                 Spiral.shared.loadInstantImpactCard(into: impactCell.contentView) {
                     tableView.reloadData()
+                    
+//                    self.tableView.beginUpdates()
+//                    self.tableView.endUpdates()
+//                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    
                 } failure: { error in
                     print("failure: " + (error?.localizedDescription ?? ""))
                 } updateLayout: {
@@ -158,22 +167,44 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     }
     
     @IBAction func handleGenericModalTap() {
-//        Spiral.shared.showModalContent(type: "SR_SUMMARY", delegate: self, success: nil, failure: nil)
+        Spiral.shared.showModalContent(type: "SR_SUMMARY", delegate: self, success: nil, failure: nil)
         
-        guard let cardModel = GenericCardTestFacility.genericCardTestPayloadModel() else { return }
-        
-        let vc = SpiralGenericCardModalViewController.create(with: cardModel, delegate: self)
-        UIApplication.topViewController()?.present(vc, animated: true)
+//        guard let cardModel = GenericCardTestFacility.genericCardTestPayloadModel() else { return }
+//
+//        let vc = SpiralGenericCardModalViewController.create(with: cardModel, delegate: self)
+//        UIApplication.topViewController()?.present(vc, animated: true)
     }
     
     @IBAction func getTransactionImpact() {
         Spiral.shared.getTransactionImpact(transactionId: "TRX_00100") { [weak self] impact, error in
-            if error == nil {
+            if error == nil, let impact = impact, let self = self {
                 let alertController = UIAlertController(title: "Transaction Impact Results",
-                                                        message: impact.debugDescription,
+                                                        message: self.impactSummaryText(transactionReward: impact),
                                                         preferredStyle: .alert)
-                self?.present(alertController, animated: true)
+                let okAction = UIAlertAction (title: "Ok", style: UIAlertActionStyle.cancel, handler: nil)
+                alertController.addAction(okAction)
+                self.present(alertController, animated: true)
             }
+        }
+    }
+    
+    func plural(word: String, suffix: String, n: Double) -> String {
+        return n > 1 ? word + suffix : word
+    }
+    
+    func impactSummaryText(transactionReward: SocialResponsibilityTransactionInstantImpactResponse) -> String {
+        let unit = transactionReward.rewardUnit?.unit
+        let count = transactionReward.impact
+        
+        switch unit {
+        case "TREE": return "We donated to pay for \(Int(count)) \(plural(word: "tree", suffix: "s", n: count)) to clean the air."
+        case "MEAL": return "We donated to pay for \(Int(count)) \(plural(word: "meal", suffix: "s", n: count)) for a child that is going hungry."
+        case "CLEAN_WATER": return "We donated to pay for \(Int(count)) \(plural(word: "week", suffix: "s", n: count)) of clean water for a person in need."
+        case "SAFE_SHELTER": return "We donated to pay for \(Int(count)) \(plural(word: "night", suffix: "s", n: count)) of safe shelter for a person in poverty."
+        case .none:
+            return ""
+        case .some(_):
+            return ""
         }
     }
     

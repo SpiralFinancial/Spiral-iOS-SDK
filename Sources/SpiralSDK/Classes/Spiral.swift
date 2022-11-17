@@ -19,7 +19,7 @@ public class Spiral {
     private var _apiHeaders: [String: String] {
         return ["X-SPIRAL-SDK-VERSION": "ios-1.0.0",
                 "X-SPIRAL-CUSTOMER-ID": "CUST12345",
-                "X-SPIRAL-CLIENT-ID": "a327d188-5e7e-4d1c-93bf-2d2b662ee311"]
+                "X-SPIRAL-CLIENT-ID": "a3e4564b-d9bb-4067-b94b-03ec1c606815"]
     }
     
     public func token() -> String? {
@@ -113,6 +113,27 @@ public class Spiral {
 //            }
 //        }
 
+        let requestBuilder = CmsAPI.getTypedGenericCardWithRequestBuilder(type: .srSummary)
+        requestBuilder.addHeaders(_apiHeaders)
+        requestBuilder.execute { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(response):
+                    if let cardData = response.body.card.value as? GenericCardModel {
+                        
+                        let payload = SpiralGenericCardPayloadModel(identifier: 0, type: "SR_SUMMARY", data: cardData, isNew: false)
+                        let vc = SpiralGenericCardModalViewController.create(with: payload, delegate: delegate)
+                        UIApplication.topViewController()?.present(vc, animated: true)
+                        
+                        success?()
+                    } else {
+                        failure?(nil)
+                    }
+                case let .failure(error):
+                    failure?(error)
+                }
+            }
+        }
     }
     
     public func getTransactionImpact(transactionId: String, completion: @escaping (SocialResponsibilityTransactionInstantImpactResponse?, Error?) -> Void) {

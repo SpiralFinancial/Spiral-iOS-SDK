@@ -64,8 +64,8 @@ public enum SpiralGenericCardContentAlignment: String, Codable {
 }
 
 public enum SpiralGenericCardContentMode: String, Codable {
-    case aspectFit
-    case aspectFill
+    case aspectFit = "aspect_fit"
+    case aspectFill = "aspect_fill"
     case left
     case center
     case right
@@ -127,8 +127,8 @@ public struct GenericCardModel: Codable, Hashable {
     let root: SpiralGenericCardComponent
     
     private enum CodingKeys: String, CodingKey {
-        case backgroundColor
-        case backgroundImage
+        case backgroundColor = "background_color"
+        case backgroundImage = "background_image"
         case link
         case root
     }
@@ -168,14 +168,14 @@ public class SpiralGenericCardComponent: Codable {
     
     private enum CodingKeys: String, CodingKey {
         case type
-        case backgroundColor
-        case backgroundGradient
+        case backgroundColor = "background_color"
+        case backgroundGradient = "background_gradient"
         case alpha
         case blur
-        case fixedWidth
-        case fixedHeight
+        case fixedWidth = "fixed_width"
+        case fixedHeight = "fixed_height"
         case padding
-        case snapToEdges
+        case snapToEdges = "snap_to_edges"
         case link
         case links
         case content
@@ -320,10 +320,10 @@ public class SpiralGenericCardImageComponent: SpiralGenericCardComponentContent 
     
     private enum CodingKeys: String, CodingKey {
         case url
-        case fixedWidth
-        case fixedHeight
-        case aspectRatio
-        case contentMode
+        case fixedWidth = "fixed_width"
+        case fixedHeight = "fixed_height"
+        case aspectRatio = "aspect_ratio"
+        case contentMode = "content_mode"
     }
     
     public init(url: String,
@@ -351,11 +351,11 @@ public class SpiralGenericCardTextComponent: SpiralGenericCardComponentContent {
     private enum CodingKeys: String, CodingKey {
         case html
         case text
-        case textColor
-        case textSize
-        case textWeight
+        case textColor = "text_color"
+        case textSize = "text_size"
+        case textWeight = "text_weight"
         case alignment
-        case lineHeight
+        case lineHeight = "line_height"
     }
     
     public init(html: String? = nil,
@@ -386,12 +386,12 @@ public class SpiralGenericCardButtonComponent: SpiralGenericCardComponentContent
     
     private enum CodingKeys: String, CodingKey {
         case text
-        case textColor
-        case textSize
-        case textWeight
-        case borderColor
-        case fixedWidth
-        case fixedHeight
+        case textColor = "text_color"
+        case textSize = "text_size"
+        case textWeight = "text_weight"
+        case borderColor = "border_color"
+        case fixedWidth = "fixed_width"
+        case fixedHeight = "fixed_height"
     }
     
     public init(text: String,

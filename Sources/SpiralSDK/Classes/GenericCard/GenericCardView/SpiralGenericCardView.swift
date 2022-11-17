@@ -140,7 +140,7 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
     open func setBackgroundGradient(gradient: SpiralGenericCardGradient) {
         genericContentView.backgroundColor = .clear
         
-        let existing = findViews(subclassOf: SpiralGradientView.self).first
+        let existing = genericContentView.findViews(subclassOf: SpiralGradientView.self).first
         existing?.removeFromSuperview()
         
         let gradientView = SpiralGradientView(frame: genericContentView.bounds)
@@ -149,8 +149,8 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
         if let distribution = gradient.distribution {
             gradientView.distribution = distribution.map { NSNumber(value: $0) }
         }
-        gradientView.embed(in: self)
-        sendSubviewToBack(gradientView)
+        gradientView.embed(in: genericContentView)
+        genericContentView.sendSubviewToBack(gradientView)
     }
     
     open func setAlpha(alpha: CGFloat?) {
