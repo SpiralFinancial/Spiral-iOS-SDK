@@ -26,6 +26,16 @@ enum SectionIndex: Int {
 }
 
 class SpiralConfigTableViewController: UITableViewController, UINavigationControllerDelegate {
+    
+    override var tableView: UITableView! {
+        didSet {
+            tableView.refreshControl = UIRefreshControl()
+            tableView.refreshControl?.addTarget(self, action:
+                                                    #selector(refresh),
+                                                    for: .valueChanged)
+        }
+    }
+    
     var data = [
         ConfigField(label:"mode", value:"sandbox"),
         ConfigField(label:"skip_intro_screen", value:"false"),
@@ -33,8 +43,16 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     let st = SpiralToken()
     var selected: Int = 0
     
+    var didDisplayImpactCard = false
+    
     private var events = Array<EventData>()
 
+    @objc func refresh() {
+        didDisplayImpactCard = false
+        tableView.reloadData()
+        tableView.refreshControl?.endRefreshing()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         st.delegate = self
@@ -82,13 +100,16 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         if indexPath.section == SectionIndex.impact.rawValue {
             let impactCell = tableView.dequeueReusableCell(withIdentifier: "impactCell", for: indexPath)
             
-            if impactCell.contentView.subviews.isEmpty {
+            if !didDisplayImpactCard {
+                impactCell.contentView.subviews.forEach { $0.removeFromSuperview() }
                 Spiral.shared.loadInstantImpactCard(into: impactCell.contentView) {
                     // Instantaneous vs. animated display
                     // tableView.reloadData()
                     
                     self.tableView.beginUpdates()
                     self.tableView.endUpdates()
+                    
+                    self.didDisplayImpactCard = true
                     
                 } failure: { error in
                     print("failure: " + (error?.localizedDescription ?? ""))
