@@ -19,7 +19,7 @@ public class Spiral {
     private var _apiHeaders: [String: String] {
         return ["X-SPIRAL-SDK-VERSION": "ios-1.0.0",
                 "X-SPIRAL-CUSTOMER-ID": "CUST12345",
-                "X-SPIRAL-CLIENT-ID": "a3e4564b-d9bb-4067-b94b-03ec1c606815"]
+                "X-SPIRAL-CLIENT-ID": "49f60e7d-c110-4611-8a7f-c8746b034f80"]
     }
     
     public func token() -> String? {

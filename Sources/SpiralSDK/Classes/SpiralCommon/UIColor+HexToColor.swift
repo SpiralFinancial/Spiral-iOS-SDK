@@ -9,12 +9,12 @@
 import UIKit
 
 extension UIColor {
-    public convenience init?(hexString: String) {
+    public convenience init?(hex: String) {
         let red, green, blue, alpha: CGFloat
         
-        if hexString.hasPrefix("#") {
-            let start = hexString.index(hexString.startIndex, offsetBy: 1)
-            var hexColor = hexString[start...]
+        if hex.hasPrefix("#") {
+            let start = hex.index(hex.startIndex, offsetBy: 1)
+            var hexColor = hex[start...]
             
             // Handles hexes without alpha
             if hexColor.count == 6 {
@@ -42,7 +42,7 @@ extension UIColor {
     
     public static func hexColor(_ hex: String?, fallbackColor: UIColor) -> UIColor {
         if let hex = hex,
-           let color = UIColor(hexString: hex) {
+           let color = UIColor(hex: hex) {
             return color
         } else {
             return fallbackColor
