@@ -18,8 +18,8 @@ public class Spiral {
     
     private var _apiHeaders: [String: String] {
         return ["X-SPIRAL-SDK-VERSION": "ios-1.0.0",
-                "X-SPIRAL-CUSTOMER-ID": "CUST12345",
-                "X-SPIRAL-CLIENT-ID": "49f60e7d-c110-4611-8a7f-c8746b034f80"]
+                "X-SPIRAL-CUSTOMER-ID": _config?.customerId ?? .empty,
+                "X-SPIRAL-CLIENT-ID": _config?.clientId ?? .empty]
     }
     
     public func token() -> String? {
@@ -30,12 +30,20 @@ public class Spiral {
         return _config
     }
     
-    public func startDonationFlow(token: String, delegate: SpiralDelegate, config: SpiralConfig? = nil) {
+    public func startDonationFlow(token: String, delegate: SpiralDelegate) {
+        guard let _config = _config else {
+            print("Spiral: missing config. Please call Spiral.shared.setup() before starting the donation flow.")
+            return
+        }
+        
         _token = token
-        _config = config
-        _donationViewController = SpiralViewController(token: token, delegate: delegate, config: config, onExit: { [weak self] in
+        _donationViewController = SpiralViewController(token: token, delegate: delegate, config: _config, onExit: { [weak self] in
             self?._donationViewController = nil
         })
+    }
+    
+    public func setup(config: SpiralConfig) {
+        _config = config
     }
     
     public func loadInstantImpactCard(into view: UIView,
@@ -200,6 +208,10 @@ extension SpiralEnvironment {
 public struct SpiralConfig {
     public let mode: SpiralMode
     public let environment: SpiralEnvironment
+    
+    public let clientId: String
+    public let customerId: String
+    
     public var url: String {
         get {
             switch environment {
@@ -212,8 +224,10 @@ public struct SpiralConfig {
             }
         }
     }
-    public init(mode: SpiralMode, environment: SpiralEnvironment) {
+    public init(mode: SpiralMode, environment: SpiralEnvironment, clientId: String, customerId: String) {
         self.mode = mode
         self.environment = environment
+        self.clientId = clientId
+        self.customerId = customerId
     }
 }

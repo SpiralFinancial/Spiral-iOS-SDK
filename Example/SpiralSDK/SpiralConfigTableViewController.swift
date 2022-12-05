@@ -57,6 +57,11 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         super.viewDidLoad()
         st.delegate = self
         navigationController?.delegate = self
+        
+        Spiral.shared.setup(config: SpiralConfig(mode: .sandbox,
+                                                 environment: .staging,
+                                                 clientId: "d2f2d15c-8198-4bfe-9752-505b49a9b970",
+                                                 customerId: "CUST12345"))
     }
 
     // MARK: - Table view data source

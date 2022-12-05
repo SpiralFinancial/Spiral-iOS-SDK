@@ -55,6 +55,10 @@ class TestMessage: WKScriptMessage {
 class TableOfContentsSpec: QuickSpec {
     override func spec() {
         let spiralToken = "abc-123"
+        let config = SpiralConfig(mode: .sandbox,
+                                  environment: .staging,
+                                  clientId: "CUST12345",
+                                  customerId: "d2f2d15c-8198-4bfe-9752-505b49a9b970")
         
         describe("Spiral") {
             
@@ -66,7 +70,7 @@ class TableOfContentsSpec: QuickSpec {
                     "eventName": "open"
                 ]
                 let message = TestMessage("openEventHandler", body: asString(jsonDictionary: body))
-                let spiralVC = SpiralViewController(token: spiralToken, delegate: delegate)
+                let spiralVC = SpiralViewController(token: spiralToken, delegate: delegate, config: config)
                 spiralVC.userContentController(userContentController, didReceive: message)
                 expect(delegate.onEventName?.rawValue).to(equal("open"))
             }
@@ -83,7 +87,7 @@ class TableOfContentsSpec: QuickSpec {
                 ]
                 let bodyString = asString(jsonDictionary: body)
                 let message = TestMessage("successEventHandler", body: bodyString)
-                let spiralVC = SpiralViewController(token: spiralToken, delegate: delegate)
+                let spiralVC = SpiralViewController(token: spiralToken, delegate: delegate, config: config)
                 spiralVC.userContentController(userContentController, didReceive: message)
                 let payload = delegate.onEventPayload as? SpiralSuccessPayload
                 expect(payload?.result).to(equal(true))
@@ -101,7 +105,7 @@ class TableOfContentsSpec: QuickSpec {
                 ]
                 let bodyString = asString(jsonDictionary: body)
                 let message = TestMessage("successEventHandler", body: bodyString)
-                let spiralVC = SpiralViewController(token: spiralToken, delegate: delegate)
+                let spiralVC = SpiralViewController(token: spiralToken, delegate: delegate, config: config)
                 spiralVC.userContentController(userContentController, didReceive: message)
                 let payload = delegate.onEventPayload as? SpiralSuccessPayload
                 expect(payload?.result).to(equal(false))
@@ -121,7 +125,7 @@ class TableOfContentsSpec: QuickSpec {
                 ]
                 let bodyString = asString(jsonDictionary: body)
                 let message = TestMessage("errorEventHandler", body: bodyString)
-                let spiralVC = SpiralViewController(token: spiralToken, delegate: delegate)
+                let spiralVC = SpiralViewController(token: spiralToken, delegate: delegate, config: config)
                 spiralVC.userContentController(userContentController, didReceive: message)
                 let payload = delegate.onEventPayload as? SpiralError
                 expect(payload?.type).to(equal("invalidUserInput"))

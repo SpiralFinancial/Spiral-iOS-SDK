@@ -33,10 +33,10 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     
     private var onExit: (() -> Void)?
     
-    public init(token: String, delegate: SpiralDelegate, config: SpiralConfig? = nil, onExit: ( () -> Void)? = nil ) {
+    public init(token: String, delegate: SpiralDelegate, config: SpiralConfig, onExit: ( () -> Void)? = nil ) {
         self.delegate = delegate
         self.token = token
-        self.config = config ?? SpiralConfig(mode: .sandbox, environment: .staging)
+        self.config = config
         self.onExit = onExit
         super.init(nibName: nil, bundle: nil)
         
