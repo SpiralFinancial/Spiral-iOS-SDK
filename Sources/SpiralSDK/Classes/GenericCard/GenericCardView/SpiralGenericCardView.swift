@@ -11,10 +11,10 @@ import UIKit
 
 public struct GenericCardDisplayModel {
     let cardData: SpiralGenericCardPayloadModel
-    weak var deepLinker: DeepLinkable?
+    weak var deepLinker: SpiralDeepLinkable?
     let layoutUpdateHandler: (_ constraintUpdater: @escaping () -> Void) -> Void
     
-    public init(cardData: SpiralGenericCardPayloadModel, deepLinker: DeepLinkable? = nil, layoutUpdateHandler: @escaping (@escaping () -> Void) -> Void) {
+    public init(cardData: SpiralGenericCardPayloadModel, deepLinker: SpiralDeepLinkable? = nil, layoutUpdateHandler: @escaping (@escaping () -> Void) -> Void) {
         self.cardData = cardData
         self.deepLinker = deepLinker
         self.layoutUpdateHandler = layoutUpdateHandler
@@ -23,7 +23,7 @@ public struct GenericCardDisplayModel {
 
 public struct GenericCardComponentDisplayModel {
     let componentModel: SpiralGenericCardComponent
-    weak var deepLinker: DeepLinkable?
+    weak var deepLinker: SpiralDeepLinkable?
     let layoutUpdateHandler: (_ constraintUpdater: @escaping () -> Void) -> Void
 }
 
@@ -38,7 +38,7 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
     
     var componentModel: SpiralGenericCardComponent?
     var componentDisplayData: GenericCardComponentDisplayModel?
-    var deepLinks = [DeepLink]()
+    var deepLinks = [SpiralDeepLink]()
     
     private var tapGestureRecognizer: BindableTapGestureRecognizer?
     
@@ -62,13 +62,13 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
         deepLinks.removeAll()
         
         if let linkStr = componentModel?.link,
-            let deepLink = DeepLink(from: linkStr) {
+            let deepLink = SpiralDeepLink(from: linkStr) {
             deepLinks.append(deepLink)
         }
         
         if let links = componentModel?.links {
             links.forEach {
-                if let deepLink = DeepLink(from: $0) {
+                if let deepLink = SpiralDeepLink(from: $0) {
                     deepLinks.append(deepLink)
                 }
             }
@@ -231,12 +231,12 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
         }
         
         if let deepLinkStr = cardDisplayData.link,
-           let deepLink = DeepLink(from: deepLinkStr) {
+           let deepLink = SpiralDeepLink(from: deepLinkStr) {
             addDeepLinkHandler(deepLink: deepLink)
         }
     }
     
-    open func addDeepLinkHandler(deepLink: DeepLink) {
+    open func addDeepLinkHandler(deepLink: SpiralDeepLink) {
         if let existingRecognizer = tapGestureRecognizer {
             removeGestureRecognizer(existingRecognizer)
         }
@@ -255,9 +255,9 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
     }
     
     func triggerRootLinks() {
-        var links: [DeepLink] = data?.cardData.data.root.links?.compactMap { DeepLink(from: $0) } ?? []
+        var links: [SpiralDeepLink] = data?.cardData.data.root.links?.compactMap { SpiralDeepLink(from: $0) } ?? []
         if let link = data?.cardData.data.root.link,
-           let deepLink = DeepLink(from: link) {
+           let deepLink = SpiralDeepLink(from: link) {
             links.append(deepLink)
         }
         
@@ -275,7 +275,7 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
 
 class GenericCardViewBuilder {
     static func componentViewForModel(componentModel: SpiralGenericCardComponent,
-                                      deepLinker: DeepLinkable?,
+                                      deepLinker: SpiralDeepLinkable?,
                                       layoutUpdateHandler: @escaping (_ constraintUpdater: @escaping () -> Void) -> Void) -> GenericCardComponentView? {
         var componentView: GenericCardComponentView?
         

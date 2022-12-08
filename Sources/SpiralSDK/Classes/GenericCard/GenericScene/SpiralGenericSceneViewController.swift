@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SpiralGenericSceneViewController: BaseViewController {
+class SpiralGenericSceneViewController: SpiralBaseViewController {
     
     private var sceneData: GenericCardDisplayModel?
     private var currentFrame = CGRect.zero

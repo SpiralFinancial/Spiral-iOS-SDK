@@ -42,10 +42,10 @@ class GenericCardTestFacility {
         return false
     }
     
-    static func genericCardTestModel() -> CardModel? {
+    static func genericCardTestModel() -> SpiralCardModel? {
         guard let cardPayload = genericCardTestPayloadModel() else { return nil }
 
-        let card = CardModel(payloadType: .generic,
+        let card = SpiralCardModel(payloadType: .generic,
                              payload: cardPayload)
         return card
     }
@@ -142,7 +142,7 @@ class GenericCardTestFacility {
         var genericCardView: SpiralGenericCardView = SpiralGenericCardView(frame: .zero)
 
         private func displayModel() -> GenericCardDisplayModel? {
-            let cardConfigurator = GenericCardConfigurator(data: GenericCardDisplayModel(cardData: genericCardPayloadModel,
+            let cardConfigurator = SpiralGenericCardConfigurator(data: GenericCardDisplayModel(cardData: genericCardPayloadModel,
                                                                          deepLinker: nil,
                                                                          layoutUpdateHandler: { constraintUpdater in
                                                                             }))

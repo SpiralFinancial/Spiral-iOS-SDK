@@ -142,17 +142,17 @@ extension UITextViewDelegate {
     func handleTextTapped(fullText: String,
                           characterRange: NSRange,
                           url: URL,
-                          deepLinker: DeepLinkable) {
+                          deepLinker: SpiralDeepLinkable) {
         let urlString = url.urlStringWithoutLocalScheme
         
         if urlString.isValidURL {
             if urlString.starts(with: "mailto:") {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {
-                let deepLink = DeepLink(sceneType: .webview, scene: .empty, params: ["page": urlString])
+                let deepLink = SpiralDeepLink(sceneType: .webview, scene: .empty, params: ["page": urlString])
                 deepLinker.goToDeepLink(deepLink)
             }
-        } else if let deepLink = DeepLink(from: urlString) {
+        } else if let deepLink = SpiralDeepLink(from: urlString) {
             deepLinker.goToDeepLink(deepLink)
         }
         

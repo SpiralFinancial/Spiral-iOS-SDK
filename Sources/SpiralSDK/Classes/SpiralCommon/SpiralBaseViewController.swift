@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class BaseViewController: UIViewController {
+public class SpiralBaseViewController: UIViewController {
     
     var name: String {
         return String(describing: classForCoder)

@@ -7,10 +7,10 @@
 
 import Foundation
 
-public class Coordinator: Equatable {
+public class SpiralCoordinator: Equatable {
     
-    private(set) var childCoordinators: [Coordinator] = []
-    weak var parentCoordinator: Coordinator?
+    private(set) var childCoordinators: [SpiralCoordinator] = []
+    weak var parentCoordinator: SpiralCoordinator?
     
     /// Unique string value, to easily identify a coordinator
     var identifier: String?
@@ -33,12 +33,12 @@ public class Coordinator: Equatable {
     /// Adds a child coordinator to the current childCoordinators array
     ///
     /// - Parameter coordinator: the coordinator to add
-    func addChildCoordinator(_ coordinator: Coordinator) {
+    func addChildCoordinator(_ coordinator: SpiralCoordinator) {
         childCoordinators.append(coordinator)
         coordinator.parentCoordinator = self
     }
     
-    func addOrReplaceChildCoordinator(_ coordinator: Coordinator) {
+    func addOrReplaceChildCoordinator(_ coordinator: SpiralCoordinator) {
         
         let index = childCoordinators.firstIndex { child in
             return type(of: child) == type(of: coordinator)
@@ -52,14 +52,14 @@ public class Coordinator: Equatable {
         }
     }
     
-    func addChildCoordinators(_ coordinators: [Coordinator]) {
+    func addChildCoordinators(_ coordinators: [SpiralCoordinator]) {
         coordinators.forEach { addChildCoordinator($0) }
     }
     
     /// Removes a child coordinator if such exists from the childCoordinators array
     ///
     /// - Parameter coordinator: the coordinator to remove
-    func removeChildCoordinator(_ coordinator: Coordinator) {
+    func removeChildCoordinator(_ coordinator: SpiralCoordinator) {
         if let index = childCoordinators.firstIndex(of: coordinator) {
             childCoordinators.remove(at: index)
         } else {
@@ -81,7 +81,7 @@ public class Coordinator: Equatable {
     
     /// Returns the first parent coordinator of passed type,
     /// with the possibility to search for specific coordinator with desired identifier
-    func firstParent<T: Coordinator>(of type: T.Type, with identifier: String? = nil) -> T? {
+    func firstParent<T: SpiralCoordinator>(of type: T.Type, with identifier: String? = nil) -> T? {
         if isCorrectCoordinator(parentCoordinator as? T, with: identifier) {
             return parentCoordinator as? T
         }
@@ -91,7 +91,7 @@ public class Coordinator: Equatable {
     
     /// Returns the first child coordinator of passed type, checking the self's child coordinators
     /// with the possibility to search for specific coordinator with desired identifier
-    func firstChildCoordinator<T: Coordinator>(of type: T.Type, with identifier: String? = nil) -> T? {
+    func firstChildCoordinator<T: SpiralCoordinator>(of type: T.Type, with identifier: String? = nil) -> T? {
         for coordinator in childCoordinators {
             if isCorrectCoordinator(coordinator as? T, with: identifier) {
                 return coordinator as? T
@@ -103,7 +103,7 @@ public class Coordinator: Equatable {
     
     /// Returns the first child coordinator of passed type, recursively checking all of the child coordinators children
     /// with the possibility to search for specific coordinator with desired identifier
-    func firstChildCoordinatorRecursive<T: Coordinator>(of type: T.Type, with identifier: String? = nil) -> T? {
+    func firstChildCoordinatorRecursive<T: SpiralCoordinator>(of type: T.Type, with identifier: String? = nil) -> T? {
         for coordinator in childCoordinators {
             if isCorrectCoordinator(coordinator as? T, with: identifier) {
                 return coordinator as? T
@@ -119,40 +119,15 @@ public class Coordinator: Equatable {
         return nil
     }
     
-    /// Returns the first child deep link coordinator of passed type, recursively checking all of the child coordinators children
-    /// with the possibility to search for specific coordinator with an existing navigation controller
-//    func firstChildDeepLinkerRecursive(of linkerType: DeepLinkable.Type, with nav: UINavigationController) -> DeepLinkable? {
-//        if type(of: self) == linkerType && (self as? DeepLinkable)?.navigationController == nav {
-//            return self as? DeepLinkable
-//        }
-//        
-//        for coordinator in childCoordinators {
-//            if type(of: coordinator) == linkerType {
-//                let childCoordinator = coordinator as? DeepLinkable
-//                if childCoordinator?.navigationController == nav {
-//                    return childCoordinator
-//                }
-//            }
-//            
-//            if !coordinator.childCoordinators.isEmpty {
-//                if let matchingCoordinator = coordinator.firstChildDeepLinkerRecursive(of: linkerType, with: nav) {
-//                    return matchingCoordinator
-//                }
-//            }
-//        }
-//        
-//        return nil
-//    }
-    
     /// Check if the given coordinator is not nil (wich means that it is from the correct type),
     /// and than check if the identifier is the correct one
-    private func isCorrectCoordinator(_ coordinator: Coordinator?, with identifier: String?) -> Bool {
+    private func isCorrectCoordinator(_ coordinator: SpiralCoordinator?, with identifier: String?) -> Bool {
         guard let coordinator = coordinator else { return false }
         
         return identifier == nil || coordinator.identifier == identifier
     }
     
-    public static func == (lhs: Coordinator, rhs: Coordinator) -> Bool {
+    public static func == (lhs: SpiralCoordinator, rhs: SpiralCoordinator) -> Bool {
         return lhs === rhs
     }
 }

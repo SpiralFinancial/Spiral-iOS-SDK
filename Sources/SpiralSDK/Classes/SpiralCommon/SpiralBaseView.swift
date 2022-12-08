@@ -52,7 +52,6 @@ public class SpiralBaseView: UIView {
     private func loadViewFromNib() -> UIView? {
         guard let bundle = Bundle.spiralResourcesBundle else { return nil }
         
-//        let bundle = Bundle(for: type(of: self))
         let nib = UINib(nibName: String(describing: type(of: self)), bundle: bundle)
         return nib.instantiate(withOwner: self, options: nil).first as? UIView
     }

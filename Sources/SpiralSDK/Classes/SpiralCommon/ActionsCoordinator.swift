@@ -12,10 +12,10 @@ enum ActionsCoordinatorSceneType: String {
     case showModal
 }
 
-class ActionsCoordinator: Coordinator, DeepLinkable {
+class ActionsCoordinator: SpiralCoordinator, SpiralDeepLinkable {
     
     let navigationController: UINavigationController
-    var deepLinkHandlers: [DeepLinkHandler]?
+    var deepLinkHandlers: [SpiralDeepLinkHandler]?
     
     required init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -25,7 +25,7 @@ class ActionsCoordinator: Coordinator, DeepLinkable {
 
     }
     
-    func start(with deepLink: DeepLink) {
+    func start(with deepLink: SpiralDeepLink) {
         let sceneType = ActionsCoordinatorSceneType(rawValue: deepLink.scene)
         
         switch sceneType {
@@ -63,7 +63,7 @@ class ActionsCoordinator: Coordinator, DeepLinkable {
 }
 
 extension ActionsCoordinator: SpiralGenericCardModalSceneDelegate {
-    func genericCardModalSceneDidRequestDismiss() {
-        navigationController.topViewController?.dismiss(animated: true, completion: nil)
+    func genericCardModalSceneDidRequestDismiss(controller: UIViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

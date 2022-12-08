@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIColor {
-    public convenience init?(hex: String) {
+    convenience init?(hex: String) {
         let red, green, blue, alpha: CGFloat
         
         if hex.hasPrefix("#") {
@@ -40,7 +40,7 @@ extension UIColor {
         return nil
     }
     
-    public static func hexColor(_ hex: String?, fallbackColor: UIColor) -> UIColor {
+    static func hexColor(_ hex: String?, fallbackColor: UIColor) -> UIColor {
         if let hex = hex,
            let color = UIColor(hex: hex) {
             return color

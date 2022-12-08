@@ -8,8 +8,8 @@
 
 import Foundation
 
-public protocol SpiralGenericCardModalSceneDelegate: DeepLinkable {
-    func genericCardModalSceneDidRequestDismiss()
+public protocol SpiralGenericCardModalSceneDelegate: SpiralDeepLinkable {
+    func genericCardModalSceneDidRequestDismiss(controller: UIViewController)
 }
 
 class SpiralGenericCardModalViewModel: GenericCardModalViewModelType {
@@ -28,22 +28,22 @@ class SpiralGenericCardModalViewModel: GenericCardModalViewModelType {
         })
         self.genericCard.value = displayModal
         
-        Notifications.addObserverForCardHidden(self, selector: #selector(didHideCard(notification:)))
+//        Notifications.addObserverForCardHidden(self, selector: #selector(didHideCard(notification:)))
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+//    deinit {
+//        NotificationCenter.default.removeObserver(self)
+//    }
+    
+    func dismissModal(controller: UIViewController) {
+        delegate?.genericCardModalSceneDidRequestDismiss(controller: controller)
     }
     
-    func dismissModal() {
-        delegate?.genericCardModalSceneDidRequestDismiss()
-    }
-    
-    @objc func didHideCard(notification: Notification) {
-        if let (identifier, _, _) = notification.object as? (Int, String, String) {
-            if genericCard.value?.cardData.identifier == identifier {
-                dismissModal()
-            }
-        }
-    }
+//    @objc func didHideCard(notification: Notification) {
+//        if let (identifier, _, _) = notification.object as? (Int, String, String) {
+//            if genericCard.value?.cardData.identifier == identifier {
+//                dismissModal()
+//            }
+//        }
+//    }
 }

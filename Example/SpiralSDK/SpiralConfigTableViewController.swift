@@ -60,8 +60,8 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         
         Spiral.shared.setup(config: SpiralConfig(mode: .sandbox,
                                                  environment: .staging,
-                                                 clientId: "d2f2d15c-8198-4bfe-9752-505b49a9b970",
-                                                 customerId: "CUST12345"))
+                                                 clientId: "7469e81c-1b14-4d6c-ae3c-ae60b5e4abb3",
+                                                 customerId: "1133413950162432"))
     }
 
     // MARK: - Table view data source
@@ -290,11 +290,11 @@ extension SpiralConfigTableViewController: SpiralDelegate {
 
 extension SpiralConfigTableViewController: SpiralGenericCardModalSceneDelegate {
     
-    func genericCardModalSceneDidRequestDismiss() {
-        UIApplication.topViewController()?.dismiss(animated: true)
+    func genericCardModalSceneDidRequestDismiss(controller: UIViewController) {
+        controller.dismiss(animated: true)
     }
     
-    func goToDeepLink(_ deepLink: DeepLink) {
+    func goToDeepLink(_ deepLink: SpiralDeepLink) {
         
     }
     

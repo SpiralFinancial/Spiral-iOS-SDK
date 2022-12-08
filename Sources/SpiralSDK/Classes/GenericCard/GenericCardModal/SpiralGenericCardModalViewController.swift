@@ -11,7 +11,7 @@ import UIKit
 protocol GenericCardModalViewModelType {
     var genericCard: Observable<GenericCardDisplayModel> { get }
     var shouldRefreshLayout: Observable<Bool> { get }
-    func dismissModal()
+    func dismissModal(controller: UIViewController)
 }
 
 class GenericModalScrollContainer: UIScrollView {
@@ -20,7 +20,7 @@ class GenericModalScrollContainer: UIScrollView {
     let initialContentOffset: CGFloat = 0
 }
 
-public class SpiralGenericCardModalViewController: BaseViewController {
+public class SpiralGenericCardModalViewController: SpiralBaseViewController {
     
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     
@@ -88,7 +88,7 @@ public class SpiralGenericCardModalViewController: BaseViewController {
     }
     
     @objc private func close() {
-        viewModel?.dismissModal()
+        viewModel?.dismissModal(controller: self)
         genericCardView.triggerRootLinks()
     }
 }

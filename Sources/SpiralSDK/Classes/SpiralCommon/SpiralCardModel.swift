@@ -13,7 +13,7 @@ public enum SpiralPayloadType: String, Codable, Equatable {
     case generic
 }
 
-public struct CardModel: Decodable {
+public struct SpiralCardModel: Decodable {
 
     let payloadType: SpiralPayloadType
     var timestamp: TimeInterval?
@@ -45,7 +45,7 @@ public struct CardModel: Decodable {
     }
 
     // swiftlint:disable:next cyclomatic_complexity
-    private func payload(with values: KeyedDecodingContainer<CardModel.CodingKeys>) throws -> SpiralCardPayloadModel? {
+    private func payload(with values: KeyedDecodingContainer<SpiralCardModel.CodingKeys>) throws -> SpiralCardPayloadModel? {
 
         switch payloadType {
         case .generic:

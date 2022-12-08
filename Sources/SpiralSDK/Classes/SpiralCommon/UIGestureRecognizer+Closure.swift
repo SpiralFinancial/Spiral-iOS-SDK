@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class BindableTapGestureRecognizer: UITapGestureRecognizer {
+final class BindableTapGestureRecognizer: UITapGestureRecognizer {
     private var action: () -> Void
 
     init(action: @escaping () -> Void) {
