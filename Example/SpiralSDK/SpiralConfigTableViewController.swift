@@ -60,7 +60,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         
         Spiral.shared.setup(config: SpiralConfig(mode: .sandbox,
                                                  environment: .staging,
-                                                 clientId: "7469e81c-1b14-4d6c-ae3c-ae60b5e4abb3",
+                                                 clientId: "fabac13c-36df-4407-9f9f-24aa109f5f23",
                                                  customerId: "1133413950162432"))
     }
 
@@ -188,7 +188,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     }
     
     @IBAction func handleGenericModalTap() {
-        Spiral.shared.showModalContent(type: "SR_SUMMARY", delegate: self, success: nil, failure: nil)
+        Spiral.shared.showModalContent(type: "SR_SUMMARY", success: nil, failure: nil, deepLinkHandler: self)
         
 //        guard let cardModel = GenericCardTestFacility.genericCardTestPayloadModel() else { return }
 //
@@ -288,15 +288,13 @@ extension SpiralConfigTableViewController: SpiralDelegate {
     
 }
 
-extension SpiralConfigTableViewController: SpiralGenericCardModalSceneDelegate {
+extension SpiralConfigTableViewController: SpiralDeepLinkHandler {
     
-    func genericCardModalSceneDidRequestDismiss(controller: UIViewController) {
-        controller.dismiss(animated: true)
+//    func genericCardModalSceneDidRequestDismiss(controller: UIViewController) {
+//        controller.dismiss(animated: true)
+//    }
+    
+    func handleDeepLink(_ deepLink: SpiralDeepLink) -> Bool {
+        return false
     }
-    
-    func goToDeepLink(_ deepLink: SpiralDeepLink) {
-        
-    }
-    
-    
 }

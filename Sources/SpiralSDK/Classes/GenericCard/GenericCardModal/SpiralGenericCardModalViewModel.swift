@@ -8,17 +8,17 @@
 
 import Foundation
 
-public protocol SpiralGenericCardModalSceneDelegate: SpiralDeepLinkable {
-    func genericCardModalSceneDidRequestDismiss(controller: UIViewController)
-}
+//public protocol SpiralGenericCardModalSceneDelegate: SpiralDeepLinkHandler {
+//    func genericCardModalSceneDidRequestDismiss(controller: UIViewController)
+//}
 
 class SpiralGenericCardModalViewModel: GenericCardModalViewModelType {
     
-    weak var delegate: SpiralGenericCardModalSceneDelegate?
+    weak var delegate: SpiralDeepLinkHandler?
     var genericCard = Observable<GenericCardDisplayModel>()
     var shouldRefreshLayout = Observable<Bool>(false)
     
-    init(genericCard: SpiralGenericCardPayloadModel, delegate: SpiralGenericCardModalSceneDelegate) {
+    init(genericCard: SpiralGenericCardPayloadModel, delegate: SpiralDeepLinkHandler) {
         self.delegate = delegate
         let displayModal = GenericCardDisplayModel(cardData: genericCard,
                                                    deepLinker: delegate,

@@ -142,7 +142,7 @@ extension UITextViewDelegate {
     func handleTextTapped(fullText: String,
                           characterRange: NSRange,
                           url: URL,
-                          deepLinker: SpiralDeepLinkable) {
+                          deepLinker: SpiralDeepLinkHandler) {
         let urlString = url.urlStringWithoutLocalScheme
         
         if urlString.isValidURL {
@@ -150,10 +150,14 @@ extension UITextViewDelegate {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {
                 let deepLink = SpiralDeepLink(sceneType: .webview, scene: .empty, params: ["page": urlString])
-                deepLinker.goToDeepLink(deepLink)
+//                deepLinker.goToDeepLink(deepLink)
+                SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
+                                                                   priorityHandler: deepLinker)
             }
         } else if let deepLink = SpiralDeepLink(from: urlString) {
-            deepLinker.goToDeepLink(deepLink)
+//            deepLinker.goToDeepLink(deepLink)
+            SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
+                                                               priorityHandler: deepLinker)
         }
         
     }

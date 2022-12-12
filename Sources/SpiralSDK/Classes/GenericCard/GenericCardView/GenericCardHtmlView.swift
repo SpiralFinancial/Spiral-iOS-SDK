@@ -282,10 +282,14 @@ extension GenericCardHtmlView: WKScriptMessageHandler {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 } else {
                     let deepLink = SpiralDeepLink(sceneType: .webview, scene: .empty, params: ["page": urlString])
-                    componentDisplayData?.deepLinker?.goToDeepLink(deepLink)
+//                    componentDisplayData?.deepLinker?.goToDeepLink(deepLink)
+                    SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
+                                                                       priorityHandler: componentDisplayData?.deepLinker)
                 }
             } else if let deepLink = SpiralDeepLink(from: urlString) {
-                componentDisplayData?.deepLinker?.goToDeepLink(deepLink)
+//                componentDisplayData?.deepLinker?.goToDeepLink(deepLink)
+                SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
+                                                                   priorityHandler: componentDisplayData?.deepLinker)
             }
         }
     }

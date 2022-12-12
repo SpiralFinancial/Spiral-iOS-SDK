@@ -95,7 +95,7 @@ public class SpiralGenericCardModalViewController: SpiralBaseViewController {
 
 extension SpiralGenericCardModalViewController {
     public class func create(with genericCard: SpiralGenericCardPayloadModel,
-                      delegate: SpiralGenericCardModalSceneDelegate) -> SpiralGenericCardModalViewController {
+                      delegate: SpiralDeepLinkHandler) -> SpiralGenericCardModalViewController {
         
 //        let bundle = Bundle(for: self)
 //        guard let bundleURL = Bundle(for: self).url(forResource: "Resources", withExtension: "bundle"),

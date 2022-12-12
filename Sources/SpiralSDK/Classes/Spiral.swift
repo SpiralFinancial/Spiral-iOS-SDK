@@ -49,8 +49,9 @@ public class Spiral {
     public func loadInstantImpactCard(into view: UIView,
                                       success: EmptyOptionalClosure,
                                       failure: ((Error?) -> Void)?,
-                                      updateLayout: EmptyOptionalClosure) {
-                
+                                      updateLayout: EmptyOptionalClosure,
+                                      deepLinkHandler: SpiralDeepLinkHandler? = nil) {
+        
         let requestBuilder = CmsAPI.getTypedGenericCardWithRequestBuilder(type: .srSummary)
         requestBuilder.addHeaders(_apiHeaders)
         requestBuilder.execute { result in
@@ -64,7 +65,7 @@ public class Spiral {
                         genericCardView.isHidden = true
                         
                         genericCardView.embed(in: view)
-                        genericCardView.configureWith(GenericCardDisplayModel(cardData: payload, deepLinker: nil, layoutUpdateHandler: { handler in
+                        genericCardView.configureWith(GenericCardDisplayModel(cardData: payload, deepLinker: deepLinkHandler, layoutUpdateHandler: { handler in
                             DispatchQueue.main.async {
                                 updateLayout?()
                             }
@@ -86,10 +87,10 @@ public class Spiral {
     }
     
     public func showModalContent(type: String,
-                                 delegate: SpiralGenericCardModalSceneDelegate,
                                  success: EmptyOptionalClosure,
-                                 failure: ((Error?) -> Void)?) {
-
+                                 failure: ((Error?) -> Void)?,
+                                 deepLinkHandler: SpiralDeepLinkHandler) {
+        
         let requestBuilder = CmsAPI.getTypedGenericCardWithRequestBuilder(type: .srSummary)
         requestBuilder.addHeaders(_apiHeaders)
         requestBuilder.execute { result in
@@ -99,7 +100,7 @@ public class Spiral {
                     if let cardData = response.body.card.value as? GenericCardModel {
                         
                         let payload = SpiralGenericCardPayloadModel(identifier: 0, type: GenericCardType.srSummary.rawValue, data: cardData, isNew: false)
-                        let vc = SpiralGenericCardModalViewController.create(with: payload, delegate: delegate)
+                        let vc = SpiralGenericCardModalViewController.create(with: payload, delegate: deepLinkHandler)
                         UIApplication.topViewController()?.present(vc, animated: true)
                         
                         success?()

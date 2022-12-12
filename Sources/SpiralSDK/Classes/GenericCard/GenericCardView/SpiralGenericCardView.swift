@@ -11,10 +11,10 @@ import UIKit
 
 public struct GenericCardDisplayModel {
     let cardData: SpiralGenericCardPayloadModel
-    weak var deepLinker: SpiralDeepLinkable?
+    weak var deepLinker: SpiralDeepLinkHandler?
     let layoutUpdateHandler: (_ constraintUpdater: @escaping () -> Void) -> Void
     
-    public init(cardData: SpiralGenericCardPayloadModel, deepLinker: SpiralDeepLinkable? = nil, layoutUpdateHandler: @escaping (@escaping () -> Void) -> Void) {
+    public init(cardData: SpiralGenericCardPayloadModel, deepLinker: SpiralDeepLinkHandler? = nil, layoutUpdateHandler: @escaping (@escaping () -> Void) -> Void) {
         self.cardData = cardData
         self.deepLinker = deepLinker
         self.layoutUpdateHandler = layoutUpdateHandler
@@ -23,7 +23,7 @@ public struct GenericCardDisplayModel {
 
 public struct GenericCardComponentDisplayModel {
     let componentModel: SpiralGenericCardComponent
-    weak var deepLinker: SpiralDeepLinkable?
+    weak var deepLinker: SpiralDeepLinkHandler?
     let layoutUpdateHandler: (_ constraintUpdater: @escaping () -> Void) -> Void
 }
 
@@ -121,7 +121,9 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
         
         let tapRecognizer = BindableTapGestureRecognizer(action: { [weak self] in
             guard let deepLinks = self?.deepLinks else { return }
-            self?.componentDisplayData?.deepLinker?.handleDeepLinks(deepLinks)
+//            self?.componentDisplayData?.deepLinker?.handleDeepLinks(deepLinks)
+            SpiralDefaultDeepLinkHandler.shared.handleDeepLinks(deepLinks,
+                                                                priorityHandler: self?.componentDisplayData?.deepLinker)
         })
         
         tapGestureRecognizer = tapRecognizer
@@ -242,7 +244,9 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
         }
         
         let tapRecognizer = BindableTapGestureRecognizer(action: { [weak self] in
-            self?.data?.deepLinker?.goToDeepLink(deepLink)
+//            self?.data?.deepLinker?.goToDeepLink(deepLink)
+            SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
+                                                               priorityHandler: self?.data?.deepLinker)
         })
         tapRecognizer.delegate = self
         tapGestureRecognizer = tapRecognizer
@@ -262,7 +266,9 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
         }
         
         for link in links {
-            self.data?.deepLinker?.goToDeepLink(link)
+//            self.data?.deepLinker?.goToDeepLink(link)
+            SpiralDefaultDeepLinkHandler.shared.handleDeepLink(link,
+                                                               priorityHandler: data?.deepLinker)
         }
     }
     
@@ -275,7 +281,7 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
 
 class GenericCardViewBuilder {
     static func componentViewForModel(componentModel: SpiralGenericCardComponent,
-                                      deepLinker: SpiralDeepLinkable?,
+                                      deepLinker: SpiralDeepLinkHandler?,
                                       layoutUpdateHandler: @escaping (_ constraintUpdater: @escaping () -> Void) -> Void) -> GenericCardComponentView? {
         var componentView: GenericCardComponentView?
         
