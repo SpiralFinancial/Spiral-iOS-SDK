@@ -22,6 +22,8 @@
 		D5F789D725677CF8003E6485 /* ConfigEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F789D625677CF8003E6485 /* ConfigEntryViewController.swift */; };
 		F53B63CF291AF61000A76C5F /* ImpactSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */; };
 		F53B63D0291AF61000A76C5F /* ImpactSummaryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */; };
+		F5A53C1F29490182007B624B /* HowItWorksCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A53C1E29490182007B624B /* HowItWorksCard.swift */; };
+		F5A53C2029490187007B624B /* HowItWorksCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A53C1E29490182007B624B /* HowItWorksCard.swift */; };
 		F5B6C50429252DDE00086C7F /* impactSummaryCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5B6C50329252DDE00086C7F /* impactSummaryCard.json */; };
 		F5B6C50529252DDE00086C7F /* impactSummaryCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5B6C50329252DDE00086C7F /* impactSummaryCard.json */; };
 		F5BD6D702901C18200A5E5CE /* TestModalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */; };
@@ -101,6 +103,7 @@
 		EDF1E1A86E177030EBD5A21E /* Pods-SpiralSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpiralSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-SpiralSDK_Example/Pods-SpiralSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F0459245F3C7850DA8DB35F2 /* SpiralSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SpiralSDK.podspec; path = ../SpiralSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpactSummaryCard.swift; sourceTree = "<group>"; };
+		F5A53C1E29490182007B624B /* HowItWorksCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowItWorksCard.swift; sourceTree = "<group>"; };
 		F5B6C50329252DDE00086C7F /* impactSummaryCard.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = impactSummaryCard.json; sourceTree = "<group>"; };
 		F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestModalCard.swift; sourceTree = "<group>"; };
 		F5BD6D6B2901C18100A5E5CE /* TestHtmlCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHtmlCard.swift; sourceTree = "<group>"; };
@@ -255,6 +258,7 @@
 				F5BD6D6E2901C18100A5E5CE /* testHtmlCard.json */,
 				F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */,
 				F5B6C50329252DDE00086C7F /* impactSummaryCard.json */,
+				F5A53C1E29490182007B624B /* HowItWorksCard.swift */,
 				F5BD6D6F2901C18100A5E5CE /* GenericCardTestFacility.swift */,
 			);
 			path = GenericCardTest;
@@ -497,6 +501,7 @@
 			files = (
 				D5F789D725677CF8003E6485 /* ConfigEntryViewController.swift in Sources */,
 				D5F789CD25675E84003E6485 /* SpiralConfigTableViewController.swift in Sources */,
+				F5A53C2029490187007B624B /* HowItWorksCard.swift in Sources */,
 				F53B63CF291AF61000A76C5F /* ImpactSummaryCard.swift in Sources */,
 				F5BD6D7A2901C18200A5E5CE /* GenericCardTestFacility.swift in Sources */,
 				D50E5BFA26B9F4E200593628 /* EventData.swift in Sources */,
@@ -515,6 +520,7 @@
 			files = (
 				F5BD6D752901C18200A5E5CE /* StJudeCard.swift in Sources */,
 				F5BD6D732901C18200A5E5CE /* TestHtmlCard.swift in Sources */,
+				F5A53C1F29490182007B624B /* HowItWorksCard.swift in Sources */,
 				F5BD6D7B2901C18200A5E5CE /* GenericCardTestFacility.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
 				F53B63D0291AF61000A76C5F /* ImpactSummaryCard.swift in Sources */,

@@ -220,26 +220,77 @@ class SpiralDefaultDeepLinkHandler: SpiralDeepLinkHandler {
     static let shared = SpiralDefaultDeepLinkHandler()
         
     func handleDeepLink(_ deepLink: SpiralDeepLink) -> Bool {
-        let sceneType = ActionsCoordinatorSceneType(rawValue: deepLink.scene)
+        
+        let sceneType = deepLink.sceneType
         
         switch sceneType {
+        case .webview:
+            showWebView(from: deepLink)
+        case .actions:
+            handleActionsScene(deepLink: deepLink)
+        case .unknown:
+            _ = ""
+        }
+        
+        return true
+    }
+    
+    func handleActionsScene(deepLink: SpiralDeepLink) {
+        let scene = ActionsSceneType(rawValue: deepLink.scene)
+        
+        switch scene {
         case .showModal:
             if let modalType = deepLink.stringParamForKey("type") {
                 showModal(type: modalType)
             }
         case .none:
             _ = ""
-//            handleDeepLinkNotFound()
         }
-        
-        return true
     }
     
     func showModal(type: String) {
         Spiral.shared.showModalContent(type: type, success: nil, failure: nil, deepLinkHandler: self)
     }
+    
+    private func showWebView(from deepLink: SpiralDeepLink) {
+        var isExternal = false
+        var url: String?
+        
+        if let style = deepLink.stringParamForKey("style") {
+            isExternal = style == "external"
+        }
+        
+        if let page = deepLink.stringParamForKey("page") {
+            url = page
+        } else if let urlStr = deepLink.stringParamForKey("url") {
+            url = urlStr
+        }
+        
+        guard let url = url else { return }
+        
+        // Don't show in an in-app webview, open externally
+        if isExternal {
+            guard let link = URL(string: url) else { return}
+            if UIApplication.shared.canOpenURL(link) {
+                UIApplication.shared.open(link, options: [:], completionHandler: nil)
+            }
+        } else {
+            showWebView(with: url)
+        }
+    }
+    
+    private func showWebView(with url: String) {
+        if let topVC = UIApplication.topViewController() {
+            
+            if let nav = topVC.navigationController {
+                let webViewScene = SpiralWebViewViewController.createScene(url: url)
+                nav.pushViewController(webViewScene, animated: true)
+            } else {
+                let webViewScene = SpiralWebViewViewController.createScene(url: url, sceneTitle: .empty)
+                let navigation = SpiralWhiteNavigationController(rootViewController: webViewScene)
+                navigation.modalPresentationStyle = .fullScreen
+                topVC.present(navigation, animated: true)
+            }
+        }
+    }
 }
-
-//protocol DeepLinkRequestHandler {
-//    func execute(from deepLink: SpiralDeepLink)
-//}

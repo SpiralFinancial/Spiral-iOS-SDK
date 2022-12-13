@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ActionsCoordinatorSceneType: String {
+enum ActionsSceneType: String {
     case showModal
 }
 
@@ -27,7 +27,7 @@ class ActionsCoordinator: SpiralCoordinator {
     }
     
     func start(with deepLink: SpiralDeepLink) {
-        let sceneType = ActionsCoordinatorSceneType(rawValue: deepLink.scene)
+        let sceneType = ActionsSceneType(rawValue: deepLink.scene)
         
         switch sceneType {
         case .showModal:

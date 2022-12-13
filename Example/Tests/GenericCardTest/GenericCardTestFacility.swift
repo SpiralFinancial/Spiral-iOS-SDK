@@ -20,6 +20,7 @@ enum GenericCardTestModelType: String {
     case testModalCard
     case testHtmlCard
     case impactSummaryCard
+    case howItWorksCard
 }
 
 // swiftlint:disable all
@@ -35,7 +36,7 @@ class GenericCardTestFacility {
     }
 
     static var testCardToDisplay: GenericCardTestModelType {
-        return .impactSummaryCard
+        return .howItWorksCard
     }
 
     static var shouldReadFromJSON: Bool {
@@ -76,6 +77,8 @@ class GenericCardTestFacility {
             card = TestHtmlCard()
         case .impactSummaryCard:
             card = ImpactSummaryCard()
+        case .howItWorksCard:
+            card = HowItWorksCard()
         }
 
         if let json = jsonValueForTestCard(model: card?.cardModel) {
