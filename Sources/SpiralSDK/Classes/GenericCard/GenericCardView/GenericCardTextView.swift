@@ -149,7 +149,8 @@ extension UITextViewDelegate {
             if urlString.starts(with: "mailto:") {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {
-                let deepLink = SpiralDeepLink(sceneType: .webview, scene: .empty, params: ["page": urlString])
+//                let deepLink = SpiralDeepLink(sceneType: .webview, scene: .empty, params: ["page": urlString])
+                guard let deepLink = SpiralDeepLink(from: "/webview?page=" + urlString) else { return }
 //                deepLinker.goToDeepLink(deepLink)
                 SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
                                                                    priorityHandler: deepLinker)

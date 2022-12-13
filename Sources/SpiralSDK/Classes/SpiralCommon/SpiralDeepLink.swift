@@ -9,20 +9,23 @@ import Foundation
 
 public class SpiralDeepLink {
     
+    let path: String
     let sceneType: SceneType
     let scene: String
     let params: [String: Any]
     
-    init(sceneType: SceneType, scene: String, params: [String: Any] = [String: Any]()) {
-        self.sceneType = sceneType
-        self.scene = scene
-        self.params = params
-    }
+//    init(sceneType: SceneType, scene: String, params: [String: Any] = [String: Any]()) {
+//        self.sceneType = sceneType
+//        self.scene = scene
+//        self.params = params
+//    }
     
     init?(from path: String) {
         
         let path = path.starts(with: "/") ? String(path.suffix(from: path.index(after: path.startIndex))) : path
         guard let url = URL(string: path) else { return nil }
+        
+        self.path = path
         
         let components = url.pathComponents
         
@@ -34,12 +37,10 @@ public class SpiralDeepLink {
             params[item.name] = item.value
         })
         
-        let type = SceneType(rawValue: components.first ?? .empty)
+        let type = SceneType(rawValue: components.first ?? .empty) ?? .unknown
         let sceneString = components.last ?? .empty
-        
-        let sceneType = type ?? .actions
-        
-        self.sceneType = sceneType
+                
+        self.sceneType = type
         self.scene = sceneString
         self.params = params
     }
@@ -85,6 +86,7 @@ public class SpiralDeepLink {
 enum SceneType: String {
     case webview
     case actions
+    case unknown
     
 //    var coordinatorType: SpiralDeepLinkable.Type {
 //        switch self {
