@@ -43,12 +43,12 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     let st = SpiralToken()
     var selected: Int = 0
     
-    var didDisplayImpactCard = false
+    weak var currentlyLoadedImpactCard: UIView? = nil
     
     private var events = Array<EventData>()
 
     @objc func refresh() {
-        didDisplayImpactCard = false
+        currentlyLoadedImpactCard = nil
         tableView.reloadData()
         tableView.refreshControl?.endRefreshing()
     }
@@ -75,7 +75,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         // #warning Incomplete implementation, return the number of rows
         switch section {
         case SectionIndex.config.rawValue: return data.count
-        case SectionIndex.buttons.rawValue: return 3
+        case SectionIndex.buttons.rawValue: return 5
         case SectionIndex.impact.rawValue: return 1
         default:
             return 0
@@ -105,16 +105,16 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         if indexPath.section == SectionIndex.impact.rawValue {
             let impactCell = tableView.dequeueReusableCell(withIdentifier: "impactCell", for: indexPath)
             
-            if !didDisplayImpactCard {
+            if currentlyLoadedImpactCard == nil {
                 impactCell.contentView.subviews.forEach { $0.removeFromSuperview() }
-                Spiral.shared.loadInstantImpactCard(into: impactCell.contentView) {
+                Spiral.shared.loadInstantImpactCard(into: impactCell.contentView) { impactView in
                     // Instantaneous vs. animated display
                     // tableView.reloadData()
                     
                     self.tableView.beginUpdates()
                     self.tableView.endUpdates()
                     
-                    self.didDisplayImpactCard = true
+                    self.currentlyLoadedImpactCard = impactView
                     
                 } failure: { error in
                     print("failure: " + (error?.localizedDescription ?? ""))
@@ -166,7 +166,8 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         }
     }
     
-    @IBAction func handleFetchTap() {
+    @IBAction func handleDonationTap() {
+        /*
         var spiralTokenAttributes = SpiralTokenAttributes()
 
         for cf in data {
@@ -179,12 +180,22 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
             default:
                 print("Missing case for label: \(cf.label), value: \(cf.value)")
             }
-        }
+        } */
 
         // TODO: bring back
 //        st.fetchTokenWithAttributes(spiralTokenAttributes)
         
-        onComplete(spiralToken: "some_token")
+//        onComplete(spiralToken: "some_token")
+        
+        Spiral.shared.startDonationFlow(delegate: self)
+    }
+    
+    @IBAction func handleCustomerSettingsTap() {
+        Spiral.shared.startCustomerSettingsFlow(delegate: self)
+    }
+    
+    @IBAction func handleGivingCenterTap() {
+        Spiral.shared.startGivingCenterFlow(delegate: self)
     }
     
     @IBAction func handleGenericModalTap() {
@@ -237,7 +248,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
 
 extension SpiralConfigTableViewController: SpiralTokenDelegate {
     func onComplete(spiralToken: String) {
-        Spiral.shared.startDonationFlow(token: spiralToken, delegate: self)
+        Spiral.shared.startDonationFlow(delegate: self)
     }
 }
 
@@ -279,7 +290,7 @@ extension SpiralConfigTableViewController: SpiralDelegate {
     }
     
     func onError(_ error: SpiralError) {
-        print("onError")
+        print("onError: " + error.message)
     }
     
     func onSuccess(_ result: SpiralSuccessPayload) {

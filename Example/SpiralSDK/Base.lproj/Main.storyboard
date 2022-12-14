@@ -146,7 +146,7 @@
                                             <rect key="frame" x="23.5" y="7" width="367" height="30"/>
                                             <state key="normal" title="Start Donation Flow"/>
                                             <connections>
-                                                <action selector="handleFetchTap" destination="g4a-YX-SBb" eventType="touchUpInside" id="6cJ-lv-Krc"/>
+                                                <action selector="handleDonationTap" destination="g4a-YX-SBb" eventType="touchUpInside" id="3k4-qK-cZp"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -158,8 +158,54 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="button-1" id="OFV-Ft-6Hh" userLabel="button-1">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="button-1" id="MqH-Fq-Qmg" userLabel="button-1">
                                 <rect key="frame" x="0.0" y="132" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MqH-Fq-Qmg" id="5jP-ah-eMw">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uAs-IL-ifA">
+                                            <rect key="frame" x="23.5" y="7" width="367" height="30"/>
+                                            <state key="normal" title="Show Customer Settings"/>
+                                            <connections>
+                                                <action selector="handleCustomerSettingsTap" destination="g4a-YX-SBb" eventType="touchUpInside" id="l8d-kB-vzr"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="uAs-IL-ifA" firstAttribute="width" secondItem="5jP-ah-eMw" secondAttribute="width" multiplier="0.885333" id="6Jo-q0-ZsW"/>
+                                        <constraint firstItem="uAs-IL-ifA" firstAttribute="centerY" secondItem="5jP-ah-eMw" secondAttribute="centerY" id="OZr-Ef-syS"/>
+                                        <constraint firstItem="uAs-IL-ifA" firstAttribute="centerX" secondItem="5jP-ah-eMw" secondAttribute="centerX" id="UnI-b2-ylY"/>
+                                        <constraint firstItem="uAs-IL-ifA" firstAttribute="height" secondItem="5jP-ah-eMw" secondAttribute="height" multiplier="0.689655" id="oJl-S3-rM0"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="button-2" id="JYE-94-Gq1" userLabel="button-2">
+                                <rect key="frame" x="0.0" y="176" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JYE-94-Gq1" id="LMK-NG-Ymd">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FXp-sz-tmQ">
+                                            <rect key="frame" x="23.5" y="7" width="367" height="30"/>
+                                            <state key="normal" title="Show Giving Center"/>
+                                            <connections>
+                                                <action selector="handleGivingCenterTap" destination="g4a-YX-SBb" eventType="touchUpInside" id="SbH-po-YIQ"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="FXp-sz-tmQ" firstAttribute="centerX" secondItem="LMK-NG-Ymd" secondAttribute="centerX" id="6cp-Lp-mxv"/>
+                                        <constraint firstItem="FXp-sz-tmQ" firstAttribute="height" secondItem="LMK-NG-Ymd" secondAttribute="height" multiplier="0.689655" id="fAh-4o-5z4"/>
+                                        <constraint firstItem="FXp-sz-tmQ" firstAttribute="centerY" secondItem="LMK-NG-Ymd" secondAttribute="centerY" id="kzC-jN-Hcg"/>
+                                        <constraint firstItem="FXp-sz-tmQ" firstAttribute="width" secondItem="LMK-NG-Ymd" secondAttribute="width" multiplier="0.885333" id="s70-3e-0Qp"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="button-3" id="OFV-Ft-6Hh" userLabel="button-3">
+                                <rect key="frame" x="0.0" y="220" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OFV-Ft-6Hh" id="hAq-Xo-7j2">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
@@ -181,8 +227,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="button-2" id="YCM-tS-gIz" userLabel="button-2">
-                                <rect key="frame" x="0.0" y="176" width="414" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="button-4" id="YCM-tS-gIz" userLabel="button-4">
+                                <rect key="frame" x="0.0" y="264" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="YCM-tS-gIz" id="XAn-Du-nMb">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
@@ -205,7 +251,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="impactCell" id="hKc-BF-yLa">
-                                <rect key="frame" x="0.0" y="220" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="308" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hKc-BF-yLa" id="qeR-ni-Qoo">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>

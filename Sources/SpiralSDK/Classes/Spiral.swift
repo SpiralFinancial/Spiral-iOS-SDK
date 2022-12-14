@@ -11,9 +11,9 @@ public class Spiral {
     
     public static let shared = Spiral()
     
-    private var _donationViewController: SpiralViewController?
+    // TODO: implement auth
+    private var _token: String? = "abc"
     
-    private var _token: String?
     private var _config: SpiralConfig?
     
     private var _apiHeaders: [String: String] {
@@ -30,24 +30,39 @@ public class Spiral {
         return _config
     }
     
-    public func startDonationFlow(token: String, delegate: SpiralDelegate) {
-        guard let _config = _config else {
-            print("Spiral: missing config. Please call Spiral.shared.setup() before starting the donation flow.")
+    public func startDonationFlow(delegate: SpiralDelegate) {
+        startFlow(flow: .donation, delegate: delegate)
+    }
+    
+    public func startCustomerSettingsFlow(delegate: SpiralDelegate) {
+        startFlow(flow: .customerSettings, delegate: delegate)
+    }
+    
+    public func startGivingCenterFlow(delegate: SpiralDelegate) {
+        startFlow(flow: .givingCenter, delegate: delegate)
+    }
+    
+    private var _currentFlowController: SpiralViewController?
+    
+    private func startFlow(flow: SpiralFlow, delegate: SpiralDelegate) {
+        guard _token != nil, _config != nil else {
+            print("Spiral: missing config. Please call Spiral.shared.setup() before starting this flow.")
             return
         }
         
-        _token = token
-        _donationViewController = SpiralViewController(token: token, delegate: delegate, config: _config, onExit: { [weak self] in
-            self?._donationViewController = nil
+        _currentFlowController = SpiralViewController(flow: flow, delegate: delegate, onExit: { [weak self] in
+            self?._currentFlowController = nil
         })
     }
     
     public func setup(config: SpiralConfig) {
         _config = config
+        
+        // TODO: load token
     }
     
     public func loadInstantImpactCard(into view: UIView,
-                                      success: EmptyOptionalClosure,
+                                      success: ((UIView) -> Void)?,
                                       failure: ((Error?) -> Void)?,
                                       updateLayout: EmptyOptionalClosure,
                                       deepLinkHandler: SpiralDeepLinkHandler? = nil) {
@@ -74,7 +89,7 @@ public class Spiral {
                         
                         genericCardView.isHidden = false
                                                 
-                        success?()
+                        success?(genericCardView)
                     } else {
                         failure?(nil)
                     }
@@ -161,6 +176,23 @@ public enum SpiralEnvironment {
     case production
 }
 
+public enum SpiralFlow {
+    case donation
+    case customerSettings
+    case givingCenter
+    
+    var url: String {
+        switch self {
+        case .donation:
+            return (Spiral.shared.config()?.baseUrl ?? .empty) + "v0.0.1/apps/donate/index.html"
+        case .customerSettings:
+            return (Spiral.shared.config()?.baseUrl ?? .empty) + "v0.0.1/apps/customerSettings/index.html"
+        case .givingCenter:
+            return (Spiral.shared.config()?.baseUrl ?? .empty) + "v0.0.1/apps/givingCenter/index.html"
+        }
+    }
+}
+
 extension SpiralEnvironment {
     public init(value: String) {
         if value == "local" {
@@ -212,16 +244,16 @@ public struct SpiralConfig {
     
     public let clientId: String
     public let customerId: String
-    
-    public var url: String {
+        
+    public var baseUrl: String {
         get {
             switch environment {
             case .local(let _url):
                 return _url
             case .staging:
-                return "https://integration-sdk.spiral.us/v0.0.1/apps/donate/index.html"
+                return "https://integration-sdk.spiral.us/"
             case .production:
-                return "https://cdn.getspiral.com/link-v2.3.0.html"
+                return "https://sdk.spiral.us/"
             }
         }
     }

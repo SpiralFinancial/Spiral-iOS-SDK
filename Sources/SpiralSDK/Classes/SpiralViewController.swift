@@ -26,17 +26,17 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     var webView: WKWebView!
     weak var delegate: SpiralDelegate?
     private var token: String
-    private var config: SpiralConfig
+    private var flow: SpiralFlow
     private var url: String {
-        return config.url
+        return flow.url
     }
     
     private var onExit: (() -> Void)?
     
-    public init(token: String, delegate: SpiralDelegate, config: SpiralConfig, onExit: ( () -> Void)? = nil ) {
+    public init(flow: SpiralFlow, delegate: SpiralDelegate, onExit: ( () -> Void)? = nil ) {
         self.delegate = delegate
-        self.token = token
-        self.config = config
+        self.token = Spiral.shared.token() ?? .empty
+        self.flow = flow
         self.onExit = onExit
         super.init(nibName: nil, bundle: nil)
         
@@ -162,7 +162,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     }
     
     private func getScript(token: String) -> String {
-        var versionString = "2.3.13"
+        var versionString = "1.0.0"
         if let bundleVersion = Bundle(identifier: "org.cocoapods.SpiralSDK")?.infoDictionary?["CFBundleShortVersionString"] as? String {
             print(bundleVersion)
             versionString = bundleVersion
