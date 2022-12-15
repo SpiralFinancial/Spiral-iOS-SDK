@@ -14,14 +14,14 @@ import Foundation
 
 class SpiralGenericCardModalViewModel: GenericCardModalViewModelType {
     
-    weak var delegate: SpiralDeepLinkHandler?
+    weak var delegate: SpiralDelegate?
     var genericCard = Observable<GenericCardDisplayModel>()
     var shouldRefreshLayout = Observable<Bool>(false)
     
-    init(genericCard: SpiralGenericCardPayloadModel, delegate: SpiralDeepLinkHandler) {
+    init(genericCard: SpiralGenericCardPayloadModel, delegate: SpiralDelegate) {
         self.delegate = delegate
         let displayModal = GenericCardDisplayModel(cardData: genericCard,
-                                                   deepLinker: delegate,
+                                                   delegate: delegate,
                                                    layoutUpdateHandler: { [weak self] constraintUpdater in
             constraintUpdater()
             self?.shouldRefreshLayout.value = true

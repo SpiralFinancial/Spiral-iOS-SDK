@@ -95,7 +95,7 @@ class GenericCardButtonView: GenericCardComponentView {
             guard let deepLinks = self?.deepLinks else { return }
 //            self?.componentDisplayData?.deepLinker?.handleDeepLinks(deepLinks)
             SpiralDefaultDeepLinkHandler.shared.handleDeepLinks(deepLinks,
-                                                                priorityHandler: self?.componentDisplayData?.deepLinker)
+                                                                priorityHandler: self?.componentDisplayData?.delegate)
         }
     }
     

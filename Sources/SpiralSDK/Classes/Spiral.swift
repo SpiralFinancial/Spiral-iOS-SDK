@@ -44,7 +44,7 @@ public class Spiral {
     
     private var _currentFlowController: SpiralViewController?
     
-    private func startFlow(flow: SpiralFlow, delegate: SpiralDelegate) {
+    func startFlow(flow: SpiralFlow, delegate: SpiralDelegate) {
         guard _token != nil, _config != nil else {
             print("Spiral: missing config. Please call Spiral.shared.setup() before starting this flow.")
             return
@@ -65,7 +65,7 @@ public class Spiral {
                                       success: ((UIView) -> Void)?,
                                       failure: ((Error?) -> Void)?,
                                       updateLayout: EmptyOptionalClosure,
-                                      deepLinkHandler: SpiralDeepLinkHandler? = nil) {
+                                      delegate: SpiralDelegate? = nil) {
         
         let requestBuilder = CmsAPI.getTypedGenericCardWithRequestBuilder(type: .srSummary)
         requestBuilder.addHeaders(_apiHeaders)
@@ -80,7 +80,9 @@ public class Spiral {
                         genericCardView.isHidden = true
                         
                         genericCardView.embed(in: view)
-                        genericCardView.configureWith(GenericCardDisplayModel(cardData: payload, deepLinker: deepLinkHandler, layoutUpdateHandler: { handler in
+                        genericCardView.configureWith(GenericCardDisplayModel(cardData: payload,
+                                                                              delegate: delegate,
+                                                                              layoutUpdateHandler: { handler in
                             DispatchQueue.main.async {
                                 updateLayout?()
                             }
@@ -104,7 +106,7 @@ public class Spiral {
     public func showModalContent(type: String,
                                  success: EmptyOptionalClosure,
                                  failure: ((Error?) -> Void)?,
-                                 deepLinkHandler: SpiralDeepLinkHandler) {
+                                 delegate: SpiralDelegate) {
         
         let requestBuilder = CmsAPI.getTypedGenericCardWithRequestBuilder(type: .srSummary)
         requestBuilder.addHeaders(_apiHeaders)
@@ -115,7 +117,7 @@ public class Spiral {
                     if let cardData = response.body.card.value as? GenericCardModel {
                         
                         let payload = SpiralGenericCardPayloadModel(identifier: 0, type: GenericCardType.srSummary.rawValue, data: cardData, isNew: false)
-                        let vc = SpiralGenericCardModalViewController.create(with: payload, delegate: deepLinkHandler)
+                        let vc = SpiralGenericCardModalViewController.create(with: payload, delegate: delegate)
                         UIApplication.topViewController()?.present(vc, animated: true)
                         
                         success?()
@@ -147,7 +149,7 @@ public class Spiral {
     
 }
 
-public protocol SpiralDelegate: AnyObject {
+public protocol SpiralDelegate: SpiralDeepLinkHandler {
     func onEvent(name: SpiralEventType, event: SpiralEventPayload?)
     func onReady(controller: SpiralViewController)
     func onExit(_ error: SpiralError?)
@@ -176,7 +178,7 @@ public enum SpiralEnvironment {
     case production
 }
 
-public enum SpiralFlow {
+public enum SpiralFlow: String {
     case donation
     case customerSettings
     case givingCenter

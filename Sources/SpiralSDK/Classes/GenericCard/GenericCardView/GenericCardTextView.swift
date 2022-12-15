@@ -120,12 +120,12 @@ extension GenericCardTextView: UITextViewDelegate {
                   in characterRange: NSRange,
                   interaction: UITextItemInteraction) -> Bool {
         
-        guard let deepLinker = componentDisplayData?.deepLinker else { return false }
+        guard let delegate = componentDisplayData?.delegate else { return false }
         
         handleTextTapped(fullText: textView.text,
                          characterRange: characterRange,
                          url: URL,
-                         deepLinker: deepLinker)
+                         delegate: delegate)
         
         return false
     }
@@ -142,7 +142,7 @@ extension UITextViewDelegate {
     func handleTextTapped(fullText: String,
                           characterRange: NSRange,
                           url: URL,
-                          deepLinker: SpiralDeepLinkHandler) {
+                          delegate: SpiralDelegate) {
         let urlString = url.urlStringWithoutLocalScheme
         
         if urlString.isValidURL {
@@ -153,12 +153,12 @@ extension UITextViewDelegate {
                 guard let deepLink = SpiralDeepLink(from: "/webview?page=" + urlString) else { return }
 //                deepLinker.goToDeepLink(deepLink)
                 SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
-                                                                   priorityHandler: deepLinker)
+                                                                   priorityHandler: delegate)
             }
         } else if let deepLink = SpiralDeepLink(from: urlString) {
 //            deepLinker.goToDeepLink(deepLink)
             SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
-                                                               priorityHandler: deepLinker)
+                                                               priorityHandler: delegate)
         }
         
     }

@@ -45,6 +45,13 @@ public class SpiralDeepLink {
         self.params = params
     }
     
+    private init(path: String, sceneType: SceneType, scene: String, params: [String: Any]) {
+        self.path = path
+        self.sceneType = sceneType
+        self.scene = scene
+        self.params = params
+    }
+    
     func stringParamForKey(_ key: String) -> String? {
         return params[key] as? String
     }
@@ -81,9 +88,14 @@ public class SpiralDeepLink {
     static func == (lhs: SpiralDeepLink, rhs: SpiralDeepLink) -> Bool {
         return lhs.sceneType == rhs.sceneType && lhs.scene == rhs.scene
     }
+    
+    public func copy(with params: [String: Any]) -> SpiralDeepLink {
+        SpiralDeepLink(path: path, sceneType: sceneType, scene: scene, params: params)
+    }
 }
 
 enum SceneType: String {
+    case flow
     case webview
     case actions
     case unknown
@@ -106,6 +118,12 @@ enum SceneType: String {
 
 public protocol SpiralDeepLinkHandler: AnyObject {
     @discardableResult func handleDeepLink(_ deepLink: SpiralDeepLink) -> Bool
+}
+
+public extension SpiralDeepLinkHandler {
+    @discardableResult func handleDeepLink(_ deepLink: SpiralDeepLink) -> Bool {
+        return false
+    }
 }
 
 //public struct DeepLinkListener {
@@ -164,13 +182,21 @@ extension SpiralDeepLinkHandler {
         return deepLink.scene == "dismiss"
     }
     
-    @discardableResult func handleDeepLink(_ deepLink: SpiralDeepLink, priorityHandler: SpiralDeepLinkHandler?) -> Bool {
+    @discardableResult func handleDeepLink(_ deepLink: SpiralDeepLink, priorityHandler: SpiralDelegate?) -> Bool {
         guard priorityHandler?.handleDeepLink(deepLink) ?? false == false else { return true }
-                    
+            
+        var deepLink = deepLink
+        if let delegate = priorityHandler,
+           deepLink.params["delegate"] == nil {
+            var params = deepLink.params
+            params["delegate"] = delegate
+            deepLink = deepLink.copy(with: params)
+        }
+        
         return handleDeepLink(deepLink)
     }
     
-    func handleDeepLinks(_ deepLinks: [SpiralDeepLink], priorityHandler: SpiralDeepLinkHandler? = nil) {
+    func handleDeepLinks(_ deepLinks: [SpiralDeepLink], priorityHandler: SpiralDelegate? = nil) {
         var links = [SpiralDeepLink]()
         var linksAfterDismiss = [SpiralDeepLink]()
         var didEncounterDismiss = false
@@ -224,6 +250,8 @@ class SpiralDefaultDeepLinkHandler: SpiralDeepLinkHandler {
         let sceneType = deepLink.sceneType
         
         switch sceneType {
+        case .flow:
+            startFlow(from: deepLink)
         case .webview:
             showWebView(from: deepLink)
         case .actions:
@@ -235,21 +263,30 @@ class SpiralDefaultDeepLinkHandler: SpiralDeepLinkHandler {
         return true
     }
     
+    func startFlow(from deepLink: SpiralDeepLink) {
+        guard let type = deepLink.stringParamForKey("type"),
+              let flow = SpiralFlow(rawValue: type),
+              let delegate = deepLink.params["delegate"] as? SpiralDelegate else { return }
+        
+        Spiral.shared.startFlow(flow: flow, delegate: delegate)
+    }
+    
     func handleActionsScene(deepLink: SpiralDeepLink) {
         let scene = ActionsSceneType(rawValue: deepLink.scene)
         
         switch scene {
         case .showModal:
-            if let modalType = deepLink.stringParamForKey("type") {
-                showModal(type: modalType)
+            if let modalType = deepLink.stringParamForKey("type"),
+               let delegate = deepLink.params["delegate"] as? SpiralDelegate {
+                showModal(type: modalType, delegate: delegate)
             }
         case .none:
             _ = ""
         }
     }
     
-    func showModal(type: String) {
-        Spiral.shared.showModalContent(type: type, success: nil, failure: nil, deepLinkHandler: self)
+    func showModal(type: String, delegate: SpiralDelegate) {
+        Spiral.shared.showModalContent(type: type, success: nil, failure: nil, delegate: delegate)
     }
     
     private func showWebView(from deepLink: SpiralDeepLink) {

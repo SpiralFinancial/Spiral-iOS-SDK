@@ -63,7 +63,7 @@ class ActionsCoordinator: SpiralCoordinator {
     }
 }
 
-extension ActionsCoordinator: SpiralDeepLinkHandler {
+extension ActionsCoordinator: SpiralDelegate {
     func handleDeepLink(_ deepLink: SpiralDeepLink) -> Bool {
         return deepLinkHandler.handleDeepLink(deepLink)
     }

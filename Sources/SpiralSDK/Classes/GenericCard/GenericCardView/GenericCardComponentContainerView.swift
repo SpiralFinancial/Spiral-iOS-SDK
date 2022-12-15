@@ -34,7 +34,7 @@ class GenericCardComponentContainerView: GenericCardComponentView {
         containerComponentData.children?.forEach {
             if let componentView =
                 GenericCardViewBuilder.componentViewForModel(componentModel: $0,
-                                                             deepLinker: data.deepLinker,
+                                                             delegate: data.delegate,
                                                              layoutUpdateHandler: data.layoutUpdateHandler) {
                 childrenComponentViews.append(componentView)
                 stackView.addArrangedSubview(componentView)

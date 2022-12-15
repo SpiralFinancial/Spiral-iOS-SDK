@@ -95,7 +95,7 @@ public class SpiralGenericCardModalViewController: SpiralBaseViewController {
 
 extension SpiralGenericCardModalViewController {
     public class func create(with genericCard: SpiralGenericCardPayloadModel,
-                      delegate: SpiralDeepLinkHandler) -> SpiralGenericCardModalViewController {
+                      delegate: SpiralDelegate) -> SpiralGenericCardModalViewController {
         
 //        let bundle = Bundle(for: self)
 //        guard let bundleURL = Bundle(for: self).url(forResource: "Resources", withExtension: "bundle"),
@@ -110,7 +110,7 @@ extension SpiralGenericCardModalViewController {
         vc.modalTransitionStyle = .crossDissolve
         
         let vm = SpiralGenericCardModalViewModel(genericCard: genericCard,
-                                           delegate: delegate)
+                                                 delegate: delegate)
         vc.viewModel = vm
         
         return vc

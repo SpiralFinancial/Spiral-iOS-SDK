@@ -11,19 +11,21 @@ import UIKit
 
 public struct GenericCardDisplayModel {
     let cardData: SpiralGenericCardPayloadModel
-    weak var deepLinker: SpiralDeepLinkHandler?
+    weak var delegate: SpiralDelegate?
     let layoutUpdateHandler: (_ constraintUpdater: @escaping () -> Void) -> Void
     
-    public init(cardData: SpiralGenericCardPayloadModel, deepLinker: SpiralDeepLinkHandler? = nil, layoutUpdateHandler: @escaping (@escaping () -> Void) -> Void) {
+    public init(cardData: SpiralGenericCardPayloadModel,
+                delegate: SpiralDelegate? = nil,
+                layoutUpdateHandler: @escaping (@escaping () -> Void) -> Void) {
         self.cardData = cardData
-        self.deepLinker = deepLinker
+        self.delegate = delegate
         self.layoutUpdateHandler = layoutUpdateHandler
     }
 }
 
 public struct GenericCardComponentDisplayModel {
     let componentModel: SpiralGenericCardComponent
-    weak var deepLinker: SpiralDeepLinkHandler?
+    weak var delegate: SpiralDelegate?
     let layoutUpdateHandler: (_ constraintUpdater: @escaping () -> Void) -> Void
 }
 
@@ -123,7 +125,7 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
             guard let deepLinks = self?.deepLinks else { return }
 //            self?.componentDisplayData?.deepLinker?.handleDeepLinks(deepLinks)
             SpiralDefaultDeepLinkHandler.shared.handleDeepLinks(deepLinks,
-                                                                priorityHandler: self?.componentDisplayData?.deepLinker)
+                                                                priorityHandler: self?.componentDisplayData?.delegate)
         })
         
         tapGestureRecognizer = tapRecognizer
@@ -222,7 +224,7 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
 
         if let rootView =
             GenericCardViewBuilder.componentViewForModel(componentModel: rootModel,
-                                                         deepLinker: data.deepLinker,
+                                                         delegate: data.delegate,
                                                          layoutUpdateHandler: data.layoutUpdateHandler) {
             rootView.embed(in: containerView)
             rootView.frame.size.width = containerView.frame.size.width
@@ -246,7 +248,7 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
         let tapRecognizer = BindableTapGestureRecognizer(action: { [weak self] in
 //            self?.data?.deepLinker?.goToDeepLink(deepLink)
             SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
-                                                               priorityHandler: self?.data?.deepLinker)
+                                                               priorityHandler: self?.data?.delegate)
         })
         tapRecognizer.delegate = self
         tapGestureRecognizer = tapRecognizer
@@ -268,7 +270,7 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
         for link in links {
 //            self.data?.deepLinker?.goToDeepLink(link)
             SpiralDefaultDeepLinkHandler.shared.handleDeepLink(link,
-                                                               priorityHandler: data?.deepLinker)
+                                                               priorityHandler: data?.delegate)
         }
     }
     
@@ -281,7 +283,7 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
 
 class GenericCardViewBuilder {
     static func componentViewForModel(componentModel: SpiralGenericCardComponent,
-                                      deepLinker: SpiralDeepLinkHandler?,
+                                      delegate: SpiralDelegate?,
                                       layoutUpdateHandler: @escaping (_ constraintUpdater: @escaping () -> Void) -> Void) -> GenericCardComponentView? {
         var componentView: GenericCardComponentView?
         
@@ -302,7 +304,7 @@ class GenericCardViewBuilder {
         }
         
         let componentDisplayModel = GenericCardComponentDisplayModel(componentModel: componentModel,
-                                                                     deepLinker: deepLinker,
+                                                                     delegate: delegate,
                                                                      layoutUpdateHandler: layoutUpdateHandler)
         
         componentView?.componentDisplayData = componentDisplayModel

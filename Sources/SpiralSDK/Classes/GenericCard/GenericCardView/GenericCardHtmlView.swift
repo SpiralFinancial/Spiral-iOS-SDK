@@ -285,12 +285,12 @@ extension GenericCardHtmlView: WKScriptMessageHandler {
                     guard let deepLink = SpiralDeepLink(from: "/webview?page=" + urlString) else { return }
 //                    componentDisplayData?.deepLinker?.goToDeepLink(deepLink)
                     SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
-                                                                       priorityHandler: componentDisplayData?.deepLinker)
+                                                                       priorityHandler: componentDisplayData?.delegate)
                 }
             } else if let deepLink = SpiralDeepLink(from: urlString) {
 //                componentDisplayData?.deepLinker?.goToDeepLink(deepLink)
                 SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
-                                                                   priorityHandler: componentDisplayData?.deepLinker)
+                                                                   priorityHandler: componentDisplayData?.delegate)
             }
         }
     }
