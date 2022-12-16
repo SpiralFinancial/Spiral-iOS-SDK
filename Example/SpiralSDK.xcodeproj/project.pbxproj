@@ -26,6 +26,8 @@
 		F59D25C1294A5DA1004ECEFB /* OptInCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59D25BF294A5DA1004ECEFB /* OptInCard.swift */; };
 		F5A53C1F29490182007B624B /* HowItWorksCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A53C1E29490182007B624B /* HowItWorksCard.swift */; };
 		F5A53C2029490187007B624B /* HowItWorksCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A53C1E29490182007B624B /* HowItWorksCard.swift */; };
+		F5B0D09E294BE65500B5B933 /* howItWorksCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5B0D09D294BE65500B5B933 /* howItWorksCard.json */; };
+		F5B0D09F294BE65500B5B933 /* howItWorksCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5B0D09D294BE65500B5B933 /* howItWorksCard.json */; };
 		F5B6C50429252DDE00086C7F /* impactSummaryCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5B6C50329252DDE00086C7F /* impactSummaryCard.json */; };
 		F5B6C50529252DDE00086C7F /* impactSummaryCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F5B6C50329252DDE00086C7F /* impactSummaryCard.json */; };
 		F5BD6D702901C18200A5E5CE /* TestModalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */; };
@@ -107,6 +109,7 @@
 		F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpactSummaryCard.swift; sourceTree = "<group>"; };
 		F59D25BF294A5DA1004ECEFB /* OptInCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptInCard.swift; sourceTree = "<group>"; };
 		F5A53C1E29490182007B624B /* HowItWorksCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowItWorksCard.swift; sourceTree = "<group>"; };
+		F5B0D09D294BE65500B5B933 /* howItWorksCard.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = howItWorksCard.json; sourceTree = "<group>"; };
 		F5B6C50329252DDE00086C7F /* impactSummaryCard.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = impactSummaryCard.json; sourceTree = "<group>"; };
 		F5BD6D6A2901C18100A5E5CE /* TestModalCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestModalCard.swift; sourceTree = "<group>"; };
 		F5BD6D6B2901C18100A5E5CE /* TestHtmlCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHtmlCard.swift; sourceTree = "<group>"; };
@@ -262,6 +265,7 @@
 				F53B63CE291AF61000A76C5F /* ImpactSummaryCard.swift */,
 				F5B6C50329252DDE00086C7F /* impactSummaryCard.json */,
 				F5A53C1E29490182007B624B /* HowItWorksCard.swift */,
+				F5B0D09D294BE65500B5B933 /* howItWorksCard.json */,
 				F59D25BF294A5DA1004ECEFB /* OptInCard.swift */,
 				F5BD6D6F2901C18100A5E5CE /* GenericCardTestFacility.swift */,
 			);
@@ -391,6 +395,7 @@
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 				F5B6C50429252DDE00086C7F /* impactSummaryCard.json in Resources */,
 				F5BD6D782901C18200A5E5CE /* testHtmlCard.json in Resources */,
+				F5B0D09E294BE65500B5B933 /* howItWorksCard.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +405,7 @@
 			files = (
 				F5BD6D792901C18200A5E5CE /* testHtmlCard.json in Resources */,
 				F5B6C50529252DDE00086C7F /* impactSummaryCard.json in Resources */,
+				F5B0D09F294BE65500B5B933 /* howItWorksCard.json in Resources */,
 				F5BD6D772901C18200A5E5CE /* stJudeCard.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

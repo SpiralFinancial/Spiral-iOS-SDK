@@ -199,7 +199,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     }
     
     @IBAction func handleGenericModalTap() {
-//        Spiral.shared.showModalContent(type: "SR_SUMMARY", success: nil, failure: nil, deepLinkHandler: self)
+//        Spiral.shared.showModalContent(type: "SR_SUMMARY", success: nil, failure: nil, delegate: self)
         
         guard let cardModel = GenericCardTestFacility.genericCardTestPayloadModel() else { return }
 

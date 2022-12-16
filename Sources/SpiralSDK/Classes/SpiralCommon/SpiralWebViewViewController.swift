@@ -91,13 +91,6 @@ class SpiralWebViewViewController: SpiralBaseViewController {
         dismiss(animated: true)
     }
     
-//    private func showErrorMessage() {
-//        delegate?.showConnectionErrorPopup(completion: { [weak self] in
-//            self?.didTapClose()
-//        }, didFinishAction: { [weak self] in
-//            self?.didTapClose()
-//        })
-//    }
 }
 
 extension SpiralWebViewViewController: WKNavigationDelegate {

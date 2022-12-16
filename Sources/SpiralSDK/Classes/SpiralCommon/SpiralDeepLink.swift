@@ -14,12 +14,6 @@ public class SpiralDeepLink {
     let scene: String
     let params: [String: Any]
     
-//    init(sceneType: SceneType, scene: String, params: [String: Any] = [String: Any]()) {
-//        self.sceneType = sceneType
-//        self.scene = scene
-//        self.params = params
-//    }
-    
     init?(from path: String) {
         
         let path = path.starts(with: "/") ? String(path.suffix(from: path.index(after: path.startIndex))) : path
@@ -99,22 +93,7 @@ enum SceneType: String {
     case webview
     case actions
     case unknown
-    
-//    var coordinatorType: SpiralDeepLinkable.Type {
-//        switch self {
-//        case .webview, .actions:
-//            return ActionsCoordinator.self
-//        }
-//    }
 }
-
-//public protocol DeepLinkable: Coordinator {
-//    var navigationController: UINavigationController { get }
-//    var deepLinkHandlers: [DeepLinkHandler]? { get set }
-//    init(navigationController: UINavigationController)
-//    func start(with deepLink: DeepLink)
-//    func goToDeepLink(_ deepLink: DeepLink)
-//}
 
 public protocol SpiralDeepLinkHandler: AnyObject {
     @discardableResult func handleDeepLink(_ deepLink: SpiralDeepLink) -> Bool
@@ -126,57 +105,7 @@ public extension SpiralDeepLinkHandler {
     }
 }
 
-//public struct DeepLinkListener {
-//    let owner: ObjectIdentifier
-//    let trigger: SpiralDeepLink
-//    let action: ([String: Any]) -> Void
-//}
-//
-//public class SpiralDeepLinkHandler: SpiralHandler<SpiralDeepLink> {
-//
-//    private let listener: DeepLinkListener
-//
-//    var owner: ObjectIdentifier {
-//        return listener.owner
-//    }
-//
-//    init(listener: DeepLinkListener) {
-//        self.listener = listener
-//    }
-//
-//    override func handle(_ handleable: SpiralDeepLink) -> SpiralDeepLink? {
-//
-//        if listener.trigger == handleable {
-//            listener.action(handleable.params)
-//            return nil
-//        }
-//
-//        return nextHandler?.handle(handleable) ??  handleable
-//    }
-//}
-
-//public class SpiralHandler<T> {
-//
-//    @discardableResult
-//    func setNext(handler: SpiralHandler) -> SpiralHandler {
-//        nextHandler = handler
-//        return handler
-//    }
-//
-//    func handle(_ handleable: T) -> T? {
-//        return nextHandler?.handle(handleable)
-//    }
-//
-//    var nextHandler: SpiralHandler?
-//}
-
 extension SpiralDeepLinkHandler {
-//    @discardableResult func goToDeepLink(_ deepLink: SpiralDeepLink) -> Bool {
-////        guard let mainCoordinator = firstParent(of: MainCoordinator.self) else { return }
-////        mainCoordinator.goTo(deepLink: deepLink, originCoordinator: self)
-//
-//        return false
-//    }
     
     private func isDismissLink(_ deepLink: SpiralDeepLink) -> Bool {
         return deepLink.scene == "dismiss"
@@ -215,7 +144,7 @@ extension SpiralDeepLinkHandler {
         links.forEach({
             if isDismissLink($0) {
                 dismissModal(completion: {
-                    self.handleDeepLinks(linksAfterDismiss)
+                    self.handleDeepLinks(linksAfterDismiss, priorityHandler: priorityHandler)
                 })
             } else {
                 let deepLink: SpiralDeepLink? = $0
@@ -330,4 +259,8 @@ class SpiralDefaultDeepLinkHandler: SpiralDeepLinkHandler {
             }
         }
     }
+}
+
+enum ActionsSceneType: String {
+    case showModal
 }

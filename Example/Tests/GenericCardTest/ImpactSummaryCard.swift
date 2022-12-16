@@ -25,7 +25,7 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
         
         let headerText = SpiralGenericCardTextComponent(html:
                                                 """
-                                                <span style=\"font-family: SFProRounded-Light; font-size:17px; line-height: 22px; color:white;\">Your Social Impact</span>
+                                                <span style=\"font-family: SFProRounded-Light; font-size:17px; line-height: 22px; color:white;\">Your Social Impact is <b>OFF</b></span>
                                                 """
         )
         let headerTextComponent = SpiralGenericCardComponent(type: .text,
@@ -35,7 +35,7 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
         
         let headerSubtitleText = SpiralGenericCardTextComponent(html:
                                                 """
-                                                <span style=\"font-family: SFProRounded-Light; font-size:14px; line-height: 18px; color:white;\">From swiping your Spiral debit card</span>
+                                                <span style=\"font-family: SFProRounded-Light; font-size:14px; line-height: 18px; color:white;\">Contributions from swiping your debit card</span>
                                                 """
         )
         let headerSubtitleTextComponent = SpiralGenericCardComponent(type: .text,
@@ -46,7 +46,8 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
         
         let header = SpiralGenericCardZComponentContainer(children: [headerImageComponent, headerTextComponent, headerSubtitleTextComponent])
         let headerComponent = SpiralGenericCardComponent(type: .zContainer,
-                                                         backgroundGradient: SpiralGenericCardGradient(direction: .leftToRight, colors: ["#a9b9f2", "#d55289"], distribution: [0, 0.8]),
+//                                                         backgroundGradient: SpiralGenericCardGradient(direction: .leftToRight, colors: ["#a9b9f2", "#d55289"], distribution: [0, 0.8]),
+                                                         backgroundColor: "#126BC5",
                                                          fixedHeight: 65,
                                                          padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 0, bottom: 10),
                                                          content: header)
@@ -96,17 +97,44 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
         let categoryContainerComponent = SpiralGenericCardComponent(type: .zContainer,
                                                                     content: categoryContainer)
         
-        let button = SpiralGenericCardButtonComponent(text: "Remind me how this works", textColor: "#d83275", textSize: 14, textWeight: .medium, borderColor: "#ffffff")
+        
+        let categoriesContainer = SpiralGenericCardComponentContainer(children: [categoryContainerComponent])
+        let categoriesContainerComponent = SpiralGenericCardComponent(type: .container,
+                                                                    content: categoriesContainer)
+        
+        let offMask = SpiralGenericCardZComponentContainer(children: [])
+        let offMaskComponent = SpiralGenericCardComponent(type: .zContainer, backgroundColor: "ffffff", alpha: 0.4, content: offMask)
+        
+        let categoriesZContainer = SpiralGenericCardZComponentContainer(children: [categoriesContainerComponent, offMaskComponent])
+        let categoriesZContainerComponent = SpiralGenericCardComponent(type: .zContainer,
+                                                                    content: categoriesZContainer)
+        
+        let button = SpiralGenericCardButtonComponent(text: "How does this work?", textColor: "#126BC5", textSize: 14, textWeight: .medium, borderColor: "#ffffff")
         let buttonComponent = SpiralGenericCardComponent(type: .button,
-                                                   padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 21, bottom: 27),
+                                                   padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 21, bottom: 18),
                                                    link: "/webview?url=https://spiral.us",
                                                    content: button)
+        
+        let editButton = SpiralGenericCardButtonComponent(text: "Instant Impact Settings", textColor: "#000000", textSize: 14, textWeight: .medium, borderColor: "#000000")
+        let editButtonComponent = SpiralGenericCardComponent(type: .button,
+                                                   padding: SpiralGenericCardContentPadding(left: 40, right: 40, top: 0, bottom: 27),
+                                                   link: "/flow?type=customerSettings",
+                                                   content: editButton)
+        
+        let turnOnButton = SpiralGenericCardButtonComponent(text: "Turn on instant impact", textColor: "#ffffff", textSize: 14, textWeight: .medium, borderColor: "#126BC5")
+        let turnOnButtonComponent = SpiralGenericCardComponent(type: .button,
+                                                               backgroundColor: "#126BC5",
+                                                               padding: SpiralGenericCardContentPadding(left: 40, right: 40, top: 0, bottom: 27),
+                                                               link: "/flow?type=customerSettings",
+                                                               content: turnOnButton)
         
         return GenericCardModel(root: SpiralGenericCardComponent(type: .container,
                                                            content: SpiralGenericCardComponentContainer(children:
                                                                                                     [headerComponent,
-                                                                                                     categoryContainerComponent,
-                                                                                                     buttonComponent
+                                                                                                     categoriesZContainerComponent,
+                                                                                                     buttonComponent,
+                                                                                                     editButtonComponent,
+                                                                                                     turnOnButtonComponent
                                                                                                     ])))
     }
     
