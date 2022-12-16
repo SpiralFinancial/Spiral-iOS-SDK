@@ -37,11 +37,11 @@ class GenericCardTestFacility {
     }
 
     static var testCardToDisplay: GenericCardTestModelType {
-        return .impactSummaryCard
+        return .howItWorksCard
     }
 
     static var shouldReadFromJSON: Bool {
-        return false
+        return true
     }
     
     static func genericCardTestModel() -> SpiralCardModel? {
@@ -102,7 +102,7 @@ class GenericCardTestFacility {
 
         do {
             let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
+//            decoder.keyDecodingStrategy = .convertFromSnakeCase
             let genericCard = try decoder.decode(GenericCardModel.self, from: jsonData)
             return genericCard
         } catch {
