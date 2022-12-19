@@ -13,4 +13,5 @@ import AnyCodable
 /** Unique type for the UI card. */
 public enum GenericCardType: String, Codable, CaseIterable {
     case srSummary = "SR_SUMMARY"
+    case howItWorks = "HOW_IT_WORKS"
 }

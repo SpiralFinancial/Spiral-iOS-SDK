@@ -37,7 +37,7 @@ class GenericCardTestFacility {
     }
 
     static var testCardToDisplay: GenericCardTestModelType {
-        return .howItWorksCard
+        return .impactSummaryCard
     }
 
     static var shouldReadFromJSON: Bool {

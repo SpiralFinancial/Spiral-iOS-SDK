@@ -1,183 +1,106 @@
 {
-  "root" : {
-    "type" : "container",
-    "content" : {
-      "children" : [
-        {
-          "fixed_height" : 65,
-          "content" : {
-            "children" : [
-              {
-                "snap_to_edges" : [
-                  "top",
-                  "left"
-                ],
-                "padding" : {
-                  "bottom" : 0,
-                  "top" : 12,
-                  "right" : 0,
-                  "left" : 15
+    "root": {
+        "type": "container",
+        "content": {
+            "children": [
+                {
+                    "fixed_height": 65,
+                    "content": {
+                        "children": [
+                            {
+                                "snap_to_edges": [
+                                    "top",
+                                    "left"
+                                ],
+                                "padding": {
+                                    "bottom": 0,
+                                    "top": 12,
+                                    "right": 0,
+                                    "left": 15
+                                },
+                                "type": "image",
+                                "content": {
+                                    "url": "https://res.cloudinary.com/spiral/image/upload/v1649955512/socially-responsible-rewards/socially-responsible.png",
+                                    "fixed_width": 40,
+                                    "fixed_height": 40
+                                }
+                            },
+                            {
+                                "snap_to_edges": [
+                                    "top",
+                                    "left",
+                                    "right"
+                                ],
+                                "padding": {
+                                    "bottom": 0,
+                                    "top": 12,
+                                    "right": 20,
+                                    "left": 70
+                                },
+                                "type": "text",
+                                "content": {
+                                    "html": "<span style=\"font-family: SFProRounded-Light; font-size:17px; line-height: 22px; color:white;\">Your Social Impact</span>"
+                                }
+                            },
+                            {
+                                "snap_to_edges": [
+                                    "top",
+                                    "left",
+                                    "right"
+                                ],
+                                "padding": {
+                                    "bottom": 0,
+                                    "top": 36,
+                                    "right": 20,
+                                    "left": 70
+                                },
+                                "type": "text",
+                                "content": {
+                                    "html": "<span style=\"font-family: SFProRounded-Light; font-size:14px; line-height: 18px; color:white;\">Contributions from swiping your debit card</span>"
+                                }
+                            }
+                        ]
+                    },
+                    "padding": {
+                        "bottom": 10,
+                        "top": 0,
+                        "right": 0,
+                        "left": 0
+                    },
+                    "type": "z_container",
+                    "background_color": "#543870"
                 },
-                "type" : "image",
-                "content" : {
-                  "url" : "https:\/\/res.cloudinary.com\/spiral\/image\/upload\/v1649955512\/socially-responsible-rewards\/socially-responsible.png",
-                  "fixed_width" : 40,
-                  "fixed_height" : 40
-                }
-              },
-              {
-                "snap_to_edges" : [
-                  "top",
-                  "left"
-                ],
-                "padding" : {
-                  "bottom" : 0,
-                  "top" : 12,
-                  "right" : 20,
-                  "left" : 70
+                {
+                    "type": "z_container",
+                    "content": {
+                        "children": [
+                            {
+                                "type": "container",
+                                "content": {
+                                    "children": []
+                                }
+                            }
+                        ]
+                    }
                 },
-                "type" : "text",
-                "content" : {
-                  "html" : "<span style=\"font-family: SFProRounded-Light; font-size:17px; line-height: 22px; color:white;\">Your Social Impact<\/span>"
+                {
+                    "content": {
+                        "border_color": "#ffffff",
+                        "text_color": "#543870",
+                        "text_size": 14,
+                        "text_weight": "medium",
+                        "text": "How does this work?"
+                    },
+                    "padding": {
+                        "bottom": 27,
+                        "top": 21,
+                        "right": 0,
+                        "left": 0
+                    },
+                    "type": "button",
+                    "link": "/actions/showModal?type=HOW_IT_WORKS"
                 }
-              },
-              {
-                "snap_to_edges" : [
-                  "top",
-                  "left"
-                ],
-                "padding" : {
-                  "bottom" : 0,
-                  "top" : 36,
-                  "right" : 20,
-                  "left" : 70
-                },
-                "type" : "text",
-                "content" : {
-                  "html" : "<span style=\"font-family: SFProRounded-Light; font-size:14px; line-height: 18px; color:white;\">From swiping your Spiral debit card<\/span>"
-                }
-              }
             ]
-          },
-          "padding" : {
-            "bottom" : 10,
-            "top" : 0,
-            "right" : 0,
-            "left" : 0
-          },
-          "type" : "z_container",
-          "background_gradient" : {
-            "distribution" : [
-              0,
-              0.80000000000000004
-            ],
-            "direction" : "leftToRight",
-            "colors" : [
-              "#a9b9f2",
-              "#d55289"
-            ]
-          }
-        },
-        {
-          "type" : "z_container",
-          "content" : {
-            "children" : [
-              {
-                "snap_to_edges" : [
-                  "left",
-                  "top"
-                ],
-                "padding" : {
-                  "bottom" : 0,
-                  "top" : 12,
-                  "right" : 0,
-                  "left" : 15
-                },
-                "type" : "image",
-                "content" : {
-                  "url" : "https:\/\/res.cloudinary.com\/spiral\/image\/upload\/v1649955512\/socially-responsible-rewards\/tree.png",
-                  "fixed_width" : 40,
-                  "fixed_height" : 40
-                }
-              },
-              {
-                "snap_to_edges" : [
-                  "top",
-                  "left"
-                ],
-                "padding" : {
-                  "bottom" : 0,
-                  "top" : 11,
-                  "right" : 0,
-                  "left" : 65
-                },
-                "type" : "text",
-                "fixed_width" : 81,
-                "content" : {
-                  "html" : "<span style=\"font-family: SFProRounded-Light; font-size:36px; line-height: 40px; color:#414d54; text-align:center; dispay:block;\">12<\/span>",
-                  "alignment" : "center"
-                }
-              },
-              {
-                "snap_to_edges" : [
-                  "top",
-                  "left",
-                  "right",
-                  "bottom"
-                ],
-                "padding" : {
-                  "bottom" : 15.5,
-                  "top" : 15,
-                  "right" : 15,
-                  "left" : 155
-                },
-                "type" : "text",
-                "content" : {
-                  "html" : "<span style=\"font-family: SFProRounded-Medium; font-size:14px; line-height: 17px; color:black;\">Trees planted<\/span><br \/>\n<span style=\"font-family: SFProRounded-Regular; font-size:14px; line-height: 17px; color:black;\">to help the enviroment<\/span>"
-                }
-              },
-              {
-                "fixed_height" : 0.5,
-                "snap_to_edges" : [
-                  "left",
-                  "right",
-                  "bottom"
-                ],
-                "padding" : {
-                  "bottom" : 0,
-                  "top" : 0,
-                  "right" : 0,
-                  "left" : 0
-                },
-                "type" : "container",
-                "background_color" : "#ced4da",
-                "content" : {
-                  "children" : [
-
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "content" : {
-            "border_color" : "#ffffff",
-            "text_color" : "#d83275",
-            "text_size" : 14,
-            "text_weight" : "medium",
-            "text" : "Remind me how this works"
-          },
-          "padding" : {
-            "bottom" : 27,
-            "top" : 21,
-            "right" : 0,
-            "left" : 0
-          },
-          "type" : "button",
-          "link" : "\/webview?url=https:\/\/spiral.us"
         }
-      ]
     }
-  }
 }

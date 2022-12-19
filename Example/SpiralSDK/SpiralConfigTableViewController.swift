@@ -60,7 +60,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         
         Spiral.shared.setup(config: SpiralConfig(mode: .sandbox,
                                                  environment: .staging,
-                                                 clientId: "fabac13c-36df-4407-9f9f-24aa109f5f23",
+                                                 clientId: "7c6c7153-537a-4dc4-bf3a-816b9323d5f2",
                                                  customerId: "1133413950162432"))
     }
 
@@ -107,7 +107,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
             
             if currentlyLoadedImpactCard == nil {
                 impactCell.contentView.subviews.forEach { $0.removeFromSuperview() }
-                Spiral.shared.loadInstantImpactCard(into: impactCell.contentView) { impactView in
+                Spiral.shared.loadInstantImpactCard(into: impactCell.contentView, delegate: self) { impactView in
                     // Instantaneous vs. animated display
                     // tableView.reloadData()
                     
@@ -199,7 +199,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     }
     
     @IBAction func handleGenericModalTap() {
-//        Spiral.shared.showModalContent(type: "SR_SUMMARY", success: nil, failure: nil, delegate: self)
+//        Spiral.shared.showModalContent(type: "HOW_IT_WORKS", success: nil, failure: nil, delegate: self)
         
         guard let cardModel = GenericCardTestFacility.genericCardTestPayloadModel() else { return }
 

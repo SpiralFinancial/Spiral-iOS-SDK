@@ -41,8 +41,9 @@ if [ -n "$SWAGGER_API_KEY" ]; then
   #
   # Import specific generated files into the SDK
   #
-  ./importToSDK.sh
-​
+
+#  ./importToSDK.sh
+  
   echo #########################
   echo #########################
   echo 🤖 Codegen complete - Nice work!; 
@@ -51,7 +52,6 @@ if [ -n "$SWAGGER_API_KEY" ]; then
   echo 🔵 src/generated;
   echo #########################
   echo #########################
-​
 else
   echo #########################
   echo #########################

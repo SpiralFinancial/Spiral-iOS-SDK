@@ -62,10 +62,10 @@ public class Spiral {
     }
     
     public func loadInstantImpactCard(into view: UIView,
+                                      delegate: SpiralDelegate?,
                                       success: ((UIView) -> Void)?,
                                       failure: ((Error?) -> Void)?,
-                                      updateLayout: EmptyOptionalClosure,
-                                      delegate: SpiralDelegate? = nil) {
+                                      updateLayout: EmptyOptionalClosure) {
         
         let requestBuilder = CmsAPI.getTypedGenericCardWithRequestBuilder(type: .srSummary)
         requestBuilder.addHeaders(_apiHeaders)
@@ -108,7 +108,7 @@ public class Spiral {
                                  failure: ((Error?) -> Void)?,
                                  delegate: SpiralDelegate) {
         
-        let requestBuilder = CmsAPI.getTypedGenericCardWithRequestBuilder(type: .srSummary)
+        let requestBuilder = CmsAPI.getGenericCardWithRequestBuilder(type: type)
         requestBuilder.addHeaders(_apiHeaders)
         requestBuilder.execute { result in
             DispatchQueue.main.async {
