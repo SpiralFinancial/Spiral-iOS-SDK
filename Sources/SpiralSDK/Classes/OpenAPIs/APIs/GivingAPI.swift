@@ -13,18 +13,70 @@ import AnyCodable
 open class GivingAPI {
 
     /**
-     Donate to a charity
+     Donate to charity (recurring)
      
-     - parameter ein: (path) Employer Identification Number (EIN) of Charity 
-     - parameter charityDonationRequest: (body) Donation details to a given Charity 
+     - parameter givingCharityRecurringDonationCreateRequest: (body) Create recurring donation request object 
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func donateToCharity(ein: String, charityDonationRequest: CharityDonationRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
-        return donateToCharityWithRequestBuilder(ein: ein, charityDonationRequest: charityDonationRequest, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+    open class func createRecurringDonation(givingCharityRecurringDonationCreateRequest: GivingCharityRecurringDonationCreateRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GivingCharityRecurringDonationResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return createRecurringDonationWithRequestBuilder(givingCharityRecurringDonationCreateRequest: givingCharityRecurringDonationCreateRequest, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Donate to charity (recurring)
+     - POST /giving/customer/donation/recurring
+     - Create a recurring donation to charity by id
+     - API Key:
+       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - name: ClientID
+     - parameter givingCharityRecurringDonationCreateRequest: (body) Create recurring donation request object 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - returns: RequestBuilder<GivingCharityRecurringDonationResponse> 
+     */
+    open class func createRecurringDonationWithRequestBuilder(givingCharityRecurringDonationCreateRequest: GivingCharityRecurringDonationCreateRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<GivingCharityRecurringDonationResponse> {
+        let localVariablePath = "/giving/customer/donation/recurring"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: givingCharityRecurringDonationCreateRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-CUSTOMER-ID": X_SPIRAL_CUSTOMER_ID?.encodeToJSON(),
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GivingCharityRecurringDonationResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Donate to a charity
+     
+     - parameter ein: (path) Employer Identification Number (EIN) of Charity 
+     - parameter givingCharityOneTimeDonationRequest: (body) Donation details to a given Charity 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func donateToCharity(ein: String, givingCharityOneTimeDonationRequest: GivingCharityOneTimeDonationRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
+        return donateToCharityWithRequestBuilder(ein: ein, givingCharityOneTimeDonationRequest: givingCharityOneTimeDonationRequest, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
             switch result {
             case .success:
                 completion((), nil)
@@ -42,18 +94,70 @@ open class GivingAPI {
        - type: apiKey X-SPIRAL-CLIENT-ID 
        - name: ClientID
      - parameter ein: (path) Employer Identification Number (EIN) of Charity 
-     - parameter charityDonationRequest: (body) Donation details to a given Charity 
+     - parameter givingCharityOneTimeDonationRequest: (body) Donation details to a given Charity 
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - returns: RequestBuilder<Void> 
      */
-    open class func donateToCharityWithRequestBuilder(ein: String, charityDonationRequest: CharityDonationRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<Void> {
+    open class func donateToCharityWithRequestBuilder(ein: String, givingCharityOneTimeDonationRequest: GivingCharityOneTimeDonationRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<Void> {
         var localVariablePath = "/giving/charity/{ein}/donation"
         let einPreEscape = "\(APIHelper.mapValueToPathItem(ein))"
         let einPostEscape = einPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{ein}", with: einPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: charityDonationRequest)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: givingCharityOneTimeDonationRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-CUSTOMER-ID": X_SPIRAL_CUSTOMER_ID?.encodeToJSON(),
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Donate to charity (one-time)
+     
+     - parameter givingCharityOneTimeDonationRequest: (body) Create one-time donation request object 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func donateToCharityOneTime(givingCharityOneTimeDonationRequest: GivingCharityOneTimeDonationRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
+        return donateToCharityOneTimeWithRequestBuilder(givingCharityOneTimeDonationRequest: givingCharityOneTimeDonationRequest, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case .success:
+                completion((), nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Donate to charity (one-time)
+     - POST /giving/customer/donation/one-time
+     - Make a one-time donation to charity by id
+     - API Key:
+       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - name: ClientID
+     - parameter givingCharityOneTimeDonationRequest: (body) Create one-time donation request object 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - returns: RequestBuilder<Void> 
+     */
+    open class func donateToCharityOneTimeWithRequestBuilder(givingCharityOneTimeDonationRequest: GivingCharityOneTimeDonationRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<Void> {
+        let localVariablePath = "/giving/customer/donation/one-time"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: givingCharityOneTimeDonationRequest)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -386,6 +490,61 @@ open class GivingAPI {
     }
 
     /**
+     Get recurring donation
+     
+     - parameter id: (path) Spiral ID of recurring donation 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getRecurringDonationById(id: String, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GivingCharityRecurringDonationResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getRecurringDonationByIdWithRequestBuilder(id: id, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Get recurring donation
+     - GET /giving/customer/donation/recurring/{id}
+     - Get customer recurring donation details by id
+     - API Key:
+       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - name: ClientID
+     - parameter id: (path) Spiral ID of recurring donation 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - returns: RequestBuilder<GivingCharityRecurringDonationResponse> 
+     */
+    open class func getRecurringDonationByIdWithRequestBuilder(id: String, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<GivingCharityRecurringDonationResponse> {
+        var localVariablePath = "/giving/customer/donation/recurring/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-CUSTOMER-ID": X_SPIRAL_CUSTOMER_ID?.encodeToJSON(),
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GivingCharityRecurringDonationResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Search for charities
      
      - parameter givingCharitiesSearchRequest: (body) Filter for charity categories 
@@ -435,5 +594,62 @@ open class GivingAPI {
         let localVariableRequestBuilder: RequestBuilder<GivingCharitiesSearchResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Update recurring donation
+     
+     - parameter id: (path) Spiral ID of recurring donation 
+     - parameter givingCharityRecurringDonationUpdateRequest: (body) Update recurring donation request object 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateRecurringDonationById(id: String, givingCharityRecurringDonationUpdateRequest: GivingCharityRecurringDonationUpdateRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GivingCharityRecurringDonationResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateRecurringDonationByIdWithRequestBuilder(id: id, givingCharityRecurringDonationUpdateRequest: givingCharityRecurringDonationUpdateRequest, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Update recurring donation
+     - PUT /giving/customer/donation/recurring/{id}
+     - Update customers recurring donation by id
+     - API Key:
+       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - name: ClientID
+     - parameter id: (path) Spiral ID of recurring donation 
+     - parameter givingCharityRecurringDonationUpdateRequest: (body) Update recurring donation request object 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - returns: RequestBuilder<GivingCharityRecurringDonationResponse> 
+     */
+    open class func updateRecurringDonationByIdWithRequestBuilder(id: String, givingCharityRecurringDonationUpdateRequest: GivingCharityRecurringDonationUpdateRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<GivingCharityRecurringDonationResponse> {
+        var localVariablePath = "/giving/customer/donation/recurring/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: givingCharityRecurringDonationUpdateRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-CUSTOMER-ID": X_SPIRAL_CUSTOMER_ID?.encodeToJSON(),
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GivingCharityRecurringDonationResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 }

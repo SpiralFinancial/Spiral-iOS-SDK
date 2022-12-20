@@ -61,13 +61,43 @@ public class Spiral {
         // TODO: load token
     }
     
+    public func getCustomerSettings(success: ((CustomerSettings) -> Void)?,
+                                    failure: ((Error?) -> Void)?) {
+        let requestBuilder = ManagementAPI.getCustomerSettingsWithRequestBuilder()
+        requestBuilder.addHeaders(_apiHeaders)
+        requestBuilder.execute { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(response):
+                    success?(response.body)
+                case let .failure(error):
+                    failure?(error)
+                }
+            }
+        }
+    }
+    
     public func loadInstantImpactCard(into view: UIView,
                                       delegate: SpiralDelegate?,
                                       success: ((UIView) -> Void)?,
                                       failure: ((Error?) -> Void)?,
                                       updateLayout: EmptyOptionalClosure) {
+        loadContentCard(type: GenericCardType.srSummary.rawValue,
+                        into: view,
+                        delegate: delegate,
+                        success: success,
+                        failure: failure,
+                        updateLayout: updateLayout)
+    }
+    
+    public func loadContentCard(type: String,
+                                into view: UIView,
+                                delegate: SpiralDelegate?,
+                                success: ((UIView) -> Void)?,
+                                failure: ((Error?) -> Void)?,
+                                updateLayout: EmptyOptionalClosure) {
         
-        let requestBuilder = CmsAPI.getTypedGenericCardWithRequestBuilder(type: .srSummary)
+        let requestBuilder = CmsAPI.getGenericCardWithRequestBuilder(type: type)
         requestBuilder.addHeaders(_apiHeaders)
         requestBuilder.execute { result in
             DispatchQueue.main.async {
@@ -90,7 +120,7 @@ public class Spiral {
                         }))
                         
                         genericCardView.isHidden = false
-                                                
+                        
                         success?(genericCardView)
                     } else {
                         failure?(nil)
@@ -100,7 +130,7 @@ public class Spiral {
                 }
             }
         }
-
+        
     }
     
     public func showModalContent(type: String,

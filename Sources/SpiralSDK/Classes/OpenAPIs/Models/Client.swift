@@ -18,16 +18,25 @@ public struct Client: Codable, JSONEncodable, Hashable {
     public var logo: String?
     /** Full fintech name */
     public var fintechName: String
+    /** Starting timestamp of the fintech's contract. */
+    public var contractStart: Double?
+    /** Ending timestamp of the fintech's contract. */
+    public var contractEnd: Double?
+    /** Spiral-side manager assigned to this client. */
+    public var manager: String?
     /** Shortname description of the fintech brand */
     public var brandName: String?
     public var contactUser: User?
     public var clientSettings: ClientSettings?
     public var products: ClientProducts
 
-    public init(id: String? = nil, logo: String? = nil, fintechName: String, brandName: String? = nil, contactUser: User? = nil, clientSettings: ClientSettings? = nil, products: ClientProducts) {
+    public init(id: String? = nil, logo: String? = nil, fintechName: String, contractStart: Double? = nil, contractEnd: Double? = nil, manager: String? = nil, brandName: String? = nil, contactUser: User? = nil, clientSettings: ClientSettings? = nil, products: ClientProducts) {
         self.id = id
         self.logo = logo
         self.fintechName = fintechName
+        self.contractStart = contractStart
+        self.contractEnd = contractEnd
+        self.manager = manager
         self.brandName = brandName
         self.contactUser = contactUser
         self.clientSettings = clientSettings
@@ -38,6 +47,9 @@ public struct Client: Codable, JSONEncodable, Hashable {
         case id
         case logo
         case fintechName
+        case contractStart
+        case contractEnd
+        case manager
         case brandName
         case contactUser
         case clientSettings
@@ -51,6 +63,9 @@ public struct Client: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(id, forKey: .id)
         try container.encodeIfPresent(logo, forKey: .logo)
         try container.encode(fintechName, forKey: .fintechName)
+        try container.encodeIfPresent(contractStart, forKey: .contractStart)
+        try container.encodeIfPresent(contractEnd, forKey: .contractEnd)
+        try container.encodeIfPresent(manager, forKey: .manager)
         try container.encodeIfPresent(brandName, forKey: .brandName)
         try container.encodeIfPresent(contactUser, forKey: .contactUser)
         try container.encodeIfPresent(clientSettings, forKey: .clientSettings)

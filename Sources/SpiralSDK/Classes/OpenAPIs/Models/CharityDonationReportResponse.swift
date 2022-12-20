@@ -14,9 +14,9 @@ public struct CharityDonationReportResponse: Codable, JSONEncodable, Hashable {
 
     /** Dollar value aggragating all donations */
     public var totalAmountDonated: Double
-    public var donations: [CharityDonation]
+    public var donations: [GivingCharityDonation]
 
-    public init(totalAmountDonated: Double, donations: [CharityDonation]) {
+    public init(totalAmountDonated: Double, donations: [GivingCharityDonation]) {
         self.totalAmountDonated = totalAmountDonated
         self.donations = donations
     }

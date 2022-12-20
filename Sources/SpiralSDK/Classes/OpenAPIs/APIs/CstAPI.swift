@@ -201,6 +201,103 @@ open class CstAPI {
     }
 
     /**
+     Partial update of a client
+     
+     - parameter clientPatchRequest: (body) Update client settings request 
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func patchClient(clientPatchRequest: ClientPatchRequest, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ClientCreationResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return patchClientWithRequestBuilder(clientPatchRequest: clientPatchRequest, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Partial update of a client
+     - PATCH /cst/client
+     - Updates main client information
+     - parameter clientPatchRequest: (body) Update client settings request 
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - returns: RequestBuilder<ClientCreationResponse> 
+     */
+    open class func patchClientWithRequestBuilder(clientPatchRequest: ClientPatchRequest, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<ClientCreationResponse> {
+        let localVariablePath = "/cst/client"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: clientPatchRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ClientCreationResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+     Mass process client instant impact
+     
+     - parameter clientId: (path) ID of client to process II for 
+     - parameter clientInstantImpactProcessRequest: (body)  
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func processClientInstantImpact(clientId: String, clientInstantImpactProcessRequest: ClientInstantImpactProcessRequest, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: CstOperationsResponseList?, _ error: Error?) -> Void)) -> RequestTask {
+        return processClientInstantImpactWithRequestBuilder(clientId: clientId, clientInstantImpactProcessRequest: clientInstantImpactProcessRequest, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Mass process client instant impact
+     - PUT /cst/client/{clientId}/instant/impact
+     - Mass process client instant impact
+     - parameter clientId: (path) ID of client to process II for 
+     - parameter clientInstantImpactProcessRequest: (body)  
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - returns: RequestBuilder<CstOperationsResponseList> 
+     */
+    open class func processClientInstantImpactWithRequestBuilder(clientId: String, clientInstantImpactProcessRequest: ClientInstantImpactProcessRequest, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<CstOperationsResponseList> {
+        var localVariablePath = "/cst/client/{clientId}/instant/impact"
+        let clientIdPreEscape = "\(APIHelper.mapValueToPathItem(clientId))"
+        let clientIdPostEscape = clientIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{clientId}", with: clientIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: clientInstantImpactProcessRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CstOperationsResponseList>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
      Updates a client and their settings
      
      - parameter clientUpdateRequest: (body) Update client settings request 

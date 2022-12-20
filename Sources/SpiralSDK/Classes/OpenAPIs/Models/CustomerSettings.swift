@@ -12,13 +12,22 @@ import AnyCodable
 
 public struct CustomerSettings: Codable, JSONEncodable, Hashable {
 
+    public enum RewardType: String, Codable, CaseIterable {
+        case userSponsored = "UserSponsored"
+        case bankSponsored = "BankSponsored"
+    }
+    /** True if the customer has ever opted in to round up in the user-sponsored flow. */
+    public var userSponsoredEverOptedIn: Bool?
+    public var rewardType: RewardType?
     public var consented: Bool?
     public var optedIn: Bool?
     public var roundUp: RoundUpSelections
     public var limitSelection: CustomerInstantImpactLimitSelections?
     public var limitValue: Double?
 
-    public init(consented: Bool? = nil, optedIn: Bool? = nil, roundUp: RoundUpSelections, limitSelection: CustomerInstantImpactLimitSelections? = nil, limitValue: Double? = nil) {
+    public init(userSponsoredEverOptedIn: Bool? = nil, rewardType: RewardType? = nil, consented: Bool? = nil, optedIn: Bool? = nil, roundUp: RoundUpSelections, limitSelection: CustomerInstantImpactLimitSelections? = nil, limitValue: Double? = nil) {
+        self.userSponsoredEverOptedIn = userSponsoredEverOptedIn
+        self.rewardType = rewardType
         self.consented = consented
         self.optedIn = optedIn
         self.roundUp = roundUp
@@ -27,6 +36,8 @@ public struct CustomerSettings: Codable, JSONEncodable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case userSponsoredEverOptedIn
+        case rewardType
         case consented
         case optedIn
         case roundUp
@@ -38,6 +49,8 @@ public struct CustomerSettings: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(userSponsoredEverOptedIn, forKey: .userSponsoredEverOptedIn)
+        try container.encodeIfPresent(rewardType, forKey: .rewardType)
         try container.encodeIfPresent(consented, forKey: .consented)
         try container.encodeIfPresent(optedIn, forKey: .optedIn)
         try container.encode(roundUp, forKey: .roundUp)

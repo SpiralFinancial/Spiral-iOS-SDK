@@ -45,12 +45,24 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     
     weak var currentlyLoadedImpactCard: UIView? = nil
     
+    var isCustomerSponsored: Bool = false
+    var hasCustomerEverOptedIn: Bool = false
+    
     private var events = Array<EventData>()
 
     @objc func refresh() {
         currentlyLoadedImpactCard = nil
-        tableView.reloadData()
-        tableView.refreshControl?.endRefreshing()
+        
+        Spiral.shared.getCustomerSettings { [weak self] customerSettings in
+            self?.isCustomerSponsored = customerSettings.rewardType == .userSponsored
+            self?.hasCustomerEverOptedIn = customerSettings.userSponsoredEverOptedIn ?? false
+            
+            self?.tableView.reloadData()
+            self?.tableView.refreshControl?.endRefreshing()
+        } failure: { error in
+            print(error?.localizedDescription ?? "")
+        }
+
     }
     
     override func viewDidLoad() {
@@ -60,8 +72,10 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         
         Spiral.shared.setup(config: SpiralConfig(mode: .sandbox,
                                                  environment: .staging,
-                                                 clientId: "7c6c7153-537a-4dc4-bf3a-816b9323d5f2",
+                                                 clientId: "fabac13c-36df-4407-9f9f-24aa109f5f23",
                                                  customerId: "1133413950162432"))
+        
+        refresh()
     }
 
     // MARK: - Table view data source
@@ -107,7 +121,13 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
             
             if currentlyLoadedImpactCard == nil {
                 impactCell.contentView.subviews.forEach { $0.removeFromSuperview() }
-                Spiral.shared.loadInstantImpactCard(into: impactCell.contentView, delegate: self) { impactView in
+                
+                let contentType = (isCustomerSponsored && !hasCustomerEverOptedIn) ?                    GenericCardType.userSponsoredOptIn.rawValue :
+                    GenericCardType.srSummary.rawValue
+                
+                Spiral.shared.loadContentCard(type: contentType,
+                                              into: impactCell.contentView,
+                                              delegate: self) { impactView in
                     // Instantaneous vs. animated display
                     // tableView.reloadData()
                     
