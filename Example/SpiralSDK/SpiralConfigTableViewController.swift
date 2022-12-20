@@ -295,15 +295,13 @@ extension SpiralConfigTableViewController: SpiralDelegate {
     
     func onSuccess(_ result: SpiralSuccessPayload) {
         print("onSuccess")
+        
+        refresh()
     }
     
 }
 
 extension SpiralConfigTableViewController: SpiralDeepLinkHandler {
-    
-//    func genericCardModalSceneDidRequestDismiss(controller: UIViewController) {
-//        controller.dismiss(animated: true)
-//    }
     
     func handleDeepLink(_ deepLink: SpiralDeepLink) -> Bool {
         return false
