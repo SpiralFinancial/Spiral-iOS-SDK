@@ -45,8 +45,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     
     weak var currentlyLoadedImpactCard: UIView? = nil
     
-    var isCustomerSponsored: Bool = false
-    var hasCustomerEverOptedIn: Bool = false
+    var customerSettings: CustomerSettings? = nil
     
     private var events = Array<EventData>()
 
@@ -54,8 +53,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         currentlyLoadedImpactCard = nil
         
         Spiral.shared.getCustomerSettings { [weak self] customerSettings in
-            self?.isCustomerSponsored = customerSettings.rewardType == .userSponsored
-            self?.hasCustomerEverOptedIn = customerSettings.userSponsoredEverOptedIn ?? false
+            self?.customerSettings = customerSettings
             
             self?.tableView.reloadData()
             self?.tableView.refreshControl?.endRefreshing()
@@ -119,11 +117,19 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         if indexPath.section == SectionIndex.impact.rawValue {
             let impactCell = tableView.dequeueReusableCell(withIdentifier: "impactCell", for: indexPath)
             
+            guard let customerSettings = customerSettings else {
+                return UITableViewCell()
+            }
+            
             if currentlyLoadedImpactCard == nil {
                 impactCell.contentView.subviews.forEach { $0.removeFromSuperview() }
                 
-                let contentType = (isCustomerSponsored && !hasCustomerEverOptedIn) ?                    GenericCardType.userSponsoredOptIn.rawValue :
-                    GenericCardType.srSummary.rawValue
+                let isCustomerSponsored = customerSettings.rewardType == .userSponsored
+                let hasCustomerEverOptedIn = customerSettings.userSponsoredEverOptedIn ?? false
+                
+                let contentType = (isCustomerSponsored && !hasCustomerEverOptedIn) ?
+                                                            GenericCardType.userSponsoredOptIn.rawValue :
+                                                            GenericCardType.srSummary.rawValue
                 
                 Spiral.shared.loadContentCard(type: contentType,
                                               into: impactCell.contentView,

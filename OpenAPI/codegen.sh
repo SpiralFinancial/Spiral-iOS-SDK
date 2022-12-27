@@ -25,11 +25,13 @@ if [ -n "$SWAGGER_API_KEY" ]; then
   #
   # Run codegen and output in the generated folder
   #
-  openapi-generator generate -i ./tmp/openapi-v1.yaml -g swift5 -o src/generated;
+#  openapi-generator generate -i ./tmp/openapi-v1.yaml -g swift5 -o src/generated;
+  openapi-generator generate -i ./openapi-ios-v1.yaml -g swift5 -o src/generated;
   #
   # Move the open api .yaml file to the generated folder
   #
-  mv -i ./tmp/openapi-v1.yaml ./src/generated;
+  # mv -i ./tmp/openapi-v1.yaml ./src/generated;
+  cp ./openapi-ios-v1.yaml ./src/generated;
   #
   # Delete the temporary folder
   #

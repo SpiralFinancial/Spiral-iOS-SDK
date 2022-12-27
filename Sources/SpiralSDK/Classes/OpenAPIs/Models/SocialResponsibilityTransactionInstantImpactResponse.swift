@@ -14,6 +14,7 @@ import AnyCodable
 public struct SocialResponsibilityTransactionInstantImpactResponse: Codable, JSONEncodable, Hashable {
 
     public var categoryId: String
+    public var customerId: String?
     /** Name of the charity category. */
     public var categoryName: String
     public var rewardUnit: CharityRewardUnit?
@@ -36,8 +37,9 @@ public struct SocialResponsibilityTransactionInstantImpactResponse: Codable, JSO
     /** Transaction account identifier. */
     public var transactionAccountId: String?
 
-    public init(categoryId: String, categoryName: String, rewardUnit: CharityRewardUnit? = nil, impact: Double, donatedAmount: Double? = nil, transactionId: String? = nil, transactionTimestamp: Double? = nil, transactionTitle: String? = nil, transactionType: String? = nil, statementDescription: String? = nil, transactionAmount: Double? = nil, transactionAccountId: String? = nil) {
+    public init(categoryId: String, customerId: String? = nil, categoryName: String, rewardUnit: CharityRewardUnit? = nil, impact: Double, donatedAmount: Double? = nil, transactionId: String? = nil, transactionTimestamp: Double? = nil, transactionTitle: String? = nil, transactionType: String? = nil, statementDescription: String? = nil, transactionAmount: Double? = nil, transactionAccountId: String? = nil) {
         self.categoryId = categoryId
+        self.customerId = customerId
         self.categoryName = categoryName
         self.rewardUnit = rewardUnit
         self.impact = impact
@@ -53,6 +55,7 @@ public struct SocialResponsibilityTransactionInstantImpactResponse: Codable, JSO
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case categoryId
+        case customerId
         case categoryName
         case rewardUnit
         case impact
@@ -71,6 +74,7 @@ public struct SocialResponsibilityTransactionInstantImpactResponse: Codable, JSO
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(categoryId, forKey: .categoryId)
+        try container.encodeIfPresent(customerId, forKey: .customerId)
         try container.encode(categoryName, forKey: .categoryName)
         try container.encodeIfPresent(rewardUnit, forKey: .rewardUnit)
         try container.encode(impact, forKey: .impact)
