@@ -306,6 +306,10 @@ extension SpiralConfigTableViewController: SpiralDelegate {
         self.present(controller, animated: true)
     }
     
+    func onFailedToStart(_ error: SpiralError) {
+        print("onFailedToStart: " + error.message)
+    }
+    
     func onExit(_ error: SpiralError?) {
         if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EventsTableViewController") as? EventsTableViewController {
             

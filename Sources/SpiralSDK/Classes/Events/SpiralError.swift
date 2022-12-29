@@ -18,3 +18,7 @@ public struct SpiralError: SpiralEventPayload {
     public let code: String
     public let message: String
 }
+
+public enum SpiralErrorType: String {
+    case failedToStartFlow
+}

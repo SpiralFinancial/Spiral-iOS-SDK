@@ -182,6 +182,7 @@ public class Spiral {
 public protocol SpiralDelegate: SpiralDeepLinkHandler {
     func onEvent(name: SpiralEventType, event: SpiralEventPayload?)
     func onReady(controller: SpiralViewController)
+    func onFailedToStart(_ error: SpiralError)
     func onExit(_ error: SpiralError?)
     func onSuccess(_ result: SpiralSuccessPayload)
     func onError(_ error: SpiralError)
@@ -191,6 +192,7 @@ public protocol SpiralDelegate: SpiralDeepLinkHandler {
 public extension SpiralDelegate {
     func onEvent(name: SpiralEventType, event: SpiralEventPayload?) {}
     func onReady(controller: SpiralViewController) {}
+    func onFailedToStart(_ error: SpiralError) {}
     func onExit(_ error: SpiralError?) {}
     func onSuccess(_ result: SpiralSuccessPayload) {}
     func onError(_ error: SpiralError) {}

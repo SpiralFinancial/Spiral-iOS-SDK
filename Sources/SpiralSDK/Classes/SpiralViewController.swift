@@ -22,7 +22,7 @@ class SpiralWebKitScriptMessageHandler: NSObject, WKScriptMessageHandler {
     }
 }
 
-public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler {
+public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate {
     var webView: WKWebView!
     weak var delegate: SpiralDelegate?
     private var token: String
@@ -30,6 +30,8 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     private var url: String {
         return flow.url
     }
+    
+    private var wasReady: Bool = false
     
     private var onExit: (() -> Void)?
     
@@ -47,6 +49,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         webConfiguration.userContentController.addUserScript(wkScript)
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.uiDelegate = self
+        webView.navigationDelegate = self
         webView.backgroundColor = .white
         
         let contentController = webView.configuration.userContentController
@@ -75,6 +78,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         case SpiralEventHandler.openEventHandler.rawValue:
             self.delegate?.onEvent(name: .open, event: nil)
             self.delegate?.onReady(controller: self)
+            self.wasReady = true
         case SpiralEventHandler.closeEventHandler.rawValue:
             self.delegate?.onEvent(name: .close, event: nil)
         case SpiralEventHandler.initEventHandler.rawValue:
@@ -109,6 +113,21 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         default:
             print("Unhandled message: \(message.name)")
         }
+    }
+    
+    
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse,
+                 decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+
+        if let response = navigationResponse.response as? HTTPURLResponse {
+            if !wasReady, response.statusCode != 200 {
+                self.delegate?.onFailedToStart(SpiralError(type: SpiralErrorType.failedToStartFlow.rawValue,
+                                                           code: String(response.statusCode),
+                                                           message: "Unable to start Spiral flow. Please try again later."))
+                self.onExit?()
+            }
+        }
+        decisionHandler(.allow)
     }
     
     public override func loadView() {
@@ -164,7 +183,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     private func getScript(token: String) -> String {
         var versionString = "1.0.0"
         if let bundleVersion = Bundle(identifier: "org.cocoapods.SpiralSDK")?.infoDictionary?["CFBundleShortVersionString"] as? String {
-            print(bundleVersion)
+            print("Spiral version: " + bundleVersion)
             versionString = bundleVersion
         }
         let version = versionString.split(separator: ".")
