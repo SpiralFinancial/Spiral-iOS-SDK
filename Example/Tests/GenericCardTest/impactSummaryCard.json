@@ -1,105 +1,250 @@
 {
-    "root": {
-        "type": "container",
-        "content": {
-            "children": [
+    "root" : {
+        "type" : "container",
+        "content" : {
+            "children" : [
                 {
-                    "fixed_height": 65,
-                    "content": {
-                        "children": [
+                    "fixed_height" : 65,
+                    "content" : {
+                        "children" : [
                             {
-                                "snap_to_edges": [
+                                "snap_to_edges" : [
                                     "top",
                                     "left"
                                 ],
-                                "padding": {
-                                    "bottom": 0,
-                                    "top": 12,
-                                    "right": 0,
-                                    "left": 15
+                                "padding" : {
+                                    "bottom" : 0,
+                                    "top" : 12,
+                                    "right" : 0,
+                                    "left" : 15
                                 },
-                                "type": "image",
-                                "content": {
-                                    "url": "https://res.cloudinary.com/spiral/image/upload/v1649955512/socially-responsible-rewards/socially-responsible.png",
-                                    "fixed_width": 40,
-                                    "fixed_height": 40
+                                "type" : "image",
+                                "content" : {
+                                    "url" : "https:\/\/res.cloudinary.com\/spiral\/image\/upload\/v1649955512\/socially-responsible-rewards\/socially-responsible.png",
+                                    "fixed_width" : 40,
+                                    "fixed_height" : 40
                                 }
                             },
                             {
-                                "snap_to_edges": [
+                                "snap_to_edges" : [
                                     "top",
                                     "left",
                                     "right"
                                 ],
-                                "padding": {
-                                    "bottom": 0,
-                                    "top": 12,
-                                    "right": 20,
-                                    "left": 70
+                                "padding" : {
+                                    "bottom" : 0,
+                                    "top" : 12,
+                                    "right" : 20,
+                                    "left" : 70
                                 },
-                                "type": "text",
-                                "content": {
-                                    "html": "<span style=\"font-family: SFProRounded-Light; font-size:17px; line-height: 22px; color:white;\">Your Social Impact</span>"
+                                "type" : "text",
+                                "content" : {
+                                    [# th:if="${ctx.isClientBankSponsored}"]
+                                    "html" : "<span style=\"font-family: SFProRounded-Light; font-size:17px; line-height: 22px; color:white;\">Your Everyday Impact<\/span>"
+                                    [/]
+                                    [# th:if="${ctx.isClientCustomerSponsored}"]
+                                    "html" : "<span style=\"font-family: SFProRounded-Light; font-size:17px; line-height: 22px; color:white;\">Everyday Impact rewards are [# th:if="${ctx.isCustomerSponsored}"]<b>ON<\/b>[/][# th:if="${not ctx.isCustomerSponsored}"]<b>OFF<\/b>[/]<\/span>"
+                                    [/]
                                 }
                             },
                             {
-                                "snap_to_edges": [
+                                "snap_to_edges" : [
                                     "top",
                                     "left",
                                     "right"
                                 ],
-                                "padding": {
-                                    "bottom": 0,
-                                    "top": 36,
-                                    "right": 20,
-                                    "left": 70
+                                "padding" : {
+                                    "bottom" : 0,
+                                    "top" : 36,
+                                    "right" : 20,
+                                    "left" : 70
                                 },
-                                "type": "text",
-                                "content": {
-                                    "html": "<span style=\"font-family: SFProRounded-Light; font-size:14px; line-height: 18px; color:white;\">Contributions from swiping your debit card</span>"
+                                "type" : "text",
+                                "content" : {
+                                    "html" : "<span style=\"font-family: SFProRounded-Light; font-size:14px; line-height: 18px; color:white;\">From swiping your card<\/span>"
                                 }
                             }
                         ]
                     },
-                    "padding": {
-                        "bottom": 10,
-                        "top": 0,
-                        "right": 0,
-                        "left": 0
+                    "padding" : {
+                        "bottom" : 10,
+                        "top" : 0,
+                        "right" : 0,
+                        "left" : 0
                     },
-                    "type": "z_container",
-                    "background_color": "#543870"
+                    "type" : "z_container",
+                    "background_color" : "[(${ctx.clientPrimaryColor})]"
                 },
                 {
-                    "type": "z_container",
-                    "content": {
-                        "children": [
+                    "type" : "z_container",
+                    "content" : {
+                        "children" : [
                             {
-                                "type": "container",
-                                "content": {
-                                    "children": []
+                                "type" : "container",
+                                "content" : {
+                                    "children" : [
+                                        [# th:each="unit,unitsStatus : ${ctx.units}"]
+                                        {
+                                            "type": "z_container",
+                                            "content": {
+                                                "children": [
+                                                    {
+                                                        "snap_to_edges": [
+                                                            "left",
+                                                            "top"
+                                                        ],
+                                                        "padding": {
+                                                            "bottom": 0,
+                                                            "top": 12,
+                                                            "right": 0,
+                                                            "left": 15
+                                                        },
+                                                        "type": "image",
+                                                        "content": {
+                                                            "url": "[(${unit.icon})]",
+                                                            "fixed_width": 40,
+                                                            "fixed_height": 40
+                                                        }
+                                                    },
+                                                    {
+                                                        "snap_to_edges": [
+                                                            "top",
+                                                            "left"
+                                                        ],
+                                                        "padding": {
+                                                            "bottom": 0,
+                                                            "top": 11,
+                                                            "right": 0,
+                                                            "left": 65
+                                                        },
+                                                        "type": "text",
+                                                        "fixed_width": 81,
+                                                        "content": {
+                                                            "html": "<span style=\"font-family: SFProRounded-Light; font-size:36px; line-height: 40px; color:#414d54; text-align:center; display:block;\">[(${unit.count})]<\/span>",
+                                                            "alignment": "center"
+                                                        }
+                                                    },
+                                                    {
+                                                        "snap_to_edges": [
+                                                            "top",
+                                                            "left",
+                                                            "right",
+                                                            "bottom"
+                                                        ],
+                                                        "padding": {
+                                                            "bottom": 15.5,
+                                                            "top": 15,
+                                                            "right": 15,
+                                                            "left": 155
+                                                        },
+                                                        "type": "text",
+                                                        "content": {
+                                                            "html": "<span style=\"font-family: SFProRounded-Medium; font-size:14px; line-height: 17px; color:black;\">[(${unit.title})]<\/span><br \/>\n<span style=\"font-family: SFProRounded-Regular; font-size:14px; line-height: 17px; color:black;\">[(${unit.subtitle})]<\/span>"
+                                                        }
+                                                    },
+                                                    {
+                                                        "fixed_height": 0.5,
+                                                        "snap_to_edges": [
+                                                            "left",
+                                                            "right",
+                                                            "bottom"
+                                                        ],
+                                                        "padding": {
+                                                            "bottom": 0,
+                                                            "top": 0,
+                                                            "right": 0,
+                                                            "left": 0
+                                                        },
+                                                        "type": "container",
+                                                        "background_color": "#ced4da",
+                                                        "content": {
+                                                            "children": [
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }[# th:unless="${unitsStatus.last}"],[/]
+                                        [/]
+                                    ]
                                 }
                             }
+                            [# th:if="${not #lists.isEmpty(ctx.units) and ctx.isClientCustomerSponsored and not ctx.isCustomerSponsored}"],[/]
+                            [# th:if="${ctx.isClientCustomerSponsored and not ctx.isCustomerSponsored}"]
+                            {
+                                "content" : {
+                                    "children" : [
+                                        
+                                    ]
+                                },
+                                "background_color" : "ffffff",
+                                "type" : "z_container",
+                                "alpha" : 0.5
+                            }
+                            [/]
                         ]
                     }
                 },
                 {
-                    "content": {
-                        "border_color": "#ffffff",
-                        "text_color": "#543870",
-                        "text_size": 14,
-                        "text_weight": "medium",
-                        "text": "How does this work?"
+                    "content" : {
+                        "html": "<a href=\"\/actions\/showModal?type=HOW_IT_WORKS\"><span style=\"font-family: SFProRounded-Regular; font-size:14px; line-height: 20px; color:[(${ctx.clientPrimaryColor})];\">How does this work?<\/span><\/a>",
+                        "alignment": "center",
+                        "text_color": "[(${ctx.clientPrimaryColor})]"
                     },
-                    "padding": {
+                    "padding" : {
+                        [# th:if="${ctx.isClientCustomerSponsored}"]
+                        "bottom" : 18,
+                        [/]
+                        [# th:if="${not ctx.isClientCustomerSponsored}"]
                         "bottom": 27,
-                        "top": 21,
-                        "right": 0,
-                        "left": 0
+                        [/]
+                        "top" : 21,
+                        "right" : 0,
+                        "left" : 0
                     },
-                    "type": "button",
-                    "link": "/actions/showModal?type=HOW_IT_WORKS"
+                    "type" : "text",
+                    "link" : "\/actions\/showModal?type=HOW_IT_WORKS"
                 }
+                [# th:if="${ctx.isClientCustomerSponsored and ctx.isCustomerSponsored}"]
+                ,
+                {
+                    "content" : {
+                        "border_color" : "#000000",
+                        "text_color" : "#000000",
+                        "text_size" : 14,
+                        "text_weight" : "medium",
+                        "text" : "Everyday Impact Settings"
+                    },
+                    "padding" : {
+                        "bottom" : 27,
+                        "top" : 0,
+                        "right" : 40,
+                        "left" : 40
+                    },
+                    "type" : "button",
+                    "link" : "\/flow?type=customerSettings"
+                }[/]
+                [# th:if="${ctx.isClientCustomerSponsored and not ctx.isCustomerSponsored}"]
+                ,
+                {
+                    "content" : {
+                        "border_color" : "[(${ctx.clientPrimaryColor})]",
+                        "text_color" : "#ffffff",
+                        "text_size" : 14,
+                        "text_weight" : "medium",
+                        "text" : "Turn on Everyday Impact"
+                    },
+                    "padding" : {
+                        "bottom" : 27,
+                        "top" : 0,
+                        "right" : 40,
+                        "left" : 40
+                    },
+                    "type" : "button",
+                    "background_color" : "[(${ctx.clientPrimaryColor})]",
+                    "link" : "\/flow?type=customerSettings"
+                }
+                [/]
             ]
         }
     }

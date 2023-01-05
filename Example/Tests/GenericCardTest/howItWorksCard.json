@@ -2,279 +2,176 @@
     "root": {
         "type": "modal_container",
         "content": {
-            "children": [
-                {
-                    "type": "z_container",
-                    "content": {
-                        "children": [
-                            {
-                                "type": "scroll_container",
-                                "content": {
-                                    "children": [
-                                        {
-                                            "type": "container",
-                                            "padding": {
-                                                "bottom": 75,
-                                                "top": 0,
-                                                "right": 0,
-                                                "left": 0
-                                            },
-                                            "content": {
-                                                "children": [
-                                                    {
-                                                        "type": "text",
-                                                        "padding": {
-                                                            "bottom": 0,
-                                                            "top": 46,
-                                                            "right": 20,
-                                                            "left": 20
-                                                        },
-                                                        "content": {
-                                                            "html": "<span style=\"font-family: SFProRounded-Regular; font-size:22px; line-height: 22px; color:black;\">Introducing Social Impact<br />Rewards</span>",
-                                                            "alignment": "center"
-                                                        }
-                                                    },
-                                                    {
-                                                        "type": "image",
-                                                        "padding": {
-                                                            "bottom": 0,
-                                                            "top": 20,
-                                                            "right": 0,
-                                                            "left": 0
-                                                        },
-                                                        "content": {
-                                                            "url": "https://res.cloudinary.com/spiral/image/upload/v1670959825/sdkClients/SDK_Card_howitworks.png",
-                                                            "fixed_height": 98
-                                                        }
-                                                    },
-                                                    {
-                                                        "type": "text",
-                                                        "padding": {
-                                                            "bottom": 20,
-                                                            "top": 20,
-                                                            "right": 32,
-                                                            "left": 32
-                                                        },
-                                                        "content": {
-                                                            "html": "<span style=\"font-family: SFProRounded-SemiBold; font-size:18px; line-height: 22px; color:black;\">Impact Rewards<span><br /><span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 22px; color:black;\">Now, certain purchases made with your debit card create a social or environmental impact. When you make everyday purchases like buying gas or paying bills, we make a donation to a nonprofit to achieve a related impact.</span><br /><br /><span style=\"font-family: SFProRounded-SemiBold; font-size:18px; line-height: 22px; color:black;\">How it works</span><br /><span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 22px; color:black;\">We donate to four trusted, effective nonprofits. We’ve estimated how much these nonprofits spend to achieve a tangible impact — such as planting a tree or delivering a meal — and make a donation in that amount for each swipe.  The social impact totals you see are reflective of your impact all-time, and do not reset every year.</span>"
-                                                        }
-                                                    },
-                                                    {
-                                                        "type": "container",
-                                                        "padding": {
-                                                            "bottom": 0,
-                                                            "top": 20,
-                                                            "right": 32,
-                                                            "left": 32
-                                                        },
-                                                        "content": {
-                                                            "axis": "horizontal",
-                                                            "children": [
-                                                                {
-                                                                    "type": "container",
-                                                                    "fixed_width": 78,
-                                                                    "content": {
-                                                                        "children": [
-                                                                            {
-                                                                                "type": "image",
-                                                                                "padding": {
-                                                                                    "bottom": 0,
-                                                                                    "top": 0,
-                                                                                    "right": 18,
-                                                                                    "left": 10
-                                                                                },
-                                                                                "content": {
-                                                                                    "fixed_height": 50,
-                                                                                    "content_mode": "aspect_fit",
-                                                                                    "url": "https://res.cloudinary.com/spiral/image/upload/v1649955512/socially-responsible-rewards/coffee.png",
-                                                                                    "fixed_width": 50
-                                                                                }
-                                                                            }
-                                                                        ]
-                                                                    }
-                                                                },
-                                                                {
-                                                                    "type": "text",
-                                                                    "padding": {
-                                                                        "bottom": 0,
-                                                                        "top": 0,
-                                                                        "right": 10,
-                                                                        "left": 0
-                                                                    },
-                                                                    "content": {
-                                                                        "html": "<span style=\"font-family: SFProRounded-SemiBold; font-size:15px; line-height: 22px; color:black;\">Restaurants, Groceries: </span><span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 22px; color:black;\">When you buy groceries or eat at restaurant, we donate to World Food Program USA</span>"
-                                                                    }
-                                                                }
-                                                            ]
-                                                        }
-                                                    },
-                                                    {
-                                                        "type": "container",
-                                                        "padding": {
-                                                            "bottom": 0,
-                                                            "top": 20,
-                                                            "right": 32,
-                                                            "left": 32
-                                                        },
-                                                        "content": {
-                                                            "axis": "horizontal",
-                                                            "children": [
-                                                                {
-                                                                    "type": "container",
-                                                                    "fixed_width": 78,
-                                                                    "content": {
-                                                                        "children": [
-                                                                            {
-                                                                                "type": "image",
-                                                                                "padding": {
-                                                                                    "bottom": 0,
-                                                                                    "top": 0,
-                                                                                    "right": 18,
-                                                                                    "left": 10
-                                                                                },
-                                                                                "content": {
-                                                                                    "fixed_height": 50,
-                                                                                    "content_mode": "aspect_fit",
-                                                                                    "url": "https://res.cloudinary.com/spiral/image/upload/v1649955512/socially-responsible-rewards/roof.png",
-                                                                                    "fixed_width": 50
-                                                                                }
-                                                                            }
-                                                                        ]
-                                                                    }
-                                                                },
-                                                                {
-                                                                    "type": "text",
-                                                                    "padding": {
-                                                                        "bottom": 0,
-                                                                        "top": 0,
-                                                                        "right": 10,
-                                                                        "left": 0
-                                                                    },
-                                                                    "content": {
-                                                                        "html": "<span style=\"font-family: SFProRounded-SemiBold; font-size:15px; line-height: 22px; color:black;\">Hotels: </span><span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 22px; color:black;\">When you pay your rent or mortgage, we donate to Evidence Action</span>"
-                                                                    }
-                                                                }
-                                                            ]
-                                                        }
-                                                    },
-                                                    {
-                                                        "type": "container",
-                                                        "padding": {
-                                                            "bottom": 0,
-                                                            "top": 20,
-                                                            "right": 32,
-                                                            "left": 32
-                                                        },
-                                                        "content": {
-                                                            "axis": "horizontal",
-                                                            "children": [
-                                                                {
-                                                                    "type": "container",
-                                                                    "fixed_width": 78,
-                                                                    "content": {
-                                                                        "children": [
-                                                                            {
-                                                                                "type": "image",
-                                                                                "padding": {
-                                                                                    "bottom": 0,
-                                                                                    "top": 0,
-                                                                                    "right": 18,
-                                                                                    "left": 10
-                                                                                },
-                                                                                "content": {
-                                                                                    "fixed_height": 50,
-                                                                                    "content_mode": "aspect_fit",
-                                                                                    "url": "https://res.cloudinary.com/spiral/image/upload/v1649955512/socially-responsible-rewards/tree.png",
-                                                                                    "fixed_width": 50
-                                                                                }
-                                                                            }
-                                                                        ]
-                                                                    }
-                                                                },
-                                                                {
-                                                                    "type": "text",
-                                                                    "padding": {
-                                                                        "bottom": 0,
-                                                                        "top": 0,
-                                                                        "right": 10,
-                                                                        "left": 0
-                                                                    },
-                                                                    "content": {
-                                                                        "html": "<span style=\"font-family: SFProRounded-SemiBold; font-size:15px; line-height: 22px; color:black;\">Gas, Transportation: </span><span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 22px; color:black;\">When you pay your electric or gas bill, or buy gas from the gas station, we donate to EDEN REFORESTATION PROJECTS</span>"
-                                                                    }
-                                                                }
-                                                            ]
-                                                        }
-                                                    },
-                                                    {
-                                                        "type": "text",
-                                                        "padding": {
-                                                            "bottom": 20,
-                                                            "top": 20,
-                                                            "right": 32,
-                                                            "left": 32
-                                                        },
-                                                        "content": {
-                                                            "html": "<span style=\"font-family: SFProRounded-SemiBold; font-size:18px; line-height: 22px; color:black;\">Why these nonprofits?<span><br /><span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 22px; color:black;\">We carefully selected these nonprofits based on their evidence-based results and high quality reputations. If you have questions, please email <a href=\"mailto:nonprofits@spiral.us\">nonprofits@spiral.us</a>.</span>"
-                                                        }
-                                                    },
-                                                    {
-                                                        "type": "text",
-                                                        "padding": {
-                                                            "bottom": 20,
-                                                            "top": 0,
-                                                            "right": 32,
-                                                            "left": 32
-                                                        },
-                                                        "content": {
-                                                            "html": "<span style=\"font-family: SFProRounded-Regular; font-size:16px; line-height: 20px; color:black;\"><a href=\"http://spiral.us\">I want more info</a>.</span>",
-                                                            "alignment": "center"
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            {
-                                "fixed_height": 75,
-                                "snap_to_edges": [
-                                    "left",
-                                    "bottom",
-                                    "right"
-                                ],
-                                "blur": true,
-                                "type": "z_container",
-                                "content": {
-                                    "children": []
-                                }
-                            },
-                            {
-                                "snap_to_edges": [
-                                    "left",
-                                    "bottom",
-                                    "right"
-                                ],
+            "children": [{
+                "type": "z_container",
+                "content": {
+                    "children": [{
+                        "type": "scroll_container",
+                        "content": {
+                            "children": [{
+                                "type": "container",
                                 "padding": {
-                                    "bottom": 25,
+                                    "bottom": 75,
                                     "top": 0,
                                     "right": 0,
                                     "left": 0
                                 },
-                                "type": "button",
                                 "content": {
-                                    "text_color": "#000000",
-                                    "border_color": "#000000",
-                                    "fixed_width": 200,
-                                    "text": "Got it, thanks"
-                                },
-                                "link": "dismiss"
+                                    "children": [{
+                                        "type": "text",
+                                        "padding": {
+                                            "bottom": 0,
+                                            "top": 46,
+                                            "right": 20,
+                                            "left": 20
+                                        },
+                                        "content": {
+                                            "html": "<span style=\"font-family: SFProRounded-Regular; font-size:22px; line-height: 22px; color:black;\">Introducing<br />Everyday Impact<br \/>rewards<\/span>",
+                                            "alignment": "center"
+                                        }
+                                    },
+                                        {
+                                            "type": "image",
+                                            "padding": {
+                                                "bottom": 0,
+                                                "top": 20,
+                                                "right": 0,
+                                                "left": 0
+                                            },
+                                            "content": {
+                                                "url": "https:\/\/res.cloudinary.com\/spiral\/image\/upload\/v1670959825\/sdkClients\/SDK_Card_howitwords2.png",
+                                                "fixed_height": 99
+                                            }
+                                        },
+                                        {
+                                            "type": "text",
+                                            "padding": {
+                                                "bottom": 20,
+                                                "top": 20,
+                                                "right": 32,
+                                                "left": 32
+                                            },
+                                            "content": {
+                                                "html": "<span style=\"font-family: SFProRounded-SemiBold; font-size:18px; line-height: 22px; color:black;\">Everyday Impact rewards<span><br \/><span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 22px; color:black;\">Now, certain purchases made with your card create a social or environmental impact. When you make everyday purchases like buying gas or paying bills, we make a donation to a nonprofit to achieve a related impact.<\/span><br \/><br \/><span style=\"font-family: SFProRounded-SemiBold; font-size:18px; line-height: 22px; color:black;\">How it works<\/span><br \/><span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 22px; color:black;\">We donate to four trusted, effective nonprofits. We’ve estimated how much these nonprofits spend to achieve a tangible impact — such as planting a tree or delivering a meal — and make a donation in that amount for each swipe.  The everyday impact totals you see are reflective of your impact all-time, and do not reset every year.<\/span>"
+                                            }
+                                        },
+                                        [# th:each="unit,unitsStats : ${units}"]
+                                        {
+                                            "type": "container",
+                                            "padding": {
+                                                "bottom": 0,
+                                                "top": 20,
+                                                "right": 32,
+                                                "left": 32
+                                            },
+                                            "content": {
+                                                "axis": "horizontal",
+                                                "children": [{
+                                                    "type": "container",
+                                                    "fixed_width": 78,
+                                                    "content": {
+                                                        "children": [{
+                                                            "type": "image",
+                                                            "padding": {
+                                                                "bottom": 0,
+                                                                "top": 0,
+                                                                "right": 18,
+                                                                "left": 10
+                                                            },
+                                                            "content": {
+                                                                "fixed_height": 50,
+                                                                "content_mode": "aspect_fit",
+                                                                "url": "[(${unit.icon})]",
+                                                                "fixed_width": 50
+                                                            }
+                                                        }]
+                                                    }
+                                                },
+                                                    {
+                                                        "type": "text",
+                                                        "padding": {
+                                                            "bottom": 0,
+                                                            "top": 0,
+                                                            "right": 10,
+                                                            "left": 0
+                                                        },
+                                                        "content": {
+                                                            "html": "<span style=\"font-family: SFProRounded-SemiBold; font-size:15px; line-height: 22px; color:black;\">[(${unit.category})]: <\/span><span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 22px; color:black;\">[(${unit.description})]<\/span>"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },[/]
+                                        {
+                                            "type": "text",
+                                            "padding": {
+                                                "bottom": 20,
+                                                "top": 20,
+                                                "right": 32,
+                                                "left": 32
+                                            },
+                                            "content": {
+                                                "html": "<span style=\"font-family: SFProRounded-SemiBold; font-size:18px; line-height: 22px; color:black;\">Why these nonprofits?<span><br \/><span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 22px; color:black;\">We carefully selected these nonprofits based on their evidence-based results and high quality reputations. If you have questions, please email <a href=\"mailto:nonprofits@spiral.us\">nonprofits@spiral.us<\/a>.<\/span>"
+                                            }
+                                        },
+                                        {
+                                            "type": "text",
+                                            "padding": {
+                                                "bottom": 20,
+                                                "top": 0,
+                                                "right": 32,
+                                                "left": 32
+                                            },
+                                            "content": {
+                                                "html": "<a href=\"http:\/\/spiral.us\"><span style=\"font-family: SFProRounded-Regular; font-size:16px; line-height: 20px; color:[(${primaryClientColor})];\">I want more info<\/span><\/a>",
+                                                "alignment": "center",
+                                                "text_color": "[(${primaryClientColor})]"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }]
+                        }
+                    },
+                        {
+                            "fixed_height": 75,
+                            "snap_to_edges": [
+                                "left",
+                                "bottom",
+                                "right"
+                            ],
+                            "blur": true,
+                            "type": "z_container",
+                            "content": {
+                                "children": [
+                                    
+                                ]
                             }
-                        ]
-                    }
+                        },
+                        {
+                            "snap_to_edges": [
+                                "left",
+                                "bottom",
+                                "right"
+                            ],
+                            "padding": {
+                                "bottom": 25,
+                                "top": 0,
+                                "right": 0,
+                                "left": 0
+                            },
+                            "type": "button",
+                            "content": {
+                                "text_color": "#000000",
+                                "border_color": "#000000",
+                                "fixed_width": 200,
+                                "text": "Got it, thanks"
+                            },
+                            "link": "dismiss"
+                        }
+                    ]
                 }
-            ]
+            }]
         }
     }
 }

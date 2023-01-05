@@ -1,78 +1,76 @@
 {
-    "root": {
-        "type": "container",
-        "content": {
-            "children": [
+    "root" : {
+        "type" : "container",
+        "content" : {
+            "children" : [
                 {
-                    "type": "image",
-                    "padding": {
-                        "bottom": 20,
-                        "top": 20,
-                        "right": 0,
-                        "left": 0
+                    "type" : "image",
+                    "padding" : {
+                        "bottom" : 20,
+                        "top" : 20,
+                        "right" : 0,
+                        "left" : 0
                     },
-                    "content": {
-                        "url": "https://res.cloudinary.com/spiral/image/upload/v1671046939/sdkClients/Piggybank-icon.png",
-                        "fixed_height": 60
+                    "content" : {
+                        "url" : "https:\/\/res.cloudinary.com\/spiral\/image\/upload\/v1671046939\/sdkClients\/Everyday_Impact_Icon.png",
+                        "fixed_height" : 60
                     }
                 },
                 {
-                    "type": "text",
-                    "padding": {
-                        "bottom": 10,
-                        "top": 0,
-                        "right": 18,
-                        "left": 18
+                    "type" : "text",
+                    "padding" : {
+                        "bottom" : 10,
+                        "top" : 0,
+                        "right" : 18,
+                        "left" : 18
                     },
-                    "content": {
-                        "html": "<span style=\"font-family: SFProRounded-Regular; font-size:22px; line-height: 28px; color:black;\">Introducing Social Impact Rewards</span>",
-                        "alignment": "center"
+                    "content" : {
+                        "html" : "<span style=\"font-family: SFProRounded-Regular; font-size:22px; line-height: 28px; color:black;\">Introducing<br />Everyday Impact rewards<\/span>",
+                        "alignment" : "center"
                     }
                 },
                 {
-                    "type": "text",
-                    "padding": {
-                        "bottom": 10,
-                        "top": 0,
-                        "right": 16,
-                        "left": 16
+                    "type" : "text",
+                    "padding" : {
+                        "bottom" : 0,
+                        "top" : 0,
+                        "right" : 16,
+                        "left" : 16
                     },
-                    "content": {
-                        "html": "<span style=\"font-family: SFProRounded-Regular; font-size:16px; line-height: 24px; color:black;\">When you make certain purchases with your debit card, your transaction amount will be rounded up and the money will be used as a charitable contribution.</span>",
-                        "alignment": "center"
+                    "content" : {
+                        "html" : "<span style=\"font-family: SFProRounded-Regular; font-size:16px; line-height: 24px; color:black;\">When you make certain purchases with your card, your transaction amount will be rounded up and the money will be used as a charitable contribution.<\/span>",
+                        "alignment" : "center"
                     }
                 },
                 {
-                    "content": {
-                        "text_color": "#da7676",
-                        "border_color": "ffffff",
-                        "fixed_width": 200,
-                        "text": "How does this work?"
+                    "content" : {
+                        "html": "<a href=\"\/actions\/showModal?type=HOW_IT_WORKS\"><span style=\"font-family: SFProRounded-Regular; font-size:14px; line-height: 20px; color:[(${primaryClientColor})];\">How does this work?<\/span><\/a>",
+                        "alignment": "center",
+                        "text_color": "[(${primaryClientColor})]"
                     },
-                    "padding": {
-                        "bottom": 10,
-                        "top": 0,
-                        "right": 0,
-                        "left": 0
+                    "padding" : {
+                        "bottom" : 30,
+                        "top" : 30,
+                        "right" : 0,
+                        "left" : 0
                     },
-                    "type": "button",
-                    "link": "/actions/showModal?type=HOW_IT_WORKS"
+                    "type" : "text"
                 },
                 {
-                    "content": {
-                        "text_color": "#ffffff",
-                        "text": "Set up Instant Impact",
-                        "border_color": "#da7676"
+                    "content" : {
+                        "text_color" : "#ffffff",
+                        "text" : "Set up Everyday Impact",
+                        "border_color" : "[(${primaryClientColor})]"
                     },
-                    "padding": {
-                        "bottom": 25,
-                        "top": 0,
-                        "right": 16,
-                        "left": 16
+                    "padding" : {
+                        "bottom" : 25,
+                        "top" : 0,
+                        "right" : 16,
+                        "left" : 16
                     },
-                    "type": "button",
-                    "background_color": "#da7676",
-                    "link": "/flow?type=customerSettings"
+                    "type" : "button",
+                    "background_color" : "[(${primaryClientColor})]",
+                    "link" : "\/flow?type=customerSettings"
                 }
             ]
         }

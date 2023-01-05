@@ -25,6 +25,12 @@ class GenericCardTextView: GenericCardComponentView {
         if let html = textComponentData.html {
             let fontWrappedHtml = wrapWithHTMLFontStyles(html: html)
             let attributedString = NSMutableAttributedString(html: fontWrappedHtml)
+            
+            if let textColorHex = textComponentData.textColor,
+               let textColor = UIColor(hexString: textColorHex) {
+                textView.linkTextAttributes = [.foregroundColor: textColor]
+            }
+            
             textView.attributedText = attributedString
         } else {
             if let text = textComponentData.text {
