@@ -30,7 +30,7 @@ if [ -n "$SWAGGER_API_KEY" ]; then
   #
   # Move the open api .yaml file to the generated folder
   #
-  # mv -i ./tmp/openapi-v1.yaml ./src/generated;
+  mv -i ./tmp/openapi-v1.yaml ./src/generated;
   cp ./openapi-ios-v1.yaml ./src/generated;
   #
   # Delete the temporary folder

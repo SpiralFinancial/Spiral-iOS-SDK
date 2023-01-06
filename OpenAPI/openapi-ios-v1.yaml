@@ -228,6 +228,13 @@ paths:
           description: Unique request ID used for troubleshooting.
           schema:
             type: string
+        - name: ids
+          in: query
+          description: Optional transaction ids; if provided, will be used instead of search parameters.
+          schema:
+            type: array
+            items:
+              type: string
         - name: search
           in: query
           description: Search query; filters transaction descriptions in a case-insensitive way.

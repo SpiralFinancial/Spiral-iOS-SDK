@@ -145,6 +145,7 @@ open class SocialResponsibilityAPI {
      
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter ids: (query) Optional transaction ids; if provided, will be used instead of search parameters. (optional)
      - parameter search: (query) Search query; filters transaction descriptions in a case-insensitive way. (optional)
      - parameter rewardUnit: (query) A list of reward units to include in the search. Defaults to all units if not provided. (optional)
      - parameter period: (query) The period of transactions to include in the search. Defaults to ALL-TIME. (optional)
@@ -152,8 +153,8 @@ open class SocialResponsibilityAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getInstantImpactTransactions(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, search: String? = nil, rewardUnit: [String]? = nil, period: SummaryTimePeriod? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: SocialResponsibilityTransactionListResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getInstantImpactTransactionsWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID, search: search, rewardUnit: rewardUnit, period: period).execute(apiResponseQueue) { result in
+    open class func getInstantImpactTransactions(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, ids: [String]? = nil, search: String? = nil, rewardUnit: [String]? = nil, period: SummaryTimePeriod? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: SocialResponsibilityTransactionListResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getInstantImpactTransactionsWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID, ids: ids, search: search, rewardUnit: rewardUnit, period: period).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -172,18 +173,20 @@ open class SocialResponsibilityAPI {
        - name: ClientID
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter ids: (query) Optional transaction ids; if provided, will be used instead of search parameters. (optional)
      - parameter search: (query) Search query; filters transaction descriptions in a case-insensitive way. (optional)
      - parameter rewardUnit: (query) A list of reward units to include in the search. Defaults to all units if not provided. (optional)
      - parameter period: (query) The period of transactions to include in the search. Defaults to ALL-TIME. (optional)
      - returns: RequestBuilder<SocialResponsibilityTransactionListResponse> 
      */
-    open class func getInstantImpactTransactionsWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, search: String? = nil, rewardUnit: [String]? = nil, period: SummaryTimePeriod? = nil) -> RequestBuilder<SocialResponsibilityTransactionListResponse> {
+    open class func getInstantImpactTransactionsWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, ids: [String]? = nil, search: String? = nil, rewardUnit: [String]? = nil, period: SummaryTimePeriod? = nil) -> RequestBuilder<SocialResponsibilityTransactionListResponse> {
         let localVariablePath = "/social/instant/impact/transaction"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "ids": (wrappedValue: ids?.encodeToJSON(), isExplode: true),
             "search": (wrappedValue: search?.encodeToJSON(), isExplode: true),
             "rewardUnit": (wrappedValue: rewardUnit?.encodeToJSON(), isExplode: true),
             "period": (wrappedValue: period?.encodeToJSON(), isExplode: true),
