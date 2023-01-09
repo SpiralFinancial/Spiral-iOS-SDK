@@ -31,7 +31,7 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
     }
     
     @discardableResult private func updateToken() -> Bool {
-        token = Spiral.shared.token()
+        token = Spiral.shared.config()?.authToken
         return token != nil
     }
     

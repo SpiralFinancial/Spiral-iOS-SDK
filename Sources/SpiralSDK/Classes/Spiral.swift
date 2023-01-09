@@ -11,19 +11,13 @@ public class Spiral {
     
     public static let shared = Spiral()
     
-    // TODO: implement auth
-    private var _token: String? = "abc"
-    
     private var _config: SpiralConfig?
     
     private var _apiHeaders: [String: String] {
         return ["X-SPIRAL-SDK-VERSION": "ios-1.0.0",
                 "X-SPIRAL-CUSTOMER-ID": _config?.customerId ?? .empty,
-                "X-SPIRAL-CLIENT-ID": _config?.clientId ?? .empty]
-    }
-    
-    public func token() -> String? {
-        return _token
+                "X-SPIRAL-CLIENT-ID": _config?.clientId ?? .empty,
+                "X-AUTH-TOKEN": _config?.authToken ?? .empty]
     }
     
     public func config() -> SpiralConfig? {
@@ -45,7 +39,7 @@ public class Spiral {
     private var _currentFlowController: SpiralViewController?
     
     func startFlow(flow: SpiralFlow, delegate: SpiralDelegate) {
-        guard _token != nil, _config != nil else {
+        guard _config != nil else {
             print("Spiral: missing config. Please call Spiral.shared.setup() before starting this flow.")
             return
         }
@@ -57,8 +51,6 @@ public class Spiral {
     
     public func setup(config: SpiralConfig) {
         _config = config
-        
-        // TODO: load token
     }
     
     public func getCustomerSettings(success: ((CustomerSettings) -> Void)?,
@@ -99,7 +91,8 @@ public class Spiral {
         
         let requestBuilder = CmsAPI.getGenericCardWithRequestBuilder(type: type)
         requestBuilder.addHeaders(_apiHeaders)
-        requestBuilder.execute { result in
+        proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in 
+//        requestBuilder.execute { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(response):
@@ -193,7 +186,45 @@ public class Spiral {
         }
     }
 
-    
+    private func proxyRequestForBuilder<T: Decodable>(requestBuilder: RequestBuilder<T>) -> RequestBuilder<T> {
+        
+        guard let proxyUrl = _config?.proxyUrl else { return requestBuilder }
+        
+        let localVariableURLString = proxyUrl
+        
+        let endpoint = String(requestBuilder.URLString.suffix(requestBuilder.URLString.count - OpenAPIClientAPI.basePath.count))
+        
+        var paramsData: Data? = nil
+        if let parameters = requestBuilder.parameters {
+            paramsData = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        }
+        var bodyStr: String? = nil
+        if let paramsData = paramsData {
+            bodyStr = String(data: paramsData, encoding: .utf8)
+        }
+        
+        let localNillableVariableParameters: [String: Encodable?] = [
+            "method": requestBuilder.method,
+            "endpoint": endpoint,
+            "clientId": _config?.clientId,
+            "customerId": _config?.customerId,
+            "body": bodyStr,
+        ]
+        
+        let jsonData = try? JSONSerialization.data(withJSONObject: localNillableVariableParameters, options: .prettyPrinted)
+        
+        let localVariableParameters: [String: Any] = ["jsonData": jsonData ?? [String: Any]()]
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = requestBuilder.headers
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<T>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
 }
 
 public protocol SpiralDelegate: SpiralDeepLinkHandler {
@@ -295,9 +326,16 @@ public struct SpiralConfig {
     
     public let clientId: String
     public let customerId: String
+    
+    public let proxyUrl: String?
+    public let authToken: String
         
     public var baseUrl: String {
         get {
+            if let proxyUrl = proxyUrl {
+                return proxyUrl
+            }
+            
             switch environment {
             case .local(let _url):
                 return _url
@@ -308,10 +346,12 @@ public struct SpiralConfig {
             }
         }
     }
-    public init(mode: SpiralMode, environment: SpiralEnvironment, clientId: String, customerId: String) {
+    public init(mode: SpiralMode, environment: SpiralEnvironment, clientId: String, customerId: String, authToken: String, proxyUrl: String? = nil) {
         self.mode = mode
         self.environment = environment
         self.clientId = clientId
         self.customerId = customerId
+        self.authToken = authToken
+        self.proxyUrl = proxyUrl
     }
 }

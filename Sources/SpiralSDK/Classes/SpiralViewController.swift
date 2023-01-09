@@ -37,7 +37,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     
     public init(flow: SpiralFlow, delegate: SpiralDelegate, onExit: ( () -> Void)? = nil ) {
         self.delegate = delegate
-        self.token = Spiral.shared.token() ?? .empty
+        self.token = Spiral.shared.config()?.authToken ?? .empty
         self.flow = flow
         self.onExit = onExit
         super.init(nibName: nil, bundle: nil)

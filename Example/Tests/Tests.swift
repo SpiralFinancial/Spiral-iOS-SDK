@@ -58,7 +58,9 @@ class TableOfContentsSpec: QuickSpec {
         let config = SpiralConfig(mode: .sandbox,
                                   environment: .staging,
                                   clientId: "CUST12345",
-                                  customerId: "d2f2d15c-8198-4bfe-9752-505b49a9b970")
+                                  customerId: "d2f2d15c-8198-4bfe-9752-505b49a9b970",
+                                  authToken: "abc",
+                                  proxyUrl: "")
         
         Spiral.shared.setup(config: config)
         
