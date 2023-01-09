@@ -177,6 +177,23 @@ public class Spiral {
         }
     }
     
+    public func getTransactionImpactList(transactionIds: [String], completion: @escaping (SocialResponsibilityTransactionListResponse?, Error?) -> Void) {
+        let requestBuilder = SocialResponsibilityAPI.getInstantImpactTransactionsWithRequestBuilder(ids: transactionIds)
+        requestBuilder.addHeaders(_apiHeaders)
+        requestBuilder.execute { result in
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(response):
+                    let impactResponse = response.body
+                    completion(impactResponse, nil)
+                case let .failure(error):
+                    completion(nil, error)
+                }
+            }
+        }
+    }
+
+    
 }
 
 public protocol SpiralDelegate: SpiralDeepLinkHandler {
