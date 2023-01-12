@@ -529,7 +529,7 @@ extension String {
             return self
         }
 
-        let apiURL = Spiral.shared.config()?.baseUrl ?? .empty
+        let apiURL = Spiral.shared.config()?.webBaseUrl ?? .empty
         let newURL = apiURL + self
         return newURL
     }
