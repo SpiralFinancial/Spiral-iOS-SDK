@@ -11,10 +11,12 @@ public class Spiral {
     
     public static let shared = Spiral()
     
+    fileprivate static let sdkVersion = "1.0.0"
+    
     private var _config: SpiralConfig?
     
     private var _apiHeaders: [String: String] {
-        return ["X-SPIRAL-SDK-VERSION": "ios-1.0.0",
+        return ["X-SPIRAL-SDK-VERSION": "ios-" + Spiral.sdkVersion,
                 "X-SPIRAL-CUSTOMER-ID": _config?.customerId ?? .empty,
                 "X-SPIRAL-CLIENT-ID": _config?.clientId ?? .empty,
                 "X-AUTH-TOKEN": _config?.authToken ?? .empty]
@@ -57,7 +59,7 @@ public class Spiral {
                                     failure: ((Error?) -> Void)?) {
         let requestBuilder = ManagementAPI.getCustomerSettingsWithRequestBuilder()
         requestBuilder.addHeaders(_apiHeaders)
-        requestBuilder.execute { result in
+        proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(response):
@@ -91,8 +93,7 @@ public class Spiral {
         
         let requestBuilder = CmsAPI.getGenericCardWithRequestBuilder(type: type)
         requestBuilder.addHeaders(_apiHeaders)
-        proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in 
-//        requestBuilder.execute { result in
+        proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(response):
@@ -133,7 +134,7 @@ public class Spiral {
         
         let requestBuilder = CmsAPI.getGenericCardWithRequestBuilder(type: type)
         requestBuilder.addHeaders(_apiHeaders)
-        requestBuilder.execute { result in
+        proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(response):
@@ -157,7 +158,7 @@ public class Spiral {
     public func getTransactionImpact(transactionId: String, completion: @escaping (SocialResponsibilityTransactionInstantImpactResponse?, Error?) -> Void) {
         let requestBuilder = SocialResponsibilityAPI.getInstantImpactByTransactionIdWithRequestBuilder(transactionId: transactionId)
         requestBuilder.addHeaders(_apiHeaders)
-        requestBuilder.execute { result in
+        proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(response):
@@ -173,7 +174,7 @@ public class Spiral {
     public func getTransactionImpactList(transactionIds: [String], completion: @escaping (SocialResponsibilityTransactionListResponse?, Error?) -> Void) {
         let requestBuilder = SocialResponsibilityAPI.getInstantImpactTransactionsWithRequestBuilder(ids: transactionIds)
         requestBuilder.addHeaders(_apiHeaders)
-        requestBuilder.execute { result in
+        proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(response):
@@ -205,20 +206,18 @@ public class Spiral {
         
         let localNillableVariableParameters: [String: Encodable?] = [
             "method": requestBuilder.method,
-            "endpoint": endpoint,
+            "endpoint": "/v1" + endpoint,
             "clientId": _config?.clientId,
             "customerId": _config?.customerId,
             "body": bodyStr,
+            "version": "ios-" + Spiral.sdkVersion
         ]
         
         let jsonData = try? JSONSerialization.data(withJSONObject: localNillableVariableParameters, options: .prettyPrinted)
         
         let localVariableParameters: [String: Any] = ["jsonData": jsonData ?? [String: Any]()]
-
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
-
         let localVariableNillableHeaders: [String: Any?] = requestBuilder.headers
-
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<T>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
@@ -266,11 +265,11 @@ public enum SpiralFlow: String {
     var url: String {
         switch self {
         case .donation:
-            return (Spiral.shared.config()?.baseUrl ?? .empty) + "v0.0.1/apps/donate/index.html"
+            return (Spiral.shared.config()?.baseUrl ?? .empty) + Spiral.sdkVersion + "/apps/donate/index.html"
         case .customerSettings:
-            return (Spiral.shared.config()?.baseUrl ?? .empty) + "v0.0.1/apps/customerSettings/index.html"
+            return (Spiral.shared.config()?.baseUrl ?? .empty) + Spiral.sdkVersion + "v0.0.1/apps/customerSettings/index.html"
         case .givingCenter:
-            return (Spiral.shared.config()?.baseUrl ?? .empty) + "v0.0.1/apps/givingCenter/index.html"
+            return (Spiral.shared.config()?.baseUrl ?? .empty) + Spiral.sdkVersion + "v0.0.1/apps/givingCenter/index.html"
         }
     }
 }

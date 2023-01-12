@@ -73,8 +73,9 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
                                                  clientId: "fabac13c-36df-4407-9f9f-24aa109f5f23",
                                                  customerId: "1133413950162432",
 //                                                 customerId: "1133413950162433",
-                                                 authToken: "2452d78c-cb0c-4156-8088-52aeea159a53",
+                                                 authToken: "67c47067-fa9c-4ee2-bbd5-29bcde5fae35",
                                                  proxyUrl: "https://staging-api.spiral.us/passthrough/sdk"))
+//                                                 proxyUrl: nil))
         
         refresh()
     }
@@ -228,12 +229,12 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     }
     
     @IBAction func handleGenericModalTap() {
-//        Spiral.shared.showModalContent(type: "HOW_IT_WORKS", success: nil, failure: nil, delegate: self)
+        Spiral.shared.showModalContent(type: "HOW_IT_WORKS", success: nil, failure: nil, delegate: self)
         
-        guard let cardModel = GenericCardTestFacility.genericCardTestPayloadModel() else { return }
-
-        let vc = SpiralGenericCardModalViewController.create(with: cardModel, delegate: self)
-        present(vc, animated: true)
+//        guard let cardModel = GenericCardTestFacility.genericCardTestPayloadModel() else { return }
+//
+//        let vc = SpiralGenericCardModalViewController.create(with: cardModel, delegate: self)
+//        present(vc, animated: true)
     }
     
     @IBAction func getTransactionImpact() {
