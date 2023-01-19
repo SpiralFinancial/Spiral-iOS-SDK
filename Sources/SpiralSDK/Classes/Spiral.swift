@@ -56,7 +56,7 @@ public class Spiral {
     }
     
     public func getCustomerSettings(success: ((CustomerSettings) -> Void)?,
-                                    failure: ((Error?) -> Void)?) {
+                                    failure: ((ErrorResponse?) -> Void)?) {
         let requestBuilder = ManagementAPI.getCustomerSettingsWithRequestBuilder()
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
@@ -74,7 +74,7 @@ public class Spiral {
     public func loadInstantImpactCard(into view: UIView,
                                       delegate: SpiralDelegate?,
                                       success: ((UIView) -> Void)?,
-                                      failure: ((Error?) -> Void)?,
+                                      failure: ((ErrorResponse?) -> Void)?,
                                       updateLayout: EmptyOptionalClosure) {
         loadContentCard(type: GenericCardType.srSummary.rawValue,
                         into: view,
@@ -88,7 +88,7 @@ public class Spiral {
                                 into view: UIView,
                                 delegate: SpiralDelegate?,
                                 success: ((UIView) -> Void)?,
-                                failure: ((Error?) -> Void)?,
+                                failure: ((ErrorResponse?) -> Void)?,
                                 updateLayout: EmptyOptionalClosure) {
         
         let requestBuilder = CmsAPI.getGenericCardWithRequestBuilder(type: type)
@@ -129,7 +129,7 @@ public class Spiral {
     
     public func showModalContent(type: String,
                                  success: EmptyOptionalClosure,
-                                 failure: ((Error?) -> Void)?,
+                                 failure: ((ErrorResponse?) -> Void)?,
                                  delegate: SpiralDelegate) {
         
         let requestBuilder = CmsAPI.getGenericCardWithRequestBuilder(type: type)
@@ -155,7 +155,7 @@ public class Spiral {
         }
     }
     
-    public func getTransactionImpact(transactionId: String, completion: @escaping (SocialResponsibilityTransactionInstantImpactResponse?, Error?) -> Void) {
+    public func getTransactionImpact(transactionId: String, completion: @escaping (SocialResponsibilityTransactionInstantImpactResponse?, ErrorResponse?) -> Void) {
         let requestBuilder = SocialResponsibilityAPI.getInstantImpactByTransactionIdWithRequestBuilder(transactionId: transactionId)
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
@@ -171,7 +171,7 @@ public class Spiral {
         }
     }
     
-    public func getTransactionImpactList(transactionIds: [String], completion: @escaping (SocialResponsibilityTransactionListResponse?, Error?) -> Void) {
+    public func getTransactionImpactList(transactionIds: [String], completion: @escaping (SocialResponsibilityTransactionListResponse?, ErrorResponse?) -> Void) {
         let requestBuilder = SocialResponsibilityAPI.getInstantImpactTransactionsWithRequestBuilder(ids: transactionIds)
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
