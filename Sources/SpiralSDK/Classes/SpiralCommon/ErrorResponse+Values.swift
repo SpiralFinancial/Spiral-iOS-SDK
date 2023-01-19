@@ -31,4 +31,8 @@ public extension ErrorResponse {
         case let .error(_, _, _, error): return error
         }
     }
+    
+    var message: String {
+        return error.localizedDescription
+    }
 }
