@@ -271,6 +271,9 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
                 payload: {
                     sdk: "ios",
                     spiralToken: "\(token)",
+                    proxyUrl: "\(Spiral.shared.config()?.proxyUrl ?? .empty)",
+                    customerId: "\(Spiral.shared.config()?.customerId ?? .empty)",
+                    clientId: "\(Spiral.shared.config()?.clientId ?? .empty)",
                     uniqueUserId: uuid,
                     initializationTimestamp: Date.now(),
                     version: {
