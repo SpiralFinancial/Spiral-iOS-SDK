@@ -97,15 +97,10 @@ extension SpiralGenericCardModalViewController {
     public class func create(with genericCard: SpiralGenericCardPayloadModel,
                       delegate: SpiralDelegate) -> SpiralGenericCardModalViewController {
         
-//        let bundle = Bundle(for: self)
-//        guard let bundleURL = Bundle(for: self).url(forResource: "Resources", withExtension: "bundle"),
-//              let bundle = Bundle(url: bundleURL) else { return SpiralGenericCardModalViewController() }
         guard let bundle = Bundle.spiralResourcesBundle else { return SpiralGenericCardModalViewController() }
         
         let vc = SpiralGenericCardModalViewController(nibName: "\(self)", bundle: bundle)
-        
-//        let vc = GenericCardModalViewController()
-        
+                
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         

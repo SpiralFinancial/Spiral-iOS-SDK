@@ -93,7 +93,6 @@ class GenericCardButtonView: GenericCardComponentView {
     override func addDeepLinkHandler() {
         deepLinkHandler = { [weak self] in
             guard let deepLinks = self?.deepLinks else { return }
-//            self?.componentDisplayData?.deepLinker?.handleDeepLinks(deepLinks)
             SpiralDefaultDeepLinkHandler.shared.handleDeepLinks(deepLinks,
                                                                 priorityHandler: self?.componentDisplayData?.delegate)
         }

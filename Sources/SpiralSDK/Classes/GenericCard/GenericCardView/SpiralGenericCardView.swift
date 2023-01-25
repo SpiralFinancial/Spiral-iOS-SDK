@@ -123,7 +123,6 @@ class GenericCardComponentView: SpiralBaseView, Configurable {
         
         let tapRecognizer = BindableTapGestureRecognizer(action: { [weak self] in
             guard let deepLinks = self?.deepLinks else { return }
-//            self?.componentDisplayData?.deepLinker?.handleDeepLinks(deepLinks)
             SpiralDefaultDeepLinkHandler.shared.handleDeepLinks(deepLinks,
                                                                 priorityHandler: self?.componentDisplayData?.delegate)
         })
@@ -246,7 +245,6 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
         }
         
         let tapRecognizer = BindableTapGestureRecognizer(action: { [weak self] in
-//            self?.data?.deepLinker?.goToDeepLink(deepLink)
             SpiralDefaultDeepLinkHandler.shared.handleDeepLink(deepLink,
                                                                priorityHandler: self?.data?.delegate)
         })
@@ -268,7 +266,6 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
         }
         
         for link in links {
-//            self.data?.deepLinker?.goToDeepLink(link)
             SpiralDefaultDeepLinkHandler.shared.handleDeepLink(link,
                                                                priorityHandler: data?.delegate)
         }

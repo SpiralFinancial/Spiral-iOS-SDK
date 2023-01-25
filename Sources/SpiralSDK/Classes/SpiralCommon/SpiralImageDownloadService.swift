@@ -22,11 +22,8 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
     private var imageViewToUrl = [UIImageView: String]()
     
     private var token: String?
-    
-//    var downloader: SDWebImageDownloader
-    
+        
     init() {
-//        downloader = SDWebImageDownloader()
         updateToken()
     }
     
@@ -43,11 +40,6 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
             completion(nil)
             return
         }
-        
-//        if let cached = SDImageCache.shared.imageFromCache(forKey: safeUrl) {
-//            completion(cached)
-//            return
-//        }
         
         updateToken()
         
@@ -77,39 +69,6 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
     
     private func downloadImage(with url: URL, urlString: String, completion: @escaping (UIImage?) -> Void) {
         updateToken()
-//        downloader.downloadImage(with: url) { image, data, error, _ in
-//            if error != nil {
-//                let errorDescription = String(describing: error?.localizedDescription)
-//                let dataAsText = String(describing: String(data: data ?? Data(), encoding: .utf8))
-//                print("******Failed to Download image******\n\(url)\n\(errorDescription)\(dataAsText)")
-//            }
-//
-//            if let image = image {
-//                SDImageCache.shared.store(image, imageData: data, forKey: urlString, cacheType: .all, completion: nil)
-//            }
-//
-//            completion(image)
-//        }
-        
-//        var request = URLRequest(url: url)
-//        request.setValue(token, forHTTPHeaderField: "X-Auth-Token")
-//
-//        URLSession.shared.dataTask(with: request) { (data, response, error) in
-//            if let error = error {
-//                let errorDescription = String(describing: error.localizedDescription)
-//                let dataAsText = String(describing: String(data: data ?? Data(), encoding: .utf8))
-//                print("******Failed to Download image******\n\(url)\n\(errorDescription)\(dataAsText)")
-//                DispatchQueue.main.async {
-//                    completion(nil)
-//                }
-//                return
-//            }
-//
-//            let image = UIImage.init(data: data!)
-//            DispatchQueue.main.async {
-//                completion(image)
-//            }
-//        }.resume()
         
         downloadData(with: url, urlString: urlString) { data in
             if let data = data {
@@ -129,11 +88,6 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
     }
     
     func populateImageView(_ imageView: UIImageView, urlString: String?, placeholderImage: UIImage?, completion: (() -> Void)?) {
-        // Used for SwiftUI Previews
-//        guard !ContainerFactory.isPreviewEnvironment() else {
-//            imageView.sd_setImage(with: URL(string: urlString ?? .empty))
-//            return
-//        }
         
         let setPlaceholderOrClear = {
             imageView.image = placeholderImage ?? nil

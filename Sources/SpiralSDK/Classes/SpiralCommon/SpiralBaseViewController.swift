@@ -60,6 +60,4 @@ public class SpiralBaseViewController: UIViewController {
     /// Override for specific cases
     @objc func handleWillEnterForeground() {}
     
-    
-    
 }
