@@ -57,10 +57,9 @@ class TableOfContentsSpec: QuickSpec {
 //        let spiralToken = "abc-123"
         let config = SpiralConfig(mode: .sandbox,
                                   environment: .staging,
-                                  clientId: "CUST12345",
-                                  customerId: "d2f2d15c-8198-4bfe-9752-505b49a9b970",
-                                  authToken: "abc",
-                                  proxyUrl: "")
+                                  clientSecrethAuth: SpiralClientSecretAuth(customerId: "d2f2d15c-8198-4bfe-9752-505b49a9b970",
+                                                                            clientId: "CUST12345",
+                                                                            secret: "123"))
         
         Spiral.shared.setup(config: config)
         

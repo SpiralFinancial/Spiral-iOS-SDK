@@ -16,10 +16,18 @@ public class Spiral {
     private var _config: SpiralConfig?
     
     private var _apiHeaders: [String: String] {
-        return ["X-SPIRAL-SDK-VERSION": "ios-" + Spiral.sdkVersion,
-                "X-SPIRAL-CUSTOMER-ID": _config?.customerId ?? .empty,
-                "X-SPIRAL-CLIENT-ID": _config?.clientId ?? .empty,
-                "X-AUTH-TOKEN": _config?.authToken ?? .empty]
+        var headers =  ["X-SPIRAL-SDK-VERSION": "ios-" + Spiral.sdkVersion]
+        
+        if let proxyAuth = _config?.proxyAuth {
+            headers.add(["X-AUTH-TOKEN": proxyAuth.authToken])
+        }
+        
+        if let clientSecretAuth = _config?.clientSecretAuth {
+            headers.add(["X-SPIRAL-CUSTOMER-ID": clientSecretAuth.customerId,
+                         "X-SPIRAL-CLIENT-ID": clientSecretAuth.clientId])
+        }
+        
+        return headers
     }
     
     public func config() -> SpiralConfig? {
@@ -189,9 +197,10 @@ public class Spiral {
 
     private func proxyRequestForBuilder<T: Decodable>(requestBuilder: RequestBuilder<T>) -> RequestBuilder<T> {
         
-        guard let proxyUrl = _config?.proxyUrl else { return requestBuilder }
+        guard let proxyAuth = _config?.proxyAuth else { return requestBuilder }
+//        guard let proxyUrl = _config?.proxyUrl else { return requestBuilder }
         
-        let localVariableURLString = proxyUrl
+        let localVariableURLString = proxyAuth.proxyUrl
         
         let endpoint = String(requestBuilder.URLString.suffix(requestBuilder.URLString.count - OpenAPIClientAPI.basePath.count))
         
@@ -207,8 +216,8 @@ public class Spiral {
         let localNillableVariableParameters: [String: Encodable?] = [
             "method": requestBuilder.method,
             "endpoint": "/v1" + endpoint,
-            "clientId": _config?.clientId,
-            "customerId": _config?.customerId,
+//            "clientId": _config?.clientId,
+//            "customerId": _config?.customerId,
             "body": bodyStr,
             "version": "ios-" + Spiral.sdkVersion
         ]
@@ -323,12 +332,9 @@ public struct SpiralConfig {
     public let mode: SpiralMode
     public let environment: SpiralEnvironment
     
-    public let clientId: String
-    public let customerId: String
+    public let proxyAuth: SpiralProxyAuth?
+    public let clientSecretAuth: SpiralClientSecretAuth?
     
-    public let proxyUrl: String?
-    public let authToken: String
-        
     public var webBaseUrl: String {
         get {
             switch environment {
@@ -341,12 +347,35 @@ public struct SpiralConfig {
             }
         }
     }
-    public init(mode: SpiralMode, environment: SpiralEnvironment, clientId: String, customerId: String, authToken: String, proxyUrl: String? = nil) {
+    public init(mode: SpiralMode,
+                environment: SpiralEnvironment,
+                proxyAuth: SpiralProxyAuth? = nil,
+                clientSecrethAuth: SpiralClientSecretAuth? = nil) {
         self.mode = mode
         self.environment = environment
-        self.clientId = clientId
-        self.customerId = customerId
-        self.authToken = authToken
+        self.proxyAuth = proxyAuth
+        self.clientSecretAuth = clientSecrethAuth
+    }
+}
+
+public struct SpiralProxyAuth {
+    public let proxyUrl: String
+    public let authToken: String
+    
+    public init(proxyUrl: String, authToken: String) {
         self.proxyUrl = proxyUrl
+        self.authToken = authToken
+    }
+}
+
+public struct SpiralClientSecretAuth {
+    public let customerId: String
+    public let clientId: String
+    public let secret: String
+    
+    public init(customerId: String, clientId: String, secret: String) {
+        self.customerId = customerId
+        self.clientId = clientId
+        self.secret = secret
     }
 }

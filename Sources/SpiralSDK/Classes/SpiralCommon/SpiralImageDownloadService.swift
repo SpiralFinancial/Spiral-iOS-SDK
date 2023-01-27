@@ -21,17 +21,6 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
     
     private var imageViewToUrl = [UIImageView: String]()
     
-    private var token: String?
-        
-    init() {
-        updateToken()
-    }
-    
-    @discardableResult private func updateToken() -> Bool {
-        token = Spiral.shared.config()?.authToken
-        return token != nil
-    }
-    
     func downloadImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
         
         let safeUrl = urlString.trimmed.spiralSafeUrl()
@@ -41,14 +30,12 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
             return
         }
         
-        updateToken()
-        
         downloadImage(with: url, urlString: safeUrl, completion: completion)
     }
     
     private func downloadData(with url: URL, urlString: String, completion:  @escaping (Data?) -> Void) {
-        var request = URLRequest(url: url)
-        request.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        let request = URLRequest(url: url)
+//        request.setValue(token, forHTTPHeaderField: "X-Auth-Token")
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
@@ -68,8 +55,6 @@ class SpiralImageDownloadManager: SpiralImageDownloadService {
     }
     
     private func downloadImage(with url: URL, urlString: String, completion: @escaping (UIImage?) -> Void) {
-        updateToken()
-        
         downloadData(with: url, urlString: urlString) { data in
             if let data = data {
                 let image = UIImage.init(data: data)

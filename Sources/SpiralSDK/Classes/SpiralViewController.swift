@@ -25,7 +25,6 @@ class SpiralWebKitScriptMessageHandler: NSObject, WKScriptMessageHandler {
 public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessageHandler, WKNavigationDelegate {
     var webView: WKWebView!
     weak var delegate: SpiralDelegate?
-    private var token: String
     private var flow: SpiralFlow
     private var url: String {
         return flow.url
@@ -37,12 +36,11 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     
     public init(flow: SpiralFlow, delegate: SpiralDelegate, onExit: ( () -> Void)? = nil ) {
         self.delegate = delegate
-        self.token = Spiral.shared.config()?.authToken ?? .empty
         self.flow = flow
         self.onExit = onExit
         super.init(nibName: nil, bundle: nil)
         
-        let script = getScript(token: self.token)
+        let script = getScript()
         let wkScript = WKUserScript(source: script, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
                 
         let webConfiguration = WKWebViewConfiguration()
@@ -180,7 +178,23 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         return nil
     }
     
-    private func getScript(token: String) -> String {
+    var initAuthParams: String {
+        if let proxyAuth = Spiral.shared.config()?.proxyAuth {
+            return """
+            authToken: "\(proxyAuth.authToken)",
+            proxyUrl: "\(proxyAuth.proxyUrl)",
+            """
+        } else if let clientSecretAuth = Spiral.shared.config()?.clientSecretAuth {
+            return """
+            customerId: "\(clientSecretAuth.customerId)",
+            clientId: "\(clientSecretAuth.clientId)",
+            clientSecret: "\(clientSecretAuth.secret)",
+            """
+        }
+        return .empty
+    }
+    
+    private func getScript() -> String {
         var versionString = "1.0.0"
         if let bundleVersion = Bundle(identifier: "org.cocoapods.SpiralSDK")?.infoDictionary?["CFBundleShortVersionString"] as? String {
             print("Spiral version: " + bundleVersion)
@@ -270,10 +284,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
                 type: 'SPIRAL_INIT',
                 payload: {
                     sdk: "ios",
-                    spiralToken: "\(token)",
-                    proxyUrl: "\(Spiral.shared.config()?.proxyUrl ?? .empty)",
-                    customerId: "\(Spiral.shared.config()?.customerId ?? .empty)",
-                    clientId: "\(Spiral.shared.config()?.clientId ?? .empty)",
+                    \(initAuthParams)
                     uniqueUserId: uuid,
                     initializationTimestamp: Date.now(),
                     version: {
