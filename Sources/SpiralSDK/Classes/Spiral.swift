@@ -274,11 +274,12 @@ public enum SpiralFlow: String {
     var url: String {
         switch self {
         case .donation:
-            return (Spiral.shared.config()?.webBaseUrl ?? .empty) + "/apps/donate/index.html"
+            return (Spiral.shared.config()?.webBaseUrl ?? .empty) + "v0.0.1/apps/donate/index.html"
         case .customerSettings:
             return (Spiral.shared.config()?.webBaseUrl ?? .empty) + "v0.0.1/apps/customerSettings/index.html"
         case .givingCenter:
-            return (Spiral.shared.config()?.webBaseUrl ?? .empty) + "v0.0.1/apps/givingCenter/index.html"
+//            return (Spiral.shared.config()?.webBaseUrl ?? .empty) + "v0.0.1/apps/givingCenter/index.html"
+            return (Spiral.shared.config()?.webBaseUrl ?? .empty) + "v0.0.1/apps/donate/index.html"
         }
     }
 }
