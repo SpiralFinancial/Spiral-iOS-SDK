@@ -181,7 +181,6 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     var initAuthParams: String {
         if let proxyAuth = Spiral.shared.config()?.proxyAuth {
             return """
-            clientId: "\(proxyAuth.clientId)",
             authToken: "\(proxyAuth.authToken)",
             proxyUrl: "\(proxyAuth.proxyUrl)",
             """

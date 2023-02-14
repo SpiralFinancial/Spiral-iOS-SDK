@@ -198,6 +198,7 @@ public class Spiral {
     private func proxyRequestForBuilder<T: Decodable>(requestBuilder: RequestBuilder<T>) -> RequestBuilder<T> {
         
         guard let proxyAuth = _config?.proxyAuth else { return requestBuilder }
+//        guard let proxyUrl = _config?.proxyUrl else { return requestBuilder }
         
         let localVariableURLString = proxyAuth.proxyUrl
         
@@ -359,12 +360,10 @@ public struct SpiralConfig {
 }
 
 public struct SpiralProxyAuth {
-    public let clientId: String
     public let proxyUrl: String
     public let authToken: String
     
-    public init(clientId: String, proxyUrl: String, authToken: String) {
-        self.clientId = clientId
+    public init(proxyUrl: String, authToken: String) {
         self.proxyUrl = proxyUrl
         self.authToken = authToken
     }
