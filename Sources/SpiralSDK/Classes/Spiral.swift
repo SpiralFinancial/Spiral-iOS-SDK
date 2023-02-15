@@ -83,7 +83,7 @@ public class Spiral {
     
     public func loadInstantImpactCard(into view: UIView,
                                       delegate: SpiralDelegate?,
-                                      success: ((UIView) -> Void)?,
+                                      success: ((SpiralGenericCardView) -> Void)?,
                                       failure: ((ErrorResponse?) -> Void)?,
                                       updateLayout: EmptyOptionalClosure) {
         loadContentCard(type: GenericCardType.srSummary.rawValue,
@@ -97,7 +97,7 @@ public class Spiral {
     public func loadContentCard(type: String,
                                 into view: UIView,
                                 delegate: SpiralDelegate?,
-                                success: ((UIView) -> Void)?,
+                                success: ((SpiralGenericCardView) -> Void)?,
                                 failure: ((ErrorResponse?) -> Void)?,
                                 updateLayout: EmptyOptionalClosure) {
         
