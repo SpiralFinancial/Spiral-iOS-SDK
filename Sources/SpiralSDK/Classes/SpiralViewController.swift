@@ -75,6 +75,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         switch message.name {
         case SpiralEventHandler.openEventHandler.rawValue:
             self.delegate?.onEvent(name: .open, event: nil)
+            self.delegate?.onFinishLoadingContent()
             self.delegate?.onReady(controller: self)
             self.wasReady = true
         case SpiralEventHandler.closeEventHandler.rawValue:
@@ -106,6 +107,11 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
                let event = try? JSONDecoder().decode(SpiralErrorEvent.self, from: bodyData) {
                 
                 self.delegate?.onEvent(name: .error, event: event.payload)
+                
+                if !wasReady {
+                    self.delegate?.onFinishLoadingContent()
+                }
+                
                 self.delegate?.onError(event.payload)
             }
         default:
@@ -119,6 +125,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
 
         if let response = navigationResponse.response as? HTTPURLResponse {
             if !wasReady, response.statusCode != 200 {
+                self.delegate?.onFinishLoadingContent()
                 self.delegate?.onFailedToStart(SpiralError(type: SpiralErrorType.failedToStartFlow.rawValue,
                                                            code: String(response.statusCode),
                                                            message: "Unable to start Spiral flow. Please try again later."))

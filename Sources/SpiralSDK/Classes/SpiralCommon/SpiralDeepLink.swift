@@ -215,7 +215,12 @@ class SpiralDefaultDeepLinkHandler: SpiralDeepLinkHandler {
     }
     
     func showModal(type: String, delegate: SpiralDelegate) {
-        Spiral.shared.showModalContent(type: type, success: nil, failure: nil, delegate: delegate)
+        delegate.onBeginLoadingContent()
+        Spiral.shared.showModalContent(type: type, success: {
+            delegate.onFinishLoadingContent()
+        }, failure: { _ in
+            delegate.onFinishLoadingContent()
+        }, delegate: delegate)
     }
     
     private func showWebView(from deepLink: SpiralDeepLink) {

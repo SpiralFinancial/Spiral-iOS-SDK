@@ -302,6 +302,14 @@ extension SpiralConfigTableViewController: SpiralDelegate {
         }
     }
     
+    func onBeginLoadingContent() {
+        print("Spiral begin loading content")
+    }
+    
+    func onFinishLoadingContent() {
+        print("Spiral end loading content")
+    }
+    
     func onReady(controller: SpiralViewController) {
         controller.modalPresentationStyle = .fullScreen
         self.present(controller, animated: true)

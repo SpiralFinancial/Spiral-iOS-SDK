@@ -54,6 +54,8 @@ public class Spiral {
             return
         }
         
+        delegate.onBeginLoadingContent()
+        
         _currentFlowController = SpiralViewController(flow: flow, delegate: delegate, onExit: { [weak self] in
             self?._currentFlowController = nil
         })
@@ -237,6 +239,8 @@ public class Spiral {
 
 public protocol SpiralDelegate: SpiralDeepLinkHandler {
     func onEvent(name: SpiralEventType, event: SpiralEventPayload?)
+    func onBeginLoadingContent()
+    func onFinishLoadingContent()
     func onReady(controller: SpiralViewController)
     func onFailedToStart(_ error: SpiralError)
     func onExit(_ error: SpiralError?)
@@ -247,6 +251,8 @@ public protocol SpiralDelegate: SpiralDeepLinkHandler {
 // These empty implementations are to make them optional to implement
 public extension SpiralDelegate {
     func onEvent(name: SpiralEventType, event: SpiralEventPayload?) {}
+    func onBeginLoadingContent() {}
+    func onFinishLoadingContent() {}
     func onReady(controller: SpiralViewController) {}
     func onFailedToStart(_ error: SpiralError) {}
     func onExit(_ error: SpiralError?) {}
