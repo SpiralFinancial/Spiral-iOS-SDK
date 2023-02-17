@@ -272,20 +272,36 @@ public enum SpiralEnvironment {
     case production
 }
 
-public enum SpiralFlow: String {
+public enum SpiralFlow {
     case donation
     case customerSettings
     case givingCenter
+    case custom(String)
     
     var url: String {
+        let baseUrl = Spiral.shared.config()?.webBaseUrl ?? .empty
         switch self {
         case .donation:
-            return (Spiral.shared.config()?.webBaseUrl ?? .empty) + "v0.0.1/apps/donate/index.html"
+            return baseUrl + "v0.0.1/apps/donate/index.html"
         case .customerSettings:
-            return (Spiral.shared.config()?.webBaseUrl ?? .empty) + "v0.0.1/apps/customerSettings/index.html"
+            return baseUrl + "v0.0.1/apps/customerSettings/index.html"
         case .givingCenter:
-//            return (Spiral.shared.config()?.webBaseUrl ?? .empty) + "v0.0.1/apps/givingCenter/index.html"
-            return (Spiral.shared.config()?.webBaseUrl ?? .empty) + "v0.0.1/apps/donate/index.html"
+            return baseUrl + "v0.0.1/apps/donate/index.html"
+        case .custom(let urlStr):
+            if urlStr.hasPrefix(baseUrl) {
+                return baseUrl + urlStr
+            } else {
+                return urlStr
+            }
+        }
+    }
+    
+    init?(typeStr: String) {
+        switch typeStr {
+        case "donation": self = .donation
+        case "customerSettings": self = .customerSettings
+        case "givingCenter": self = .givingCenter
+        default: self = .custom(typeStr)
         }
     }
 }
