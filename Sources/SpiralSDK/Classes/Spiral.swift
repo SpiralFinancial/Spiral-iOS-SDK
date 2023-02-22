@@ -35,7 +35,7 @@ public class Spiral {
     }
     
     public func startDonationFlow(delegate: SpiralDelegate) {
-        startFlow(flow: .donation, delegate: delegate)
+        startFlow(flow: .searchCharities, delegate: delegate)
     }
     
     public func startCustomerSettingsFlow(delegate: SpiralDelegate) {
@@ -268,40 +268,85 @@ public enum SpiralMode: String, CaseIterable {
 
 public enum SpiralEnvironment {
     case local(url: String)
+    case integration
     case staging
+    case uat
     case production
 }
 
 public enum SpiralFlow {
-    case donation
+    case donateToCharityById(String)
+    case charityByIdSummary(String)
+    case searchCharities
     case customerSettings
     case givingCenter
-    case custom(String)
+    case receipts
+    case custom(String, String, String?)
+    
+    static let defaultUrlStr = "v0.0.1/apps/web-sdk/index.html"
     
     var url: String {
         let baseUrl = Spiral.shared.config()?.webBaseUrl ?? .empty
         switch self {
-        case .donation:
-            return baseUrl + "v0.0.1/apps/donate/index.html"
-        case .customerSettings:
-            return baseUrl + "v0.0.1/apps/customerSettings/index.html"
-        case .givingCenter:
-            return baseUrl + "v0.0.1/apps/donate/index.html"
-        case .custom(let urlStr):
+        case .custom(_, _, let urlStr):
+            guard let urlStr = urlStr else { return SpiralFlow.defaultUrlStr }
             if urlStr.hasPrefix(baseUrl) {
                 return baseUrl + urlStr
             } else {
                 return urlStr
             }
+        default:
+            return SpiralFlow.defaultUrlStr
         }
     }
     
-    init?(typeStr: String) {
+    var params: String {
+        switch self {
+        case .donateToCharityById(let id):
+            return "{\"id\": '\(id)'}"
+        case .charityByIdSummary(let id):
+            return "{\"id\": '\(id)'}"
+        case .custom(_, let params, _):
+            return params
+        default:
+            return "{}"
+        }
+    }
+    
+    var stringVal: String {
+        switch self {
+            
+        case .donateToCharityById(_):
+            return "donateToCharityById"
+        case .charityByIdSummary(_):
+            return "charityByIdSummary"
+        case .searchCharities:
+            return "searchCharities"
+        case .customerSettings:
+            return "customerSettings"
+        case .givingCenter:
+            return "givingCenter"
+        case .receipts:
+            return "receipts"
+        case .custom(let type, _, _):
+            return type
+        }
+    }
+    
+    init?(typeStr: String, params: String?, url: String? = nil) {
+        if url != nil && url != SpiralFlow.defaultUrlStr {
+            self = .custom(typeStr, params ?? .empty, url)
+            return
+        }
+        
         switch typeStr {
-        case "donation": self = .donation
         case "customerSettings": self = .customerSettings
         case "givingCenter": self = .givingCenter
-        default: self = .custom(typeStr)
+        case "donateToCharityById": self = .donateToCharityById(params ?? .empty)
+        case "charityByIdSummary": self = .charityByIdSummary(params ?? .empty)
+        case "searchCharities": self = .searchCharities
+        case "receipts": self = .receipts
+        default: self = .custom(typeStr, params ?? .empty, url)
         }
     }
 }
@@ -310,12 +355,16 @@ extension SpiralEnvironment {
     public init(value: String) {
         if value == "local" {
             self = .local(url: "")
+        } else if value == "integration" {
+            self = .integration
         } else if value == "staging" {
             self = .staging
+        } else if value == "uat" {
+            self = .uat
         } else if value == "production" {
             self = .production
         } else {
-            self = .staging
+            self = .integration
         }
     }
     
@@ -324,10 +373,12 @@ extension SpiralEnvironment {
             self = .local(url: url ?? "")
         } else if value == "staging" {
             self = .staging
+        } else if value == "uat" {
+            self = .uat
         } else if value == "production" {
             self = .production
         } else {
-            self = .staging
+            self = .integration
         }
     }
     
@@ -335,8 +386,12 @@ extension SpiralEnvironment {
         switch self {
         case .local(let url):
             return "local@\(url)"
+        case .integration:
+            return "integration"
         case .staging:
             return "staging"
+        case .uat:
+            return "uat"
         case .production:
             return "production"
         }
@@ -364,7 +419,11 @@ public struct SpiralConfig {
             case .local(let _url):
                 return _url
             case .staging:
-                return "https://integration-sdk.spiral.us/"
+                return "https://staging-sdk.spiral.us/"
+            case .integration:
+                return "https://integration-sdk.spiral.us"
+            case .uat:
+                return "https://uat-sdk.spiral.us"
             case .production:
                 return "https://sdk.spiral.us/"
             }

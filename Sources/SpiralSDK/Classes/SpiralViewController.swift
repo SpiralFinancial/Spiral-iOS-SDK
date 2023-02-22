@@ -201,6 +201,17 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         return .empty
     }
     
+    var flowConfigParams: String {
+        return """
+        config: {
+            routing: {
+                params: \(flow.params),
+                route: \(flow.stringVal),
+            },
+        },
+        """
+    }
+    
     private func getScript() -> String {
         var versionString = "1.0.0"
         if let bundleVersion = Bundle(identifier: "org.cocoapods.SpiralSDK")?.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -292,6 +303,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
                 payload: {
                     sdk: "ios",
                     \(initAuthParams)
+                    \(flowConfigParams)
                     uniqueUserId: uuid,
                     initializationTimestamp: Date.now(),
                     version: {
