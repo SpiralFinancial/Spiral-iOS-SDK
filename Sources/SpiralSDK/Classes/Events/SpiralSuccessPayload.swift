@@ -8,9 +8,11 @@
 import Foundation
 
 public struct SpiralSuccessPayload: SpiralEventPayload {
-    public init(result: Bool) {
-        self.result = result
+    public init(type: String, data: [String: AnyCodable]) {
+        self.type = type
+        self.data = data
     }
     
-    public let result: Bool
+    public let type: String
+    public let data: [String: AnyCodable]
 }

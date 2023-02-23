@@ -108,11 +108,14 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
                 
                 self.delegate?.onEvent(name: .error, event: event.payload)
                 
+                self.delegate?.onError(event.payload)
+                
                 if !wasReady {
                     self.delegate?.onFinishLoadingContent()
+                    self.delegate?.onFailedToStart(SpiralError(type: SpiralErrorType.failedToStartFlow.rawValue,
+                                                               code: event.payload.code,
+                                                               message: "Unable to start Spiral flow. Please try again later."))
                 }
-                
-                self.delegate?.onError(event.payload)
             }
         default:
             print("Unhandled message: \(message.name)")
@@ -133,6 +136,14 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
             }
         }
         decisionHandler(.allow)
+    }
+    
+    public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        print(error)
+    }
+    
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        print("didFinish")
     }
     
     public override func loadView() {
@@ -206,7 +217,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         config: {
             routing: {
                 params: \(flow.params),
-                route: \(flow.stringVal),
+                route: '\(flow.stringVal)',
             },
         },
         """

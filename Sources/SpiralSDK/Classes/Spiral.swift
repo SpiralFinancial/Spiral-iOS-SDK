@@ -289,14 +289,14 @@ public enum SpiralFlow {
         let baseUrl = Spiral.shared.config()?.webBaseUrl ?? .empty
         switch self {
         case .custom(_, _, let urlStr):
-            guard let urlStr = urlStr else { return SpiralFlow.defaultUrlStr }
+            guard let urlStr = urlStr else { return baseUrl + SpiralFlow.defaultUrlStr }
             if urlStr.hasPrefix(baseUrl) {
                 return baseUrl + urlStr
             } else {
                 return urlStr
             }
         default:
-            return SpiralFlow.defaultUrlStr
+            return baseUrl + SpiralFlow.defaultUrlStr
         }
     }
     
@@ -421,9 +421,9 @@ public struct SpiralConfig {
             case .staging:
                 return "https://staging-sdk.spiral.us/"
             case .integration:
-                return "https://integration-sdk.spiral.us"
+                return "https://integration-sdk.spiral.us/"
             case .uat:
-                return "https://uat-sdk.spiral.us"
+                return "https://uat-sdk.spiral.us/"
             case .production:
                 return "https://sdk.spiral.us/"
             }
