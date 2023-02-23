@@ -266,7 +266,7 @@ public enum SpiralMode: String, CaseIterable {
     case production
 }
 
-public enum SpiralEnvironment {
+public enum SpiralEnvironment: Equatable {
     case local(url: String)
     case integration
     case staging
