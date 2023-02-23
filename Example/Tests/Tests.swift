@@ -73,7 +73,7 @@ class TableOfContentsSpec: QuickSpec {
                     "eventName": "open"
                 ]
                 let message = TestMessage("openEventHandler", body: asString(jsonDictionary: body))
-                let spiralVC = SpiralViewController(flow: .donation, delegate: delegate)
+                let spiralVC = SpiralViewController(flow: .givingCenter, delegate: delegate)
                 spiralVC.userContentController(userContentController, didReceive: message)
                 expect(delegate.onEventName?.rawValue).to(equal("open"))
             }
@@ -90,10 +90,10 @@ class TableOfContentsSpec: QuickSpec {
                 ]
                 let bodyString = asString(jsonDictionary: body)
                 let message = TestMessage("successEventHandler", body: bodyString)
-                let spiralVC = SpiralViewController(flow: .donation, delegate: delegate)
+                let spiralVC = SpiralViewController(flow: .givingCenter, delegate: delegate)
                 spiralVC.userContentController(userContentController, didReceive: message)
                 let payload = delegate.onEventPayload as? SpiralSuccessPayload
-                expect(payload?.result).to(equal(true))
+                expect(payload?.type).to(equal("givingCenter"))
             }
             
             it("onEvent is called for success with false") {
@@ -108,10 +108,10 @@ class TableOfContentsSpec: QuickSpec {
                 ]
                 let bodyString = asString(jsonDictionary: body)
                 let message = TestMessage("successEventHandler", body: bodyString)
-                let spiralVC = SpiralViewController(flow: .donation, delegate: delegate)
+                let spiralVC = SpiralViewController(flow: .givingCenter, delegate: delegate)
                 spiralVC.userContentController(userContentController, didReceive: message)
                 let payload = delegate.onEventPayload as? SpiralSuccessPayload
-                expect(payload?.result).to(equal(false))
+                expect(payload?.type).to(equal("donationSuccess"))
             }
             
             it("onEvent is called for error") {
@@ -128,7 +128,7 @@ class TableOfContentsSpec: QuickSpec {
                 ]
                 let bodyString = asString(jsonDictionary: body)
                 let message = TestMessage("errorEventHandler", body: bodyString)
-                let spiralVC = SpiralViewController(flow: .donation, delegate: delegate)
+                let spiralVC = SpiralViewController(flow: .givingCenter, delegate: delegate)
                 spiralVC.userContentController(userContentController, didReceive: message)
                 let payload = delegate.onEventPayload as? SpiralError
                 expect(payload?.type).to(equal("invalidUserInput"))
