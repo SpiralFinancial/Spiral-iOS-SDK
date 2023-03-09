@@ -15,4 +15,5 @@ public enum CustomerInstantImpactLimitSelections: String, Codable, CaseIterable 
     case daily = "daily"
     case weekly = "weekly"
     case monthly = "monthly"
+    case noLimit = "no_limit"
 }

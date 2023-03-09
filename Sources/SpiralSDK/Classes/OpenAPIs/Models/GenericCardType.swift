@@ -15,4 +15,6 @@ public enum GenericCardType: String, Codable, CaseIterable {
     case srSummary = "SR_SUMMARY"
     case howItWorks = "HOW_IT_WORKS"
     case userSponsoredOptIn = "USER_SPONSORED_OPT_IN"
+    case donationFeeDisclosure = "DONATION_FEE_DISCLOSURE"
+    case donationFeeSuccess = "DONATION_FEE_SUCCESS"
 }

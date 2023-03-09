@@ -13,9 +13,9 @@ import AnyCodable
 /** Single customer&#39;s Instant Impact report */
 public struct SocialResponsibilityInstantImpactSummaryResponse: Codable, JSONEncodable, Hashable {
 
-    public var instantImpact: [TransactionInstantImpactSummary]
+    public var instantImpact: [SocialResponsibilityInstantImpactSummaryItem]
 
-    public init(instantImpact: [TransactionInstantImpactSummary]) {
+    public init(instantImpact: [SocialResponsibilityInstantImpactSummaryItem]) {
         self.instantImpact = instantImpact
     }
 

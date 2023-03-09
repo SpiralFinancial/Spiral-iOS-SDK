@@ -57,6 +57,86 @@ tags:
       description: Find out more
       url: http://spiral.us
 paths:
+  /transaction/process:
+    post:
+      tags:
+        - transactionProcessor
+      summary: Categorize a given financial transaction
+      description: Request a financial transaction to be categorized on behalf of a customer.
+      operationId: processTransaction
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Transaction to process
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionProcessRequest'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionProcessResponse'
+        '202':
+          description: Request has been accepted and will be processed. Query back by transaction ID to check status.
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+        '406':
+          description: Not Acceptable
+  /transaction/{transactionId}:
+    delete:
+      tags:
+        - transactionProcessor
+      summary: Delete processed transaction
+      description: Delete processed transaction with specified id
+      operationId: deleteTransaction
+      parameters:
+        - name: X-SPIRAL-SDK-VERSION
+          in: header
+          description: Unique version of the SDK that makes the call (ie. ios-1.2.3 or web-1.2.3)
+          schema:
+            type: string
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: transactionId
+          in: path
+          required: true
+          description: Permanent, unique transaction id of transaction to be deleted.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+        '204':
+          description: Request accepted, requested transaction not found
+        '400':
+          description: Invalid Request
+        '404':
+          description: Client not found
+        '405':
+          description: Validation Exception
   /cms/card/type/{type}:
     get:
       tags:
@@ -137,6 +217,37 @@ paths:
           description: Invalid Request
         '405':
           description: Validation Exception
+  /audit/cst/client/{type}:
+    get:
+      tags:
+        - audit
+      summary: List clients who were archived in the system
+      description: List archived clients at their latest version
+      operationId: getAuditClientsByType
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: type
+          in: path
+          required: true
+          description: Unique audit type.
+          schema:
+            $ref: '#/components/schemas/AuditEventType'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuditClientsResponse"
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
   /social/instant/impact:
     get:
       tags:
@@ -160,6 +271,59 @@ paths:
           description: The period of transactions to include in the search. Defaults to ALL-TIME.
           schema:
             $ref: '#/components/schemas/SummaryTimePeriod'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SocialResponsibilityInstantImpactSummaryResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /social/instant/impact/client:
+    get:
+      tags:
+        - socialResponsibility
+      summary: Load a client-level Social Impact
+      description: Load total client-level Social Responsibility Impact
+      operationId: getClientSocialResponsibilityImpactSummary
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: from
+          in: query
+          description: The search start timestamp.
+          schema:
+            type: number
+        - name: to
+          in: query
+          description: The search end timestamp.
+          schema:
+            type: number
+        - name: search
+          in: query
+          description: Search query; filters transaction descriptions in a case-insensitive way.
+          schema:
+            type: string
+        - name: rewardUnit
+          in: query
+          description: A list of reward units to include in the search. Defaults to all units if not provided.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: status
+          in: query
+          description: Transaction statuses to include. Defaults to all statuses if not provided.
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OperationalStatus'
       responses:
         '200':
           description: Successful Operation
@@ -319,6 +483,13 @@ paths:
           schema:
             type: string
           example: donationAmount.ASC
+        - name: status
+          in: query
+          description: Transaction statuses to include. Defaults to all statuses if not provided.
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OperationalStatus'
       responses:
         '200':
           description: Successful Operation
@@ -326,6 +497,1031 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SocialResponsibilityTransactionListResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /giving/category:
+    get:
+      tags:
+        - giving
+      summary: Get charity categories
+      description: Load all available charity categories
+      operationId: getCharityCategories
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharityCategoriesResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /giving/category/{categoryID}:
+    get:
+      tags:
+        - giving
+      summary: Load charities that belong to a category
+      description: Given a category ID, load all charities that belong to it
+      operationId: getCharitiesByCategory
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: categoryID
+          in: path
+          description: ID of charity category
+          required: true
+          schema:
+            type: string
+            format: guid
+            example: 'CAT12345'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharityCategoryResponse'
+        '400':
+          description: Invalid Request
+        '404':
+          description: Category by ID not found
+        '405':
+          description: Validation Exception
+  /giving/charity:
+    post:
+      tags:
+        - giving
+      summary: Search for charities
+      description: Given a filter, load all matching charities
+      operationId: searchCharities
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/PageableQuery'
+      requestBody:
+        description: Filter for charity categories
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GivingCharitiesSearchRequest'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharitiesSearchResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /giving/charity/details:
+    post:
+      tags:
+        - giving
+      summary: Load charities details
+      description: Load charities details by IDs
+      operationId: getCharitiesByIds
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: List of charities IDs
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GivingCharitiesByIdRequest'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharitiesResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /giving/customer/charity/{id}:
+    get:
+      tags:
+        - giving
+      summary: Load charity details
+      description: Load a charity details by ID
+      operationId: getCharityById
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: Spiral ID of Charity
+          required: true
+          schema:
+            type: string
+            format: guid
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCustomerCharityResponse'
+        '400':
+          description: Invalid Request
+        '404':
+          description: Charity by ID not found
+        '405':
+          description: Validation Exception
+  /giving/customer/donation/summary:
+    get:
+      tags:
+        - giving
+      summary: Load customer giving donations summary
+      description: Load customer giving donations summary for given time period
+      operationId: getCustomerDonationSummary
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: period
+          in: query
+          description: The period of giving summary
+          schema:
+            $ref: '#/components/schemas/SummaryTimePeriod'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCustomerDonationsSummaryResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /giving/customer/donation/fee:
+    post:
+      tags:
+        - giving
+      summary: Calculate donation fees
+      description: Calculate donation fees
+      operationId: calculateDonationFees
+      parameters:
+        - name: X-SPIRAL-SDK-VERSION
+          in: header
+          description: Unique version of the SDK that makes the call (ie. ios-1.2.3 or web-1.2.3)
+          schema:
+            type: string
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GivingCharityOneTimeDonationRequest'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharityDonationFeesResponse'
+        '400':
+          description: Invalid Request
+        '404':
+          description: Charity by ID not found
+        '405':
+          description: Validation Exception
+  /giving/customer/donation/one-time:
+    post:
+      tags:
+        - giving
+      summary: Donate to charity (one-time)
+      description: Make a one-time donation to charity by id
+      operationId: donateToCharityOneTime
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Create one-time donation request object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GivingCharityOneTimeDonationRequest'
+      responses:
+        '200':
+          description: Successful Operation
+        '400':
+          description: Invalid Request
+        '404':
+          description: Charity by ID not found
+        '405':
+          description: Validation Exception
+  /giving/customer/donation/recurring:
+    post:
+      tags:
+        - giving
+      summary: Donate to charity (recurring)
+      description: Create a recurring donation to charity by id
+      operationId: createRecurringDonation
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Create recurring donation request object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GivingCharityRecurringDonationCreateRequest'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharityRecurringDonationResponse'
+        '400':
+          description: Invalid Request
+        '404':
+          description: Charity by ID not found
+        '405':
+          description: Validation Exception
+  /giving/customer/donation/recurring/{id}:
+    get:
+      tags:
+        - giving
+      summary: Get recurring donation
+      description: Get customer recurring donation details by id
+      operationId: getRecurringDonationById
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: Spiral ID of recurring donation
+          required: true
+          schema:
+            type: string
+            format: guid
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharityRecurringDonationResponse'
+        '400':
+          description: Invalid Request
+        '404':
+          description: Donation not found by id
+    put:
+      tags:
+        - giving
+      summary: Update recurring donation
+      description: Update customers recurring donation by id
+      operationId: updateRecurringDonationById
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: Spiral ID of recurring donation
+          required: true
+          schema:
+            type: string
+            format: guid
+      requestBody:
+        description: Update recurring donation request object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GivingCharityRecurringDonationUpdateRequest'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharityRecurringDonationResponse'
+        '400':
+          description: Invalid Request
+        '404':
+          description: Donation not found by id
+  /giving/customer/donation/receipt:
+    get:
+      tags:
+        - giving
+      summary: Load customer giving donation receipts
+      description: Load customer giving donation receipt, grouped by month and, if required, charity
+      operationId: getCustomerDonationReceiptSummary
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: groupBy
+          in: query
+          description: The grouping to use for the receipts. If not provided, defaults to UNGROUPED.
+          schema:
+            $ref: '#/components/schemas/DonationReceiptSummaryGrouping'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCustomerDonationReceiptSummaryResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /giving/customer/donation/receipt/{receiptId}:
+    get:
+      tags:
+        - giving
+      summary: Load customer giving donation receipt
+      description: Load a given customer donation receipt
+      operationId: getCustomerDonationReceipt
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: receiptId
+          in: path
+          required: true
+          description: The receipt's unique ID
+          example: "REC12345"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /giving/customer/charity/summary:
+    get:
+      tags:
+        - giving
+      summary: Load customers charity summary
+      description: Load customers summary for charities and their donations
+      operationId: getCustomerCharitySummary
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCustomerCharitiesSummaryResponse'
+        '400':
+          description: Invalid Request
+  /giving/charity/{ein}:
+    get:
+      tags:
+        - giving
+      summary: Load charity details
+      description: Load a charity details by EIN
+      operationId: getCharityByEin
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: ein
+          in: path
+          description: Employer Identification Number (EIN) of Charity
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharityResponseWrapper'
+        '400':
+          description: Invalid Request
+        '404':
+          description: Charity by EIN not found
+        '405':
+          description: Validation Exception
+  /giving/charity/{ein}/donation:
+    post:
+      tags:
+        - giving
+      summary: Donate to a charity
+      description: Given a category ID and charity ID, donate to that charity
+      operationId: donateToCharity
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: ein
+          in: path
+          description: Employer Identification Number (EIN) of Charity
+          required: true
+          schema:
+            type: string
+            format: guid
+      requestBody:
+        description: Donation details to a given Charity
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GivingCharityOneTimeDonationRequest'
+      responses:
+        '200':
+          description: Successful Operation
+        '400':
+          description: Invalid Request
+        '404':
+          description: Charity by ID not found
+        '405':
+          description: Validation Exception
+  /giving/charity/donation:
+    post:
+      tags:
+        - giving
+      summary: Retrieves a donation report for specific Charity
+      description: Given a filter, load the donation report
+      operationId: getDonationReport
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Donation report filter
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CharityDonationReportRequest'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CharityDonationReportResponse'
+        '400':
+          description: Invalid Request
+        '404':
+          description: Charity by ID not found
+        '405':
+          description: Validation Exception
+  /giving/client/donation:
+    get:
+      tags:
+        - giving
+      summary: Load a client-level detailed donation list based on provided filters
+      description: Load a client-level detailed donation list based on provided filters
+      operationId: getClientDonations
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: query
+          in: query
+          description: Search query; filters charity/customer details in a case-insensitive way.
+          schema:
+            type: string
+        - name: charity
+          in: query
+          description: A list of charities to include in the search. Defaults to all charities if not provided.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: from
+          in: query
+          description: The search start timestamp.
+          schema:
+            type: number
+        - name: to
+          in: query
+          description: The search end timestamp.
+          schema:
+            type: number
+        - name: pageSize
+          in: query
+          description: The size of the page to return. Defaults to 50 if not provided.
+          schema:
+            type: number
+        - name: pageNum
+          in: query
+          description: The 0-indexed concurrent number of the page to return. Defaults to 0 if not provided.
+          schema:
+            type: number
+        - name: sort
+          in: query
+          description: Fields to sort by. Supports all fields returned in the response with an optional '.ASC'/'.DESC' direction marker.
+          schema:
+            type: string
+          example: donationAmount.ASC
+        - name: type
+          in: query
+          description: The type of donations to include in the search. Defaults to ALL.
+          schema:
+            $ref: '#/components/schemas/SummaryDonationType'
+        - name: status
+          in: query
+          description: Transaction statuses to include. Defaults to all statuses if not provided.
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OperationalStatus'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDonationListResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /management/user/register:
+    post:
+      tags:
+        - management
+      summary: Register an Admin user for a given client
+      description: Given a Spiral invite code, register a new Admin user for a given client to the Self-Service portal.
+      operationId: registerUser
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Customer Admin user registration request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+      responses:
+        '200':
+          description: Successful Operation
+        '400':
+          description: Invalid Request
+        '404':
+          description: Client ID not registered
+        '405':
+          description: Validation Exception
+  /management/client/settings:
+    get:
+      tags:
+        - management
+      summary: Reads client settings
+      description: Reads client settings
+      operationId: getSettings
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsResponse"
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+    post:
+      tags:
+        - management
+      summary: Creates client settings
+      description: Creates client settings
+      operationId: createSettings
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Create client settings request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingCreateRequest"
+      responses:
+        '200':
+          description: Successful Operation
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+    put:
+      tags:
+        - management
+      summary: Updates client settings
+      description: Updates client settings by key
+      operationId: updateSettings
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Update client settings request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingUpdateRequest"
+      responses:
+        '200':
+          description: Successful Operation
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+    delete:
+      tags:
+        - management
+      summary: Deletes client settings
+      description: Deletes client settings by key
+      operationId: deleteSettings
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      # Yes, a DELETE request "may" have a requestBody (https://www.rfc-editor.org/rfc/rfc7231#section-4.3.5)
+      requestBody:
+        description: Delete client settings request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingDeleteRequest"
+      responses:
+        '200':
+          description: Successful Operation
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /management/client/settings/{key}:
+    get:
+      tags:
+        - management
+      summary: Retrieves client settings by key
+      description: Retrieves client settings
+      operationId: getClientSetting
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+            description: Unique settings key
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientSettingResponse'
+        '400':
+          description: Invalid Request
+        '404':
+          description: External Transaction by ID not found
+        '405':
+          description: Validation Exception
+  /management/settings/client/instant/impact:
+    get:
+      tags:
+        - management
+      summary: Retrieves client instant impact related settings
+      description: Retrieves client categories, reward units, cost per reward unit and round up values
+      operationId: getClientInstantImpactSettings
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientInstantImpactResponse"
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /management/instant/impact/categories:
+    get:
+      tags:
+        - management
+      summary: Load predefined instant impact categories
+      description: Load predefined instant impact categories and all of the charities that belong to them
+      operationId: getInstantImpactCategories
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstantImpactCategoriesResponse"
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+  /management/customer/instant/impact/category:
+    get:
+      tags:
+        - management
+      summary: Load customer everyday impact categories selection
+      description: Load everyday impact categories selected by customer
+      operationId: getCustomerInstantImpactCategories
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SelectedInstantImpactCategoriesResponse"
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+    put:
+      tags:
+        - management
+      summary: Updates customer everyday impact category selections
+      description: Updates customer everyday impact category selections
+      operationId: setCustomerInstantImpactCategories
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Customer everyday impact category selections request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SelectedInstantImpactCategoriesRequest"
+      responses:
+        '200':
+          description: Successful Operation
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /management/terms-and-conditions:
+    get:
+      tags:
+        - management
+      summary: Retrieves Spiral terms and conditions
+      description: Retrieves Spiral terms and conditions copy
+      operationId: getTermsAndConditions
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsAndConditionsResponse'
         '400':
           description: Invalid Request
         '405':
@@ -390,8 +1586,480 @@ paths:
           description: Invalid Request
         '405':
           description: Validation Exception
+  /management/settings/client:
+    get:
+      tags:
+        - management
+      summary: Retrieves client settings
+      description: Retrieves client settings for a customer
+      operationId: getClientSettingsForCustomer
+      parameters:
+        - name: X-SPIRAL-CLIENT-ID
+          in: header
+          description: Unique bank client ID
+          schema:
+            type: string
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerClientSettingsResponse"
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+  /cst/client:
+    post:
+      tags:
+        - cst
+      summary: Create a new client
+      description: Creates a new client
+      operationId: createClient
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Create client and default settings request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientCreationRequest"
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCreationResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+    get:
+      tags:
+        - cst
+      summary: List existing clients
+      description: List existing clients and their default settings
+      operationId: getClients
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientsResponse"
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+    put:
+      tags:
+        - cst
+      summary: Updates a client and their settings
+      description: Updates client settings by key
+      operationId: updateClient
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Update client settings request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientUpdateRequest"
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCreationResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+    patch:
+      tags:
+        - cst
+      summary: Partial update of a client
+      description: Updates main client information
+      operationId: patchClient
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        description: Update client settings request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientPatchRequest"
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCreationResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+  /cst/client/{clientId}:
+    get:
+      tags:
+        - cst
+      summary: Get an existing client and their settings by ID
+      description: Load a client and their default settings by ID
+      operationId: getClientById
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          description: ID of client to delete
+          required: true
+          schema:
+            type: string
+            format: guid
+            example: 'client12345'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientResponse"
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+    delete:
+      tags:
+        - cst
+      summary: Deletes a client
+      description: Deletes a client and their settings
+      operationId: deleteClient
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          description: ID of client to delete
+          required: true
+          schema:
+            type: string
+            format: guid
+            example: 'client12345'
+      responses:
+        '200':
+          description: Successful Operation
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+  /cst/client/{clientId}/instant/impact:
+    put:
+      tags:
+        - cst
+      summary: Mass process client instant impact
+      description: Mass process client instant impact
+      operationId: processClientInstantImpact
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          description: ID of client to process II for
+          required: true
+          schema:
+            type: string
+            format: guid
+            example: 'client12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientInstantImpactProcessRequest"
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CstOperationsResponseList'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+  /cst/operation/summary:
+    get:
+      tags:
+        - cst
+      summary: Get combined list of operations, aggregated at the client level
+      description: Get combined list of operations
+      operationId: getAggregatedOperationSummary
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: from
+          in: query
+          description: The search start timestamp.
+          example: 1665917824000
+          schema:
+            type: number
+        - name: to
+          in: query
+          description: The search end timestamp.
+          example: 1665917824000
+          schema:
+            type: number
+        - name: query
+          in: query
+          description: Search query; filters client names.
+          example: 'My Bank Name'
+          schema:
+            type: string
+        - name: product
+          in: query
+          description: The product to fetch operation summary for - defaults to all products if not provided.
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CstOperationSummaryResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+  /cst/operation:
+    get:
+      tags:
+        - cst
+      summary: Get selected product operations
+      description: Get selected product operations in a CSV format
+      operationId: getAggregatedClientOperations
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: from
+          in: query
+          description: The search start timestamp.
+          example: 1665917824000
+          schema:
+            type: number
+        - name: to
+          in: query
+          description: The search end timestamp.
+          example: 1665917824000
+          schema:
+            type: number
+        - name: query
+          in: query
+          description: Search query; filters client names.
+          example: 'My Bank Name'
+          schema:
+            type: string
+        - name: product
+          in: query
+          description: The product to fetch operation summary for - defaults to all products if not provided.
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Product'
+        - name: clientIds
+          in: query
+          required: true
+          description: Client IDs to process
+          schema:
+            type: array
+            items:
+              type: string
+              example: 'client12345'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+    put:
+      tags:
+        - cst
+      summary: Process selected product operations
+      description: Process selected product operations
+      operationId: processAggregatedClientOperations
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CstOperationProcessRequest"
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CstOperationsResponseList'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+  /giving/client/{clientId}/donation:
+    put:
+      tags:
+        - giving
+      summary: Mass process client donations
+      description: Mass process client donations
+      operationId: processClientDonations
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          description: ID of client to process II for
+          required: true
+          schema:
+            type: string
+            format: guid
+            example: 'client12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientDonationProcessRequest"
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CstOperationsResponseList'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
 components:
   schemas:
+    UserRegistrationRequest:
+      type: object
+      required:
+        - inviteCode
+        - user
+      properties:
+        inviteCode:
+          type: string
+          description: Invite Code
+          example: 'sdk2020'
+        user:
+          $ref: '#/components/schemas/User'
+    TransactionProcessRequest:
+      type: object
+      required:
+        - type
+        - transaction
+      properties:
+        type:
+          type: string
+          description: Processing Type
+          example: sync
+          enum:
+            - sync
+            - async
+        transaction:
+          $ref: '#/components/schemas/DepositoryOrCreditTransaction'
+    TransactionProcessResponse:
+      type: object
+      required:
+        - transactionId
+        - instantImpact
+        - rewardSettings
+      properties:
+        transactionId:
+          type: string
+          description: Permanent, unique transaction id. Must survive changes to pending status or amount.
+          example: 'TRX12345'
+        instantImpact:
+          $ref: '#/components/schemas/SocialResponsibilityTransactionInstantImpactResponse'
+        rewardSettings:
+          $ref: '#/components/schemas/RewardSettings'
     SocialResponsibilityInstantImpactSummaryResponse:
       type: object
       description: Single customer's Instant Impact report
@@ -401,7 +2069,217 @@ components:
         instantImpact:
           type: array
           items:
-            $ref: '#/components/schemas/TransactionInstantImpactSummary'
+            $ref: '#/components/schemas/SocialResponsibilityInstantImpactSummaryItem'
+    SocialResponsibilityInstantImpactSummaryItem:
+      type: object
+      description: Customer's Instant Impact summary report per unit
+      required:
+        - rewardUnitName
+      properties:
+        rewardUnitId:
+          type: string
+          description: Spiral Reward Unit id
+          example: "0ebbaf7d-e6d7-4ba5-be0d-2c40122a2fa7"
+        rewardUnitName:
+          type: string
+          description: Reward unit name
+          example: TREE
+        rewardUnitTitle:
+          type: string
+          description: Title label text for associated reward unit
+          example: Trees planted
+        rewardUnitSubtitle:
+          type: string
+          description: Subtitle label text for associated reward unit
+          example: to help the environment
+        rewardUnitIcon:
+          type: string
+          description: URL for reward unit icon
+          example: "www.mildred-dubuque.biz"
+        totalImpact:
+          type: number
+          description: Aggregated point value for associated reward unit
+          example: 10
+        totalDonatedAmount:
+          type: number
+          description: Aggregated dollar value for associated reward unit
+          example: 10.00
+    GivingCharityCategoriesResponse:
+      type: object
+      description: Search result for Charity Categories
+      required:
+        - categories
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/GivingCharityCategoryResponse'
+    GivingCharitiesSearchRequest:
+      type: object
+      description: Filter for Charity a customer can donate to.
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: Search query term for a Charity lookup by ID, name or EIN.
+          example: '*doctor | EIN'
+    GivingCharitiesByIdRequest:
+      type: object
+      description: List of Charity IDs to get details for
+      required:
+        - charities
+      properties:
+        charities:
+          type: array
+          description: List of Charities IDs
+          example: [ "b9d0f942-131f-48f6-9367-dbbb3c056ee3", "6cfc6aae-876f-4f61-a4b0-1c8d6e207330" ]
+          items:
+            type: string
+    GivingCharitiesResponse:
+      type: object
+      description: Response object for list of Charities
+      required:
+        - charities
+      properties:
+        charities:
+          type: array
+          items:
+            $ref: '#/components/schemas/GivingCharityResponse'
+    GivingCharitiesSearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/PaginatedResponse'
+        - type: object
+          required:
+            - content
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/GivingCharityResponse'
+    GivingCustomerDonationsSummaryResponse:
+      type: object
+      description: Customer giving donations summary for given time period
+      required:
+        - everDonated
+        - periodTotal
+        - recurring
+        - oneTime
+        - allTime
+      properties:
+        everDonated:
+          type: boolean
+          description: Has customer ever donated to any charities
+          example: true
+        periodTotal:
+          $ref: '#/components/schemas/GivingCustomerDonationsSummaryItem'
+        recurring:
+          $ref: '#/components/schemas/GivingCustomerDonationsSummaryItem'
+        oneTime:
+          $ref: '#/components/schemas/GivingCustomerDonationsSummaryItem'
+        allTime:
+          $ref: '#/components/schemas/GivingCustomerDonationsSummaryItem'
+    GivingCustomerDonationsSummaryItem:
+      type: object
+      description: Customer giving donations summary item
+      required:
+        - amount
+      properties:
+        iconUrl:
+          type: string
+          description: Icon url for this item
+          example: "www.lady-rau.io"
+        amount:
+          type: number
+          format: int64
+          description: Amount donated
+    GivingCustomerCharityResponse:
+      type: object
+      description: Charity details along with customer donation info
+      required:
+        - charity
+      properties:
+        charity:
+          $ref: '#/components/schemas/GivingCharityResponse'
+        donations:
+          $ref: '#/components/schemas/GivingCustomerCharityDonationsResponse'
+    GivingCharityDonationFeesResponse:
+      type: object
+      description: Breakdown of donation fees and disclosures
+      required:
+        - fees
+        - charityAmount
+        - totalAmount
+      properties:
+        fees:
+          type: number
+          description: Total donation fees
+          example: 1.02
+        charityAmount:
+          type: number
+          description: Amount going to the charity (receipt amount)
+          example: 15.00
+        totalAmount:
+          type: number
+          description: Total amount that will be taken from the customer's account
+          example: 16.02
+        disclosureText:
+          type: string
+          description: Detailed explanation of applicable fees
+          example: Your donation is being made to American Online Giving Foundation, Inc, registered in the United States, which takes legal control of donations and disburses funds, usually once a month, to the selected charity(ies). Charities will receive your donation, less fees. Donation processing fees are 2.9% of your donation amount or a minimum of $1.02, whichever is greater. Donations are non-refundable. It's rare, but in the instance where your donation cannot be delivered to the selected charity for any reason, the funds will be sent to a default charity chosen by Spiral. By continuing, you agree to the Terms of Use.
+        successText:
+          type: string
+          description: Text to display on a successful donation, with a detailed breakdown of where your funds and fees are going
+          example: Your donation request has been sent to our partner, the American Online Giving Foundation, a 501(c)(3) charity. Once your donation has cleared, you'll receive an email with a donation receipt that you may use for tax purposes.
+    GivingCustomerCharityDonationsResponse:
+      type: object
+      description: Customer donations info for a specific Charity
+      properties:
+        charityId:
+          type: string
+          description: Spiral Charity ID
+          example: "b9cffe94-5c03-4ebe-94bd-7ffa205f2065"
+        recurring:
+          $ref: '#/components/schemas/GivingCustomerCharityRecurringDonationResponse'
+        oneTime:
+          $ref: '#/components/schemas/GivingCustomerCharityDonationsSummary'
+        total:
+          $ref: '#/components/schemas/GivingCustomerCharityDonationsSummary'
+    GivingCustomerCharityRecurringDonationResponse:
+      allOf:
+        - $ref: '#/components/schemas/GivingCharityRecurringDonationResponse'
+        - type: object
+          properties:
+            iconUrl:
+              type: string
+              description: Recurring donations icon url
+              example: "www.hiram-shields.io"
+    GivingCustomerCharityDonationsSummary:
+      type: object
+      required:
+        - charityId
+        - totalDonatedAmount
+      properties:
+        charityId:
+          type: string
+          description: Charity ID
+          example: "9a496f11-91f1-4061-a6e9-1680e84b52bd"
+        iconUrl:
+          type: string
+          description: One time donations icon url
+          example: "www.katheleen-schmeler.biz"
+        totalDonatedAmount:
+          type: number
+          description: Total amount of donations
+          example: 134.00
+    GivingCharityResponseWrapper:
+      type: object
+      description: Response object for a single Charity
+      required:
+        - charity
+      properties:
+        charity:
+          $ref: '#/components/schemas/GivingCharityResponse'
     GenericCardResponse:
       type: object
       description: Generic card response
@@ -411,6 +2289,281 @@ components:
         card:
           type: object
           description: Generic card JSON
+    GivingCharityOneTimeDonationRequest:
+      type: object
+      description: One-time donation request
+      required:
+        - accountId
+        - charityId
+        - amount
+        - anonymous
+        - coverFees
+      properties:
+        accountId:
+          type: string
+          description: External account ID to make the donation from
+          example: "800"
+        charityId:
+          type: string
+          description: Spiral ID of selected Charity
+          example: "f195929f-effc-4501-9eec-33d89d83fcdb"
+        amount:
+          type: number
+          description: Fixed-point decimal number, carried up to two decimal places.
+          example: 12.78
+          minimum: 0.01
+        anonymous:
+          type: boolean
+          description: Is donation anonymous
+          example: false
+        coverFees:
+          type: boolean
+          description: Does customer agree to cover donation fees
+          example: false
+    CharityDonationReportRequest:
+      type: object
+      required:
+        - from
+        - to
+      properties:
+        from:
+          type: string
+          format: date-time
+          description: Start time filter. Also used to wrap the month and year for monthly reports.
+        to:
+          type: string
+          format: date-time
+          description: End time filter. Also used to wrap the month and year for monthly reports.
+        ein:
+          type: string
+          description: Charity unique Employer Identification Number (EIN)
+          example: '84-2975413'
+    CharityDonationReportResponse:
+      type: object
+      required:
+        - totalAmountDonated
+        - donations
+      properties:
+        totalAmountDonated:
+          type: number
+          description: Dollar value aggragating all donations
+          example: 35.68
+        donations:
+          type: array
+          items:
+            $ref: '#/components/schemas/GivingCharityDonation'
+    SettingsResponse:
+      type: object
+      required:
+        - settings
+      properties:
+        settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Setting'
+    SettingResponse:
+      type: object
+      required:
+        - setting
+      properties:
+        setting:
+          $ref: '#/components/schemas/Setting'
+    SettingCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/SettingResponse'
+    SettingUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/SettingResponse'
+    SettingDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/SettingResponse'
+    ClientSettingResponse:
+      allOf:
+        - $ref: '#/components/schemas/SettingResponse'
+    InstantImpactCategoriesResponse:
+      type: object
+      required:
+        - categories
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstantImpactCategory'
+    SelectedInstantImpactCategoriesRequest:
+      type: object
+      required:
+        - categories
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtendedInstantImpactCategoryRewardSelection'
+        anonymousDonor:
+          type: boolean
+    SelectedInstantImpactCategoriesResponse:
+      type: object
+      required:
+        - categories
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtendedInstantImpactCategoryRewardSelection'
+        anonymousDonor:
+          type: boolean
+    ClientInstantImpactResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectedInstantImpactCategory'
+        roundUp:
+          $ref: '#/components/schemas/RoundUpSelections'
+    ClientCreationRequest:
+      type: object
+      required:
+        - client
+      properties:
+        client:
+          $ref: '#/components/schemas/Client'
+    ClientResponse:
+      type: object
+      required:
+        - client
+      properties:
+        client:
+          allOf:
+            - $ref: '#/components/schemas/Client'
+            - required: [id]
+    ClientCreationResponse:
+      allOf:
+        - $ref: '#/components/schemas/ClientResponse'
+    ClientsResponse:
+      type: object
+      required:
+        - clients
+      properties:
+        clients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Client'
+    AuditClientsResponse:
+      type: object
+      required:
+        - auditClients
+      properties:
+        auditClients:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditClient'
+    ClientUpdateRequest:
+      type: object
+      required:
+        - client
+      properties:
+        client:
+          $ref: '#/components/schemas/ClientUpdate'
+    AuditClient:
+      type: object
+      required:
+        - fintechName
+      properties:
+        id:
+          type: string
+          format: guid
+          example: 'client12345'
+          description: Spiral generated unique Client ID
+        logo:
+          type: string
+          description: URL within Cloudinary
+        fintechName:
+          type: string
+          example: 'Bank Of West'
+          description: Full fintech name
+        contractStart:
+          type: integer
+          format: int64
+          example: 1665917824
+          description: Starting timestamp of the fintech's contract.
+        contractEnd:
+          type: integer
+          format: int64
+          example: 1671199027
+          description: Ending timestamp of the fintech's contract.
+        manager:
+          type: string
+          example: 'cst.manager@spiral.us'
+          description: Spiral-side manager assigned to this client.
+    Client:
+      allOf:
+        - $ref: '#/components/schemas/AuditClient'
+        - type: object
+          required:
+            - fintechName
+            - products
+          properties:
+            brandName:
+              type: string
+              example: 'WestTech'
+              description: Shortname description of the fintech brand
+            contactUser:
+              $ref: '#/components/schemas/User'
+            clientSettings:
+              $ref: '#/components/schemas/ClientSettings'
+            products:
+              $ref: '#/components/schemas/ClientProducts'
+    ClientUpdate:
+      allOf:
+        - $ref: '#/components/schemas/Client'
+        - type: object
+          required:
+            - id
+    ClientProducts:
+      type: object
+      required:
+        - instantImpact
+        - giving
+        - daf
+      properties:
+        instantImpact:
+          type: boolean
+          description: Clients instant impact product on/off
+          default: false
+          example: "true"
+        giving:
+          type: boolean
+          description: Clients giving product on/off
+          default: false
+          example: "true"
+        daf:
+          type: boolean
+          description: Clients DAF product on/off
+          default: false
+          example: "true"
+    ClientSettings:
+      type: object
+      required:
+        - rewardSettings
+        - customerLimits
+        - rewardCategories
+        - givingSettings
+      properties:
+        brandColors:
+          type: array
+          items:
+            type: string
+          description: Hierarchical order of brand colors in HTML/CSS values
+        rewardSettings:
+          $ref: '#/components/schemas/RewardSettings'
+        customerLimits:
+          $ref: '#/components/schemas/CustomerLimits'
+        rewardCategorySelections:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstantImpactCategoryRewardSelection'
+        givingSettings:
+          $ref: '#/components/schemas/ClientGivingSettings'
     CustomerLimits:
       type: object
       properties:
@@ -429,10 +2582,12 @@ components:
         - daily
         - weekly
         - monthly
+        - no_limit
     CustomerSettings:
       type: object
       required:
         - roundUp
+        - limitSelection
       properties:
         userSponsoredEverOptedIn:
           description: True if the customer has ever opted in to round up in the user-sponsored flow.
@@ -453,6 +2608,36 @@ components:
           $ref: "#/components/schemas/CustomerInstantImpactLimitSelections"
         limitValue:
           type: number
+    CustomerClientSettingsResponse:
+      type: object
+      required:
+        - brandName
+        - clientSettings
+        - products
+      properties:
+        brandName:
+          type: string
+          example: 'WestTech'
+          description: Shortname description of the fintech brand
+        logo:
+          type: string
+          description: Client logo url
+          example: "www.britany-mueller.io"
+        clientSettings:
+          $ref: '#/components/schemas/CustomerClientSettings'
+        products:
+          $ref: '#/components/schemas/ClientProducts'
+    CustomerClientSettings:
+      type: object
+      description: Client settings for customer
+      required:
+        - brandColors
+      properties:
+        brandColors:
+          type: array
+          items:
+            type: string
+          description: Hierarchical order of brand colors in HTML/CSS values
     RewardSettings:
       type: object
       description: Reward settings that can have a certain type. Selected type is the prefix of the required property to set
@@ -532,6 +2717,207 @@ components:
           description: User Status
           format: int32
           example: 1
+    Setting:
+      type: object
+      additionalProperties:
+        type: object
+        required:
+          - key
+          - value
+        properties:
+          key:
+            type: string
+            description: settings key
+          value:
+            type: string
+            description: settings value
+    Charity:
+      type: object
+      required:
+        - ein
+        - name
+      properties:
+        id:
+          type: string
+          format: guid
+          example: 'CH12345'
+        ein:
+          type: string
+          description: Charity unique Employer Identification Number (EIN)
+          example: '84-2975413'
+        name:
+          type: string
+          description: Charity name
+          example: 'Hub of Love Corporation'
+        description:
+          type: string
+          description: Charity description or mission
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/CharityImage'
+        rewardUnits:
+          type: array
+          items:
+            $ref: '#/components/schemas/CharityRewardUnit'
+    CharityImage:
+      type: object
+      required:
+        - url
+        - type
+      properties:
+        id:
+          type: string
+          description: Unique internal ID
+        url:
+          type: string
+          description: URL within Cloudinary
+        type:
+          type: string
+          description: Enum value
+    GivingCharityDonation:
+      type: object
+      required:
+        - charity
+        - amountDonated
+      properties:
+        charity:
+          $ref: '#/components/schemas/Charity'
+        amountDonated:
+          type: number
+          description: Dollar value donated to the charity.
+          example: 35.68
+    GivingCharityRecurringDonation:
+      type: object
+      required:
+        - accountId
+        - charityId
+        - startDate
+        - amount
+        - paused
+        - stopped
+        - anonymous
+        - coverFees
+      properties:
+        accountId:
+          type: string
+          description: External account ID donation is made from
+          example: "800"
+        charityId:
+          type: string
+          description: Spiral ID of Charity to donate to
+          example: "9dc6300e-f4f0-4586-97a9-ca7a14aee6cd"
+        startDate:
+          type: integer
+          format: int64
+          description: Recurring donation start date as timestamp
+          example: 1671046312
+        amount:
+          type: number
+          description: Dollar value that is donated to Charity
+          example: 15.00
+          minimum: 0.01
+        paused:
+          type: boolean
+          description: Is recurring donation paused
+          example: false
+        stopped:
+          type: boolean
+          description: Is recurring donation stopped
+          example: false
+        anonymous:
+          type: boolean
+          description: Is recurring donation anonymous
+          example: false
+        coverFees:
+          type: boolean
+          description: Does customer agree to cover donation fees
+          example: false
+    GivingCharityRecurringDonationCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/GivingCharityRecurringDonation'
+    GivingCharityRecurringDonationUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/GivingCharityRecurringDonation'
+        - required: [ id ]
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Recurring donation ID
+              example: "559a2425-67a1-40e4-bfa0-b58f6ae002d3"
+    GivingCharityRecurringDonationResponse:
+      allOf:
+        - $ref: '#/components/schemas/GivingCharityRecurringDonation'
+        - required: [id]
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Recurring donation ID
+              example: "559a2425-67a1-40e4-bfa0-b58f6ae002d3"
+            nextDate:
+              type: integer
+              format: int64
+              description: Next donation date as timestamp
+              example: 1671298964
+    GivingCustomerCharitiesSummaryResponse:
+      type: object
+      description: Customer giving charity donations summary
+      properties:
+        recurring:
+          type: array
+          items:
+            $ref: '#/components/schemas/GivingCustomerRecurringCharityDonationResponse'
+        all:
+          type: array
+          items:
+            $ref: '#/components/schemas/GivingCustomerSupportedCharityDonationSummary'
+    GivingCustomerRecurringCharityDonationResponse:
+      type: object
+      description: Customer giving recurring charity donation
+      properties:
+        charity:
+          $ref: '#/components/schemas/GivingCharityResponse'
+        paused:
+          type: boolean
+          description: Is recurring donation paused
+          example: false
+        amount:
+          type: number
+          description: Recurring donation amount
+          example: 15.00
+        id:
+          type: string
+          format: guid
+          description: Recurring donation id
+          example: "fb156645-976d-46be-a3fb-8c8589bedaae"
+    GivingCustomerSupportedCharityDonationSummary:
+      type: object
+      description: Customer giving charity donations summary
+      properties:
+        charity:
+          $ref: '#/components/schemas/GivingCharityResponse'
+        recurring:
+          type: object
+          properties:
+            paused:
+              type: boolean
+              description: Is recurring donation paused
+              example: false
+            amount:
+              type: number
+              description: Recurring donation amount
+              example: 10.00
+            id:
+              type: string
+              format: guid
+              description: Recurring donation id
+              example: "c4047f05-9d32-4cbe-9378-fdd14a68f532"
+        totalDonatedAmount:
+          type: number
+          description: Total amount donated to this charity (one-time and processed recurring)
+          example: 200.00
     InstantImpact:
       type: object
       description: A single socially responsible Instant Impact from performing a financial transaction.
@@ -662,48 +3048,205 @@ components:
           type: string
           description: Reward Unit key
           example: TREE
-    GenericCardType:
-      type: string
-      description: Unique type for the UI card.
-      enum:
-        - SR_SUMMARY
-        - HOW_IT_WORKS
-        - USER_SPONSORED_OPT_IN
-    SocialResponsibilityTransactionListResponse:
+    GivingCharity:
       type: object
       required:
-        - transactions
-        - totalTransactions
-        - totalAmount
-        - pageTransactions
-        - pageAmount
+        - name
+        - ein
       properties:
-        totalTransactions:
-          type: number
-          description: The count of all transactions across all pages.
-          example: 241
-        pageTransactions:
-          type: number
-          description: The count of all transactions on this page.
-          example: 50
-        totalAmount:
-          type: number
-          description: The total summed amount of all transactions across all pages.
-          example: 2431.49
-        pageAmount:
-          type: number
-          description: The summed amount of all transactions on this page.
-          example: 411.98
-        transactions:
+        id:
+          type: string
+          description: Unique ID of giving charity
+          example: "c102861d-4e32-4ad4-ba74-d6fcfd3a4809"
+        name:
+          type: string
+          description: Name of the giving charity
+          example: "Garden of Eden"
+        ein:
+          type: string
+          description: Unique EIN of giving charity
+          example: "12-1234567"
+        description:
+          type: string
+          description: Short description of giving charity
+          example: "Dolorum rem quis quaerat delectus dolor."
+        categories:
+          type: array
+          description: List of categories giving charity is assigned to
+          items:
+            $ref: '#/components/schemas/GivingCharityCategory'
+        images:
+          type: array
+          description: List of giving charity images
+          items:
+            $ref: '#/components/schemas/CharityImage'
+        location:
+          type: string
+          description: City and state the charity is located in
+          example: "New York, NY"
+    GivingCharityResponse:
+      allOf:
+        - $ref: '#/components/schemas/GivingCharity'
+        - required: [id]
+    TermsAndConditionsResponse:
+      type: object
+      properties:
+        copy:
+          type: string
+    GivingCharityCategory:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: string
+          description: Unique ID of the charity category.
+          format: guid
+          example: "CAT12345"
+        name:
+          type: string
+          description: Name of the charity category.
+          example: 'Trees'
+        backgroundImageUrl:
+          type: string
+          description: Background image.
+          example: 'https://bla.com/image.png'
+        charities:
+          type: array
+          description: List of Giving Charities belonging to this category
+          items:
+            $ref: '#/components/schemas/GivingCharity'
+    # TODO SIS-734
+    GivingCharityCategoryResponse:
+      type: object
+      required:
+        - name
+        - id
+      properties:
+        id:
+          type: string
+          description: Unique ID of the charity category.
+          format: guid
+          example: "CAT12345"
+        name:
+          type: string
+          description: Name of the charity category.
+          example: 'Trees'
+        backgroundImageUrl:
+          type: string
+          description: Background image.
+          example: 'https://bla.com/image.png'
+        charities:
+          type: array
+          description: List of Giving Charities belonging to this category
+          items:
+            $ref: '#/components/schemas/GivingCharityResponse'
+    InstantImpactCategory:
+      type: object
+      description: Instant Impact Category
+      required:
+        - name
+      properties:
+        id:
+          type: string
+          description: Unique ID of the charity category.
+          format: guid
+          example: "CAT12345"
+        name:
+          type: string
+          description: Name of the charity category.
+          example: 'Trees'
+        defaultCharityId:
+          type: string
+          description: Id of the default charity for this category. Charity can be found under charities field.
+          format: guid
+          example: "CAT12345"
+        charities:
           type: array
           items:
-            $ref: '#/components/schemas/SocialResponsibilityTransactionInstantImpactResponse'
-    SummaryTimePeriod:
-      type: string
-      description: "Possible periods to choose from for Instant Impact reports"
-      enum:
-        - ALL_TIME
-        - LAST_MONTH
+            $ref: '#/components/schemas/Charity'
+    SelectedInstantImpactCategory:
+      type: object
+      description: Lightweight Instant Impact Category with attributes selected by client
+      properties:
+        categoryName:
+          type: string
+          example: 'Hotels'
+        charityName:
+          type: string
+          example: 'Charity 1'
+        rewardUnitName:
+          type: string
+          example: 'Meal'
+        internalCostInCents:
+          type: integer
+          example: 100
+    InstantImpactCategoryRewardSelection:
+      type: object
+      description: Instant Impact Category Charity and Reward Unit selection for a Client
+      required:
+        - instantImpactCategoryId
+        - charityId
+        - rewardUnitId
+      properties:
+        instantImpactCategoryId:
+          type: string
+        charityId:
+          type: string
+          format: guid
+          example: "CHAR12345"
+        rewardUnitId:
+          type: string
+          format: guid
+          example: "REWARD12345"
+    ExtendedInstantImpactCategoryRewardSelection:
+      type: object
+      description: Instant Impact Category Charity and Reward Unit selection with additional details
+      allOf:
+        - $ref: '#/components/schemas/InstantImpactCategoryRewardSelection'
+        - type: object
+          required:
+            - rewardUnitName
+            - selected
+          properties:
+            rewardUnitName:
+              type: string
+              example: "Tree"
+            enabled:
+              type: boolean
+    ClientGivingSettings:
+      type: object
+      description: Client settings for Giving Portal
+      properties:
+        charitySettings:
+          $ref: '#/components/schemas/ClientGivingCharitySettings'
+    ClientGivingCharitySettings:
+      type: object
+      description: Client settings for Charities in Giving Portal
+      properties:
+        excluded:
+          $ref: '#/components/schemas/ClientGivingExcludedCharitySettings'
+        highlighted:
+          type: array
+          description: List of Charity IDs to be highlighted in giving portal search
+          items:
+            type: string
+          example: [ "b9d0f942-131f-48f6-9367-dbbb3c056ee3", "6cfc6aae-876f-4f61-a4b0-1c8d6e207330" ]
+    ClientGivingExcludedCharitySettings:
+      type: object
+      properties:
+        recommended:
+          type: array
+          description: List of Charity IDs excluded from being recommended in the giving portal
+          items:
+            type: string
+          example: ["eaae3ee1-5ca7-4637-a05b-644f5c6b0910", "309f3f02-f644-4a22-b503-7e975496338c"]
+        search:
+          type: array
+          description: List of Charity IDs excluded from the giving portal search
+          items:
+            type: string
+          example: ["4c650458-b5cb-423f-b971-5bc6733c894d", "a2700358-ce6f-4e34-97ca-b0970bad8525"]
     DepositoryOrCreditTransaction:
       type: object
       description: Describes a transaction against a debit or credit card account.
@@ -852,74 +3395,606 @@ components:
           type: number
           description: Longitude coordinate.
           example: 74.0060
-    InstantImpactCategory:
+    GenericCardType:
+      type: string
+      description: Unique type for the UI card.
+      enum:
+        - SR_SUMMARY
+        - HOW_IT_WORKS
+        - USER_SPONSORED_OPT_IN
+        - DONATION_FEE_DISCLOSURE
+        - DONATION_FEE_SUCCESS
+    AuditEventType:
+      type: string
+      description: Unique type of an audit event
+      enum:
+        - INSERT
+        - UPDATE
+        - DELETE
+    SocialResponsibilityTransactionListResponse:
       type: object
-      description: Instant Impact Category
       required:
-        - name
+        - transactions
+        - totalTransactions
+        - totalAmount
+        - pageTransactions
+        - pageAmount
       properties:
-        id:
+        totalTransactions:
+          type: number
+          description: The count of all transactions across all pages.
+          example: 241
+        pageTransactions:
+          type: number
+          description: The count of all transactions on this page.
+          example: 50
+        totalAmount:
+          type: number
+          description: The total summed amount of all transactions across all pages.
+          example: 2431.49
+        pageAmount:
+          type: number
+          description: The summed amount of all transactions on this page.
+          example: 411.98
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialResponsibilityTransactionInstantImpactResponse'
+    ClientDonationListResponse:
+      type: object
+      required:
+        - donations
+        - totalDonations
+        - totalAmount
+        - pageDonations
+        - pageAmount
+      properties:
+        totalDonations:
+          type: number
+          description: The count of all donations across all pages.
+          example: 241
+        pageDonations:
+          type: number
+          description: The count of all donations on this page.
+          example: 50
+        totalAmount:
+          type: number
+          description: The total summed amount of all donations across all pages.
+          example: 2431.49
+        pageAmount:
+          type: number
+          description: The summed amount of all donations on this page.
+          example: 411.98
+        donations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientDonationResponse'
+    ClientDonationResponse:
+      type: object
+      description: Represents one singular donation instance for a given client that can then be operated on.
+      required:
+        - clientId
+        - clientName
+        - charityId
+        - charityName
+        - categoryId
+        - categoryName
+        - impact
+      properties:
+        clientId:
           type: string
-          description: Unique ID of the charity category.
           format: guid
-          example: "CAT12345"
-        name:
+          example: 'CLI12345'
+        clientName:
+          type: string
+          example: Spiral
+        charityId:
+          type: string
+          format: guid
+          example: 'CHA12345'
+        charityName:
+          type: string
+          example: American Red Cross
+        charityAddress:
+          type: string
+          description: The charity's address, formatted as a single line
+        customerId:
+          type: string
+          format: guid
+          example: 'CUST12345'
+        categoryName:
           type: string
           description: Name of the charity category.
-          example: 'Trees'
-        defaultCharityId:
+          example: 'Gas, Transportation'
+        donationId:
           type: string
-          description: Id of the default charity for this category. Charity can be found under charities field.
-          format: guid
-          example: "CAT12345"
-        charities:
-          type: array
-          items:
-            $ref: '#/components/schemas/Charity'
-    Charity:
+          description: Permanent, unique donation identifier.
+          example: 'TRX12345'
+        donationTimestamp:
+          type: number
+          description: Donation Unix timestamp
+          example: 1669647037
+        donationType:
+          type: string
+          description: "The type of the donation"
+          example: "Recurring"
+        donationAmount:
+          type: number
+          description: donation amount with two decimal places.
+          example: -23.41
+        transactionAccountId:
+          type: string
+          description: Transaction account identifier.
+          example: 'ACC12345'
+    SummaryTimePeriod:
+      type: string
+      description: "Possible periods to choose from for Instant Impact reports"
+      enum:
+        - ALL_TIME
+        - LAST_MONTH
+    DonationReceiptSummaryGrouping:
+      type: string
+      description: "Possible groupings to select when getting receipt summary - ungrouped or grouped by charity"
+      enum:
+        - UNGROUPED
+        - CHARITY
+    ClientInstantImpactProcessRequest:
       type: object
       required:
-        - ein
-        - name
+        - action
       properties:
-        id:
+        action:
+          $ref: '#/components/schemas/OperationsCenterAction'
+        from:
+          description: The search start timestamp.
+          type: number
+          example: 1665917824000
+        to:
+          description: The search end timestamp.
+          type: number
+          example: 1665917824000
+        search:
+          description: Search query; filters transaction descriptions in a case-insensitive way.
           type: string
-          format: guid
-          example: 'CH12345'
-        ein:
-          type: string
-          description: Charity unique Employer Identification Number (EIN)
-          example: '84-2975413'
-        name:
-          type: string
-          description: Charity name
-          example: 'Hub of Love Corporation'
-        description:
-          type: string
-          description: Charity description or mission
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/CharityImage'
+          example: 'Starbucks'
         rewardUnits:
+          description: A list of reward units to include in the search. Defaults to all units if not provided.
           type: array
           items:
-            $ref: '#/components/schemas/CharityRewardUnit'
-    CharityImage:
+            type: string
+          example: [ 'UNIT12345' ]
+        transactions:
+          type: array
+          description: List of II transaction IDs to process. Optional, but if provided will overwrite the supplied filters and only process these donation IDs.
+          example: [ 'DON12345', 'DON12346' ]
+          items:
+            type: string
+    ClientDonationProcessRequest:
       type: object
       required:
-        - url
-        - type
+        - action
+      properties:
+        action:
+          $ref: '#/components/schemas/OperationsCenterAction'
+        from:
+          description: The search start timestamp.
+          type: number
+          example: 1665917824
+        to:
+          description: The search end timestamp.
+          type: number
+          example: 1665917824
+        query:
+          description: Search query; filters donation descriptions, EINs or customer names in a case-insensitive way.
+          type: string
+          example: 'Red cross'
+        charities:
+          description: A list of charity IDs to include in the search. Defaults to all units if not provided.
+          type: array
+          items:
+            type: string
+          example: [ 'CHA12345' ]
+        donations:
+          type: array
+          description: List of donation IDs to process. Optional, but if provided will overwrite the supplied filters and only process these donation IDs.
+          example: [ 'DON12345', 'DON12346' ]
+          items:
+            type: string
+        type:
+          $ref: '#/components/schemas/SummaryDonationType'
+        status:
+          description: Transaction statuses to include. Defaults to all statuses if not provided.
+          type: array
+          items:
+            $ref: '#/components/schemas/OperationalStatus'
+    CstOperationsResponseList:
+      type: object
+      required:
+        - successfulOperations
+        - failedOperations
+      properties:
+        successfulOperations:
+          type: array
+          description: List of successfully passed operation item IDs.
+          items:
+            $ref: '#/components/schemas/CstOperationsResponse'
+        failedOperations:
+          type: array
+          description: List of failed operation item IDs with their failure reasons
+          items:
+            $ref: '#/components/schemas/CstOperationsResponse'
+    CstOperationsResponse:
+      type: object
+      required:
+        - operationItemId
+        - action
+      properties:
+        action:
+          $ref: '#/components/schemas/OperationsCenterAction'
+        operationItemId:
+          description: ID of the item this operation was on.
+          type: string
+          example: 'ITEM12345'
+        reason:
+          description: Attached operation reason. Usually a failure reason.
+          type: string
+          example: 'Incorrect item ID.'
+    GivingCustomerDonationReceiptSummaryResponse:
+      type: object
+      required:
+        - years
+      properties:
+        years:
+          description: List of years that donation receipt summary is available for
+          type: array
+          items:
+            $ref: '#/components/schemas/GivingCustomerDonationReceiptSummaryYear'
+    GivingCustomerDonationReceiptSummaryYear:
+      type: object
+      required:
+        - year
+        - months
+      properties:
+        year:
+          description: The given year
+          type: string
+          example: '2023'
+        months:
+          description: List of months of the given year that donation receipt summary is available for
+          type: array
+          items:
+            $ref: '#/components/schemas/GivingCustomerDonationReceiptSummaryMonth'
+    GivingCustomerDonationReceiptSummaryMonth:
+      type: object
+      required:
+        - month
+        - title
+        - groups
+      properties:
+        month:
+          description: The given month
+          type: string
+          example: 'February'
+        title:
+          description: Title to display in the summary list
+          type: string
+          example: 'February donation receipts'
+        groups:
+          description: List of grouped receipts for the given month, based on the provided grouping setting
+          type: array
+          items:
+            $ref: '#/components/schemas/GivingCustomerDonationReceiptSummaryGroup'
+    GivingCustomerDonationReceiptSummaryGroup:
+      type: object
+      required:
+        - groupTitle
+        - receipts
+      properties:
+        groupTitle:
+          description: The group title to display, based on the provided grouping setting
+          type: string
+          example: 'All'
+        receipts:
+          description: List of receipts in the given group
+          type: array
+          items:
+            $ref: '#/components/schemas/GivingCustomerDonationReceiptSummaryReceipt'
+    GivingCustomerDonationReceiptSummaryReceipt:
+      type: object
+      required:
+        - id
+        - date
+        - charityName
+        - period
+        - ready
+      properties:
+        id:
+          description: Receipt ID
+          type: string
+          example: 'REC12345'
+        date:
+          description: Timestamp of the receipt
+          type: number
+          example: 1676332800000
+        charityName:
+          description: Recipient charity name
+          type: string
+          example: 'American Red Cross'
+        period:
+          description: Donation period - one-time or monthly
+          type: string
+          example: 'One-time'
+        ready:
+          description: Whether the receipt has been processed and is ready for viewing
+          type: boolean
+          example: true
+    FileResponse:
+      type: object
+      required:
+        - contentType
+        - content
+      properties:
+        contentType:
+          description: Content type of the receipt
+          type: string
+          example: 'application/pdf'
+        content:
+          description: Base64-encoded byte content
+          type: string
+          example: 'JVBERi0xLj...'
+    CstOperationSummaryResponse:
+      type: object
+      required:
+        - donationTotal
+        - everydayImpactTransactionTotal
+        - productTotal
+        - clients
+      properties:
+        donationTotal:
+          description: Total donation value
+          type: number
+          example: 500.15
+        everydayImpactTransactionTotal:
+          description: Total Everyday Impact value
+          type: number
+          example: 23.45
+        productTotal:
+          description: Combined value of all products
+          type: number
+          example: 523.60
+        clients:
+          description: List of clients with aggregated data
+          type: array
+          items:
+            $ref: '#/components/schemas/CstOperationClientSummary'
+    CstOperationClientSummary:
+      type: object
+      required:
+        - cleints
+        - content
+      properties:
+        clientId:
+          description: Client's unique identifier
+          type: string
+          example: 'Client-12345'
+        clientName:
+          description: Client name
+          type: string
+          example: 'My Bank Name'
+        donationCount:
+          description: Number of donations made
+          type: number
+          example: 10
+        donationTotal:
+          description: Total donation value
+          type: number
+          example: 23.45
+        donationCheck:
+          description: Value of all donation checks
+          type: number
+          example: 11.25
+        donationACH:
+          description: Value of all ACH donations
+          type: number
+          example: 12.20
+        everydayImpactTransactionCount:
+          description: Number of everyday impact transactions
+          type: number
+          example: 30
+        everydayImpactTransactionTotal:
+          description: Total everyday impact value
+          type: number
+          example: 15.65
+        everydayImpactTransactionCheck:
+          description: Value of all everyday impact checks
+          type: number
+          example: 14.25
+        everydayImpactTransactionACH:
+          description: Value of all ACH everyday impact
+          type: number
+          example: 1.40
+    OperationsCenterAction:
+      type: string
+      description: Possible actions in CST operations center
+      enum:
+        - PROCESS
+        - DENY
+    ClientPatchRequest:
+      type: object
+      required:
+        - id
       properties:
         id:
           type: string
-          description: Unique internal ID
-        url:
+          format: guid
+          example: 'client12345'
+          description: Spiral generated unique Client ID
+        contractStart:
+          type: number
+          example: 1665917824
+          description: Starting timestamp of the fintech's contract.
+        contractEnd:
+          type: number
+          example: 1671199027
+          description: Ending timestamp of the fintech's contract.
+        manager:
           type: string
-          description: URL within Cloudinary
-        type:
+          example: 'cst.manager@spiral.us'
+          description: Spiral-side manager assigned to this client.
+    CstOperationProcessRequest:
+      type: object
+      required:
+        - clientIds
+      properties:
+        clientIds:
+          description: Client IDs to process
+          type: array
+          items:
+            type: string
+            example: 'client12345'
+        from:
+          description: The search start timestamp.
+          example: 1665917824000
+          type: number
+        to:
+          description: The search end timestamp.
+          example: 1665917824000
+          type: number
+        query:
+          description: Search query; filters client names.
+          example: 'My Bank Name'
           type: string
-          description: Enum value
+        products:
+          description: List of products to include. Defaults to all products.
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    SummaryDonationType:
+      type: string
+      description: Donation recurrence type for donation summary - all, one-time only or recurring only.
+      enum:
+        - ALL
+        - ONE_TIME
+        - RECURRING
+    Product:
+      type: string
+      description: Client-selectable products.
+      enum:
+        - GIVING
+        - EVERYDAY_IMPACT
+    OperationalStatus:
+      type: string
+      description: Operational status of everyday impact or donation transactions.
+      enum:
+        - DENIED
+        - PENDING
+        - APPROVED
+        - PROCESSED
+        - FAILED
+    PageRequest:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          example: 0
+          default: 0
+          description: Page number
+        size:
+          type: integer
+          format: int64
+          example: 20
+          default: 20
+          description: Page size
+    SortResponse:
+      type: object
+      required:
+        - empty
+        - unsorted
+        - sorted
+      properties:
+        empty:
+          type: boolean
+          description: Did sort by any field
+          example: false
+        unsorted:
+          type: boolean
+          description: Are the results not sorted
+          example: false
+        sorted:
+          type: boolean
+          description: Are the results sorted
+          example: false
+    PaginatedResponse:
+      type: object
+      required:
+        - totalPages
+        - totalElements
+        - first
+        - last
+        - number
+        - sort
+        - size
+        - empty
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+          description: Total number of pages
+          example: 10
+        totalElements:
+          type: integer
+          format: int64
+          description: Total number of elements
+          example: 100
+        first:
+          type: boolean
+          description: Is this the first page
+          example: false
+        last:
+          type: boolean
+          description: Is this the last page
+          example: false
+        number:
+          type: integer
+          format: int32
+          description: Page number
+        sort:
+          $ref: '#/components/schemas/SortResponse'
+        size:
+          type: integer
+          format: int32
+          description: Page size
+          example: 20
+        empty:
+          type: boolean
+          example: false
+          description: Is this page empty
+    Pageable:
+      type: object
+      properties:
+        page:
+          description: Zero-based page index (0..N)
+          minimum: 0
+          type: integer
+          default: 0
+        size:
+          description: The size of the page to be returned
+          minimum: 1
+          type: integer
+          default: 20
+        sort:
+          description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          type: array
+          items:
+            type: string
+  parameters:
+    PageableQuery:
+      name: pageable
+      in: query
+      schema:
+        $ref: '#/components/schemas/Pageable'
   # https://spec.openapis.org/oas/latest.html#security-scheme-object
   securitySchemes:
     # TODO: Not a real security scheme, here as a way to provide X-SPIRAL-CLIENT-ID for the time being

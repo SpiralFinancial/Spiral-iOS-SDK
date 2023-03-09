@@ -22,10 +22,10 @@ public struct CustomerSettings: Codable, JSONEncodable, Hashable {
     public var consented: Bool?
     public var optedIn: Bool?
     public var roundUp: RoundUpSelections
-    public var limitSelection: CustomerInstantImpactLimitSelections?
+    public var limitSelection: CustomerInstantImpactLimitSelections
     public var limitValue: Double?
 
-    public init(userSponsoredEverOptedIn: Bool? = nil, rewardType: RewardType? = nil, consented: Bool? = nil, optedIn: Bool? = nil, roundUp: RoundUpSelections, limitSelection: CustomerInstantImpactLimitSelections? = nil, limitValue: Double? = nil) {
+    public init(userSponsoredEverOptedIn: Bool? = nil, rewardType: RewardType? = nil, consented: Bool? = nil, optedIn: Bool? = nil, roundUp: RoundUpSelections, limitSelection: CustomerInstantImpactLimitSelections, limitValue: Double? = nil) {
         self.userSponsoredEverOptedIn = userSponsoredEverOptedIn
         self.rewardType = rewardType
         self.consented = consented
@@ -54,7 +54,7 @@ public struct CustomerSettings: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(consented, forKey: .consented)
         try container.encodeIfPresent(optedIn, forKey: .optedIn)
         try container.encode(roundUp, forKey: .roundUp)
-        try container.encodeIfPresent(limitSelection, forKey: .limitSelection)
+        try container.encode(limitSelection, forKey: .limitSelection)
         try container.encodeIfPresent(limitValue, forKey: .limitValue)
     }
 }
