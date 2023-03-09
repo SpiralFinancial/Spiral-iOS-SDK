@@ -311,6 +311,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
             window.postMessage(
               {
                 type: 'SPIRAL_INIT',
+                eventName: 'init',
                 payload: {
                     sdk: "ios",
                     \(initAuthParams)

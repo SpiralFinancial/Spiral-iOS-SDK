@@ -200,7 +200,6 @@ public class Spiral {
     private func proxyRequestForBuilder<T: Decodable>(requestBuilder: RequestBuilder<T>) -> RequestBuilder<T> {
         
         guard let proxyAuth = _config?.proxyAuth else { return requestBuilder }
-//        guard let proxyUrl = _config?.proxyUrl else { return requestBuilder }
         
         let localVariableURLString = proxyAuth.proxyUrl
         
