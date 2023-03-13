@@ -622,15 +622,15 @@ open class ManagementAPI {
     /**
      Updates customer settings
      
-     - parameter customerSettings: (body) Update client settings request 
+     - parameter customerSettingsRequest: (body) Update client settings request 
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func setCustomerSettings(customerSettings: CustomerSettings, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
-        return setCustomerSettingsWithRequestBuilder(customerSettings: customerSettings, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+    open class func setCustomerSettings(customerSettingsRequest: CustomerSettingsRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
+        return setCustomerSettingsWithRequestBuilder(customerSettingsRequest: customerSettingsRequest, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
             switch result {
             case .success:
                 completion((), nil)
@@ -647,15 +647,15 @@ open class ManagementAPI {
      - API Key:
        - type: apiKey X-SPIRAL-CLIENT-ID 
        - name: ClientID
-     - parameter customerSettings: (body) Update client settings request 
+     - parameter customerSettingsRequest: (body) Update client settings request 
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - returns: RequestBuilder<Void> 
      */
-    open class func setCustomerSettingsWithRequestBuilder(customerSettings: CustomerSettings, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<Void> {
+    open class func setCustomerSettingsWithRequestBuilder(customerSettingsRequest: CustomerSettingsRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<Void> {
         let localVariablePath = "/management/settings/customer/instant/impact"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: customerSettings)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: customerSettingsRequest)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

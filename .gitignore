@@ -50,3 +50,4 @@ swiftlint_report.xml
 # OpenAPI
 OpenAPI/open-api
 OpenAPI/src
+OpenAPI/tmp

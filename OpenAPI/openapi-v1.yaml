@@ -1578,7 +1578,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CustomerSettings"
+              $ref: "#/components/schemas/CustomerSettingsRequest"
       responses:
         '200':
           description: Successful Operation
@@ -2587,7 +2587,6 @@ components:
       type: object
       required:
         - roundUp
-        - limitSelection
       properties:
         userSponsoredEverOptedIn:
           description: True if the customer has ever opted in to round up in the user-sponsored flow.
@@ -2608,6 +2607,10 @@ components:
           $ref: "#/components/schemas/CustomerInstantImpactLimitSelections"
         limitValue:
           type: number
+    CustomerSettingsRequest:
+      allOf:
+        - $ref: '#/components/schemas/CustomerSettings'
+        - required: [limitSelection]
     CustomerClientSettingsResponse:
       type: object
       required:
