@@ -48,6 +48,15 @@ public class Spiral {
     
     private var _currentFlowController: SpiralViewController?
     
+    /**
+         Starts a Spiral flow (giving center, customer settings, opt in, etc.) from a new modal view controller.
+         The delegate object is responsible for presenting the modal on the onReady event.
+
+         - Parameters:
+            - flow: The type of flow to start, which is an enum. Can use the .custom case to present a flow not predefined in this version of the SDK
+            - delegate: The delegate object responsible for the view controller lifecycle of this flow. Use the onReady event to present the view controller.
+                        Use the onSuccess, onExit, etc. events to respond to changes in the flow's lifecycle and refresh the UI when needed.
+    */
     func startFlow(flow: SpiralFlow, delegate: SpiralDelegate) {
         guard _config != nil else {
             print("Spiral: missing config. Please call Spiral.shared.setup() before starting this flow.")
@@ -61,10 +70,26 @@ public class Spiral {
         })
     }
     
+    /**
+         Initializes the Spiral SDK with a config object representing your organization's authentication mechanism.
+
+         - Parameters:
+            - config: A config object containing the authentication details (proxy vs. client / secret), environment, etc.
+    */
     public func setup(config: SpiralConfig) {
         _config = config
     }
     
+    /**
+         Retrieves the signed in customer's Spiral settings.
+         Useful to know whether the customer opted in to Spiral's functionality, and which limits were selected.
+
+         - Parameters:
+            - success: A callback for successfully retrieving the customer's settings with a response object returned
+            - failure: A callback closure for error handling in the event we are unable to retrieve the customer settings
+
+         - Returns: A CustomerSettings object representing the signed in customer's selections
+    */
     public func getCustomerSettings(success: ((CustomerSettings) -> Void)?,
                                     failure: ((ErrorResponse?) -> Void)?) {
         let requestBuilder = ManagementAPI.getCustomerSettingsWithRequestBuilder()
@@ -81,6 +106,21 @@ public class Spiral {
         }
     }
     
+    /**
+         Loads the instant impact summary card into a container view and provides callbacks for view lifecycle
+
+         - Parameters:
+            - view: Container view where the card will be added as a subview.
+                    The card will stretch to all edges and take up maximum space within the container.
+            - delegate: The card view could potentially start a Spiral flow if the user interacts with it.
+                        This delegate object is used to handle the lifecycle of this flow.
+                        See the startFlow documentation for more details.
+            - success: A success callback when the card is loaded into the container view. Can be used to hide a loading indicator.
+                       This closure contains a reference to the card view which was added.
+            - failure: A success callback when the card was unable to load. Can be used to hide the entire container view, show an error message, etc.
+            - updateLayout: This closure is called when the card renders and establishes it's required height.
+                            At this point it may be necessary to reload those cells in a UITableView for example to accomade the needed space.
+    */
     public func loadInstantImpactCard(into view: UIView,
                                       delegate: SpiralDelegate?,
                                       success: ((SpiralGenericCardView) -> Void)?,
@@ -94,6 +134,23 @@ public class Spiral {
                         updateLayout: updateLayout)
     }
     
+    /**
+         Loads a custom content card by string ID which is not known ahead of time to the SDK.
+         Said content can potentially be configured server side for your organization's needs.
+
+         - Parameters:
+            - type: The string ID for the content which has been configured for display.
+            - view: Container view where the card will be added as a subview.
+                    The card will stretch to all edges and take up maximum space within the container.
+            - delegate: The card view could potentially start a Spiral flow if the user interacts with it.
+                        This delegate object is used to handle the lifecycle of this flow.
+                        See the startFlow documentation for more details.
+            - success: A success callback when the card is loaded into the container view. Can be used to hide a loading indicator.
+                       This closure contains a reference to the card view which was added.
+            - failure: A failure callback when the card was unable to load. Can be used to hide the entire container view, show an error message, etc.
+            - updateLayout: This closure is called when the card renders and establishes it's required height.
+                            At this point it may be necessary to reload those cells in a UITableView for example to accomade the needed space.
+    */
     public func loadContentCard(type: String,
                                 into view: UIView,
                                 delegate: SpiralDelegate?,
@@ -137,6 +194,18 @@ public class Spiral {
         
     }
     
+    /**
+         Shows a custom content modal by string ID which is not known ahead of time to the SDK.
+         Said content can potentially be configured server side for your organization's needs.
+
+         - Parameters:
+            - type: - type: The string ID for the content which has been configured for display.
+            - success: A success callback when the content modal has been displayed. Can be used to hide a loading indicator.
+            - failure: A failure callback when the card was unable to load. Can be used to show an error message, etc.
+            - delegate: The content modal could potentially start a Spiral flow if the user interacts with it.
+                        This delegate object is used to handle the lifecycle of this flow.
+                        See the startFlow documentation for more details.
+    */
     public func showModalContent(type: String,
                                  success: EmptyOptionalClosure,
                                  failure: ((ErrorResponse?) -> Void)?,
