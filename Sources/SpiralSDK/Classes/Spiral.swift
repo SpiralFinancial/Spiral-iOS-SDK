@@ -234,6 +234,15 @@ public class Spiral {
         }
     }
     
+    /**
+         Retrieves the impact details for a given transaction (category, reward units earned, rounded up amount, etc.)
+
+         - Parameters:
+            - transactionId: The string ID for this transaction
+            - completion: A callback closure containing the response object and error if we were unable to retrieve the impact
+
+         - Returns: A SocialResponsibilityTransactionInstantImpactResponse object representing the customer's impact for this transaction
+    */
     public func getTransactionImpact(transactionId: String, completion: @escaping (SocialResponsibilityTransactionInstantImpactResponse?, ErrorResponse?) -> Void) {
         let requestBuilder = SocialResponsibilityAPI.getInstantImpactByTransactionIdWithRequestBuilder(transactionId: transactionId)
         requestBuilder.addHeaders(_apiHeaders)
@@ -250,6 +259,15 @@ public class Spiral {
         }
     }
     
+    /**
+         Retrieves the impact details for a list of transactions (category, reward units earned, rounded up amount, etc.)
+
+         - Parameters:
+            - transactionIds: An array of string IDs for the transactions we'd like impact details for
+            - completion: A callback closure containing the response object and error if we were unable to retrieve the impact
+
+         - Returns: A SocialResponsibilityTransactionListResponse object representing the customer's impact for the given transaction IDs
+    */
     public func getTransactionImpactList(transactionIds: [String], completion: @escaping (SocialResponsibilityTransactionListResponse?, ErrorResponse?) -> Void) {
         let requestBuilder = SocialResponsibilityAPI.getInstantImpactTransactionsWithRequestBuilder(ids: transactionIds)
         requestBuilder.addHeaders(_apiHeaders)
@@ -305,14 +323,42 @@ public class Spiral {
     }
 }
 
+/// SpiralDelegate provides ways to respond to the lifecycle of Spiral Flows (Giving center, opt in, donation, etc.)
 public protocol SpiralDelegate: SpiralDeepLinkHandler {
+    /// Called for every meaningful event which occurs within the flow.
+    /// Can be used for logging and custom implementation purposes.
+    /// - Parameter name: Name of the referenced event
+    /// - Parameter event: Payload object for the specific event which contains additional information
     func onEvent(name: SpiralEventType, event: SpiralEventPayload?)
+    
+    /// Called when loading the flow before it is ready for display. Can be used to show a loading indicator.
     func onBeginLoadingContent()
+    
+    /// Called when the flow is finished loading, in both success and failure scenarios.
+    /// Can be used to hide a loading indicator.
     func onFinishLoadingContent()
+    
+    /// After the flow loads content in the background,
+    /// onReady is called allowing you to present the view controller from your view heirarchy.
+    /// - Parameter controller: The Spiral flow view controller to be presented.
     func onReady(controller: SpiralViewController)
+    
+    /// In the event a flow attempts to load and fails to start for whatever reason,
+    /// onFailedToStart is called so that an error message can be displayed.
+    /// - Parameter error: The error responsible for the flow failing to start.
     func onFailedToStart(_ error: SpiralError)
+    
+    /// Called when the flow exits and the controller is dismissed.
+    /// - Parameter error: If the flow exited in the event of an error, it will be passed here.
     func onExit(_ error: SpiralError?)
+    
+    /// Called when the user successfully completes an action in the flow (donation processed, opted in, etc.)
+    /// This allows you to respond to the success event appropriately (updating the underlying UI for example.)
+    /// - Parameter result: A payload object with additional details related to the user's actions.
     func onSuccess(_ result: SpiralSuccessPayload)
+    
+    /// If an error is encountered during the flow's lifecycle, this will be called
+    /// - Parameter error: The error encountered during the flow.
     func onError(_ error: SpiralError)
 }
 
@@ -343,13 +389,28 @@ public enum SpiralEnvironment: Equatable {
 }
 
 public enum SpiralFlow {
-    case donateToCharityById(String)
-    case charityByIdSummary(String)
+    /// Donation initiation flow for a specific charity.
+    case donateToCharityById(charityId: String)
+    
+    /// Flow begins with showing a specific charity's summary page, allowing the customer to initiate a donation.
+    case charityByIdSummary(charityId: String)
+    
+    /// Allows the customer to search through available non-profits, optionally initiating a donation.
     case searchCharities
+    
+    /// This flow is used for both customer opt in to Spiral's services, as well as updating their settings.
     case customerSettings
+    
+    /// The giving center flow allows the customer to view their configured monthly donations,
+    /// search charities to set up new donations, and update settings for existing donations.
     case givingCenter
+    
+    /// Flow which allows the customer to view a list of receipts for past donations.
     case receipts
-    case custom(String, String, String?)
+    
+    /// In the event you'd like to initiate a custom flow not recognized by this version of the SDK,
+    /// you can pass through required information here.
+    case custom(type: String, params: String, url: String?)
     
     static let defaultUrlStr = "v0.0.1/apps/web-sdk/index.html"
     
@@ -403,18 +464,18 @@ public enum SpiralFlow {
     
     init?(typeStr: String, params: String?, url: String? = nil) {
         if url != nil && url != SpiralFlow.defaultUrlStr {
-            self = .custom(typeStr, params ?? .empty, url)
+            self = .custom(type: typeStr, params: params ?? .empty, url: url)
             return
         }
         
         switch typeStr {
         case "customerSettings": self = .customerSettings
         case "givingCenter": self = .givingCenter
-        case "donateToCharityById": self = .donateToCharityById(params ?? .empty)
-        case "charityByIdSummary": self = .charityByIdSummary(params ?? .empty)
+        case "donateToCharityById": self = .donateToCharityById(charityId: params ?? .empty)
+        case "charityByIdSummary": self = .charityByIdSummary(charityId: params ?? .empty)
         case "searchCharities": self = .searchCharities
         case "receipts": self = .receipts
-        default: self = .custom(typeStr, params ?? .empty, url)
+        default: self = .custom(type: typeStr, params: params ?? .empty, url: url)
         }
     }
 }
