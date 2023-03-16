@@ -214,7 +214,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         
 //        onComplete(spiralToken: "some_token")
         
-        Spiral.shared.startDonationFlow(delegate: self)
+        Spiral.shared.startSearchCharitiesFlow(delegate: self)
     }
     
     @IBAction func handleCustomerSettingsTap() {
@@ -275,7 +275,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
 
 extension SpiralConfigTableViewController: SpiralTokenDelegate {
     func onComplete(spiralToken: String) {
-        Spiral.shared.startDonationFlow(delegate: self)
+        Spiral.shared.startSearchCharitiesFlow(delegate: self)
     }
 }
 

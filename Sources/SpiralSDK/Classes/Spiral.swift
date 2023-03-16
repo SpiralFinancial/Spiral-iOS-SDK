@@ -34,14 +34,39 @@ public class Spiral {
         return _config
     }
     
-    public func startDonationFlow(delegate: SpiralDelegate) {
+    /**
+         Starts the Spiral charities search flow. See the startFlow method for details.
+
+         - Parameters:
+            - delegate: The delegate object responsible for the view controller lifecycle of this flow.
+                        Use the onReady event to present the view controller.
+                        Use the onSuccess, onExit, etc. events to respond to changes in the flow's lifecycle and refresh the UI when needed.
+    */
+    public func startSearchCharitiesFlow(delegate: SpiralDelegate) {
         startFlow(flow: .searchCharities, delegate: delegate)
     }
     
+    /**
+         Starts the Spiral customer settings flow where the user can also opt in to Spiral's services.
+         See the startFlow method for details.
+
+         - Parameters:
+            - delegate: The delegate object responsible for the view controller lifecycle of this flow.
+                        Use the onReady event to present the view controller.
+                        Use the onSuccess, onExit, etc. events to respond to changes in the flow's lifecycle and refresh the UI when needed.
+    */
     public func startCustomerSettingsFlow(delegate: SpiralDelegate) {
         startFlow(flow: .customerSettings, delegate: delegate)
     }
     
+    /**
+         Starts the Spiral giving center flow. See the startFlow method for details.
+
+         - Parameters:
+            - delegate: The delegate object responsible for the view controller lifecycle of this flow.
+                        Use the onReady event to present the view controller.
+                        Use the onSuccess, onExit, etc. events to respond to changes in the flow's lifecycle and refresh the UI when needed.
+    */
     public func startGivingCenterFlow(delegate: SpiralDelegate) {
         startFlow(flow: .givingCenter, delegate: delegate)
     }
@@ -54,7 +79,8 @@ public class Spiral {
 
          - Parameters:
             - flow: The type of flow to start, which is an enum. Can use the .custom case to present a flow not predefined in this version of the SDK
-            - delegate: The delegate object responsible for the view controller lifecycle of this flow. Use the onReady event to present the view controller.
+            - delegate: The delegate object responsible for the view controller lifecycle of this flow.
+                        Use the onReady event to present the view controller.
                         Use the onSuccess, onExit, etc. events to respond to changes in the flow's lifecycle and refresh the UI when needed.
     */
     func startFlow(flow: SpiralFlow, delegate: SpiralDelegate) {
