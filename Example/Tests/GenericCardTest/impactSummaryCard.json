@@ -84,6 +84,8 @@
                                 "content" : {
                                     "children" : [
                                         [# th:each="unit,unitsStatus : ${ctx.units}"]
+                                        [# th:if="${ctx.isClientBankSponsored or (ctx.isClientCustomerSponsored and ctx.isCustomerSponsored and (unit.isEnabled or unit.count > 0))}"]
+                                        [# th:if="${not unitsStatus.first}"],[/]
                                         {
                                             "type": "z_container",
                                             "content": {
@@ -104,6 +106,25 @@
                                                             "url": "[(${unit.icon})]",
                                                             "fixed_width": 40,
                                                             "fixed_height": 40
+                                                        }
+                                                    },
+                                                    // SHOW ONLY IF THE MOST RECENTLY CATEGORIZED
+                                                    {
+                                                        "snap_to_edges": [
+                                                            "left",
+                                                            "top"
+                                                        ],
+                                                        "padding": {
+                                                            "bottom": 0,
+                                                            "top": 8,
+                                                            "right": 0,
+                                                            "left": 11
+                                                        },
+                                                        "type": "image",
+                                                        "content": {
+                                                            "url": "https://res.cloudinary.com/spiral/image/upload/v1679508033/sdk/img/everyday-impact-cirlce.png",
+                                                            "fixed_width": 48,
+                                                            "fixed_height": 48
                                                         }
                                                     },
                                                     {
@@ -162,26 +183,27 @@
                                                             ]
                                                         }
                                                     }
+                                                    [# th:if="${ctx.isClientCustomerSponsored and ctx.isCustomerSponsored and not unit.isEnabled and unit.count > 0}"]
+                                                    ,
+                                                    {
+                                                        "content" : {
+                                                            "children" : [
+​
+                                                            ]
+                                                        },
+                                                        "background_color" : "ffffff",
+                                                        "type" : "z_container",
+                                                        "alpha" : 0.5
+                                                    }
+                                                    [/]
                                                 ]
                                             }
-                                        }[# th:unless="${unitsStatus.last}"],[/]
+                                        }
+                                        [/]
                                         [/]
                                     ]
                                 }
                             }
-                            [# th:if="${not #lists.isEmpty(ctx.units) and ctx.isClientCustomerSponsored and not ctx.isCustomerSponsored}"],[/]
-                            [# th:if="${ctx.isClientCustomerSponsored and not ctx.isCustomerSponsored}"]
-                            {
-                                "content" : {
-                                    "children" : [
-                                        
-                                    ]
-                                },
-                                "background_color" : "ffffff",
-                                "type" : "z_container",
-                                "alpha" : 0.5
-                            }
-                            [/]
                         ]
                     }
                 },

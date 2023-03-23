@@ -298,6 +298,9 @@ open class ManagementAPI {
      Load customer everyday impact categories selection
      - GET /management/customer/instant/impact/category
      - Load everyday impact categories selected by customer
+     - API Key:
+       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - name: ClientID
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - returns: RequestBuilder<SelectedInstantImpactCategoriesResponse> 
@@ -318,7 +321,7 @@ open class ManagementAPI {
 
         let localVariableRequestBuilder: RequestBuilder<SelectedInstantImpactCategoriesResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**

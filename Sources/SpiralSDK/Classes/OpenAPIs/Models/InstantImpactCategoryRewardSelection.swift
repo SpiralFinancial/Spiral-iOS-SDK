@@ -15,17 +15,20 @@ public struct InstantImpactCategoryRewardSelection: Codable, JSONEncodable, Hash
 
     public var instantImpactCategoryId: String
     public var charityId: String
+    public var charityRewardUnitId: String?
     public var rewardUnitId: String
 
-    public init(instantImpactCategoryId: String, charityId: String, rewardUnitId: String) {
+    public init(instantImpactCategoryId: String, charityId: String, charityRewardUnitId: String? = nil, rewardUnitId: String) {
         self.instantImpactCategoryId = instantImpactCategoryId
         self.charityId = charityId
+        self.charityRewardUnitId = charityRewardUnitId
         self.rewardUnitId = rewardUnitId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case instantImpactCategoryId
         case charityId
+        case charityRewardUnitId
         case rewardUnitId
     }
 
@@ -35,6 +38,7 @@ public struct InstantImpactCategoryRewardSelection: Codable, JSONEncodable, Hash
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(instantImpactCategoryId, forKey: .instantImpactCategoryId)
         try container.encode(charityId, forKey: .charityId)
+        try container.encodeIfPresent(charityRewardUnitId, forKey: .charityRewardUnitId)
         try container.encode(rewardUnitId, forKey: .rewardUnitId)
     }
 }

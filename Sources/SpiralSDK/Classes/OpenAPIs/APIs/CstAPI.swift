@@ -59,6 +59,57 @@ open class CstAPI {
     }
 
     /**
+     Create giving category
+     
+     - parameter clientId: (path) ID of client to process for 
+     - parameter givingCharityCategory: (body)  
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func createGivingCategory(clientId: String, givingCharityCategory: GivingCharityCategory, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GivingCharityCategory?, _ error: Error?) -> Void)) -> RequestTask {
+        return createGivingCategoryWithRequestBuilder(clientId: clientId, givingCharityCategory: givingCharityCategory, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Create giving category
+     - POST /cst/client/{clientId}/giving/category
+     - Creates client-scoped giving category
+     - parameter clientId: (path) ID of client to process for 
+     - parameter givingCharityCategory: (body)  
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - returns: RequestBuilder<GivingCharityCategory> 
+     */
+    open class func createGivingCategoryWithRequestBuilder(clientId: String, givingCharityCategory: GivingCharityCategory, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<GivingCharityCategory> {
+        var localVariablePath = "/cst/client/{clientId}/giving/category"
+        let clientIdPreEscape = "\(APIHelper.mapValueToPathItem(clientId))"
+        let clientIdPostEscape = clientIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{clientId}", with: clientIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: givingCharityCategory)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GivingCharityCategory>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
      Deletes a client
      
      - parameter clientId: (path) ID of client to delete 
@@ -504,6 +555,57 @@ open class CstAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ClientCreationResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+     Update giving category
+     
+     - parameter clientId: (path) ID of client to process for 
+     - parameter givingCharityCategory: (body)  
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateGivingCategory(clientId: String, givingCharityCategory: GivingCharityCategory, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GivingCharityCategory?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateGivingCategoryWithRequestBuilder(clientId: clientId, givingCharityCategory: givingCharityCategory, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Update giving category
+     - PUT /cst/client/{clientId}/giving/category
+     - Updates client-scoped giving category
+     - parameter clientId: (path) ID of client to process for 
+     - parameter givingCharityCategory: (body)  
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - returns: RequestBuilder<GivingCharityCategory> 
+     */
+    open class func updateGivingCategoryWithRequestBuilder(clientId: String, givingCharityCategory: GivingCharityCategory, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<GivingCharityCategory> {
+        var localVariablePath = "/cst/client/{clientId}/giving/category"
+        let clientIdPreEscape = "\(APIHelper.mapValueToPathItem(clientId))"
+        let clientIdPostEscape = clientIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{clientId}", with: clientIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: givingCharityCategory)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GivingCharityCategory>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
     }

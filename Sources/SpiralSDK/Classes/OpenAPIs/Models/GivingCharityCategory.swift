@@ -20,12 +20,15 @@ public struct GivingCharityCategory: Codable, JSONEncodable, Hashable {
     public var backgroundImageUrl: String?
     /** List of Giving Charities belonging to this category */
     public var charities: [GivingCharity]?
+    /** Whether this category is client scoped */
+    public var clientScoped: Bool?
 
-    public init(id: String? = nil, name: String, backgroundImageUrl: String? = nil, charities: [GivingCharity]? = nil) {
+    public init(id: String? = nil, name: String, backgroundImageUrl: String? = nil, charities: [GivingCharity]? = nil, clientScoped: Bool? = nil) {
         self.id = id
         self.name = name
         self.backgroundImageUrl = backgroundImageUrl
         self.charities = charities
+        self.clientScoped = clientScoped
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -33,6 +36,7 @@ public struct GivingCharityCategory: Codable, JSONEncodable, Hashable {
         case name
         case backgroundImageUrl
         case charities
+        case clientScoped
     }
 
     // Encodable protocol methods
@@ -43,6 +47,7 @@ public struct GivingCharityCategory: Codable, JSONEncodable, Hashable {
         try container.encode(name, forKey: .name)
         try container.encodeIfPresent(backgroundImageUrl, forKey: .backgroundImageUrl)
         try container.encodeIfPresent(charities, forKey: .charities)
+        try container.encodeIfPresent(clientScoped, forKey: .clientScoped)
     }
 }
 

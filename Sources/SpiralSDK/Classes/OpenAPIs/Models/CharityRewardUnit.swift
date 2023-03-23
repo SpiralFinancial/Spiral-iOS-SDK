@@ -20,14 +20,17 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
     public var charityName: String?
     /** Internal cost per one unit in cents */
     public var internalCostInCents: Int
+    /** Reward unit ID */
+    public var rewardUnitId: String
     /** Reward Unit key */
     public var unit: String
 
-    public init(id: String, charityId: String, charityName: String? = nil, internalCostInCents: Int, unit: String) {
+    public init(id: String, charityId: String, charityName: String? = nil, internalCostInCents: Int, rewardUnitId: String, unit: String) {
         self.id = id
         self.charityId = charityId
         self.charityName = charityName
         self.internalCostInCents = internalCostInCents
+        self.rewardUnitId = rewardUnitId
         self.unit = unit
     }
 
@@ -36,6 +39,7 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
         case charityId
         case charityName
         case internalCostInCents
+        case rewardUnitId
         case unit
     }
 
@@ -47,6 +51,7 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
         try container.encode(charityId, forKey: .charityId)
         try container.encodeIfPresent(charityName, forKey: .charityName)
         try container.encode(internalCostInCents, forKey: .internalCostInCents)
+        try container.encode(rewardUnitId, forKey: .rewardUnitId)
         try container.encode(unit, forKey: .unit)
     }
 }

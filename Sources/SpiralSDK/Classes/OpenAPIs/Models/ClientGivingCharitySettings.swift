@@ -16,15 +16,18 @@ public struct ClientGivingCharitySettings: Codable, JSONEncodable, Hashable {
     public var excluded: ClientGivingExcludedCharitySettings?
     /** List of Charity IDs to be highlighted in giving portal search */
     public var highlighted: [String]?
+    public var categories: [ClientGivingCategorySettings]?
 
-    public init(excluded: ClientGivingExcludedCharitySettings? = nil, highlighted: [String]? = nil) {
+    public init(excluded: ClientGivingExcludedCharitySettings? = nil, highlighted: [String]? = nil, categories: [ClientGivingCategorySettings]? = nil) {
         self.excluded = excluded
         self.highlighted = highlighted
+        self.categories = categories
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case excluded
         case highlighted
+        case categories
     }
 
     // Encodable protocol methods
@@ -33,6 +36,7 @@ public struct ClientGivingCharitySettings: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(excluded, forKey: .excluded)
         try container.encodeIfPresent(highlighted, forKey: .highlighted)
+        try container.encodeIfPresent(categories, forKey: .categories)
     }
 }
 

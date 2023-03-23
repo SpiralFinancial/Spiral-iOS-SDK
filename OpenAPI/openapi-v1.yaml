@@ -501,6 +501,42 @@ paths:
           description: Invalid Request
         '405':
           description: Validation Exception
+  /social/everyday/impact/center/transaction:
+    get:
+      tags:
+        - socialResponsibility
+      summary: Load a customer's detailed Social Impact transactions list based on provided filters
+      description: Load a customer's detailed Social Impact transactions list based on provided filters for Impact Center
+      operationId: getImpactCenterTransactions
+      parameters:
+        - name: X-SPIRAL-CUSTOMER-ID
+          in: header
+          description: Unique end user bank customer ID.
+          schema:
+            type: string
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: rewardUnitId
+          in: query
+          description: Reward unit to get transactions by. Defaults to all units if not provided.
+          schema:
+            type: string
+            example: "e11c2e60-a9cb-49b9-bcaa-28927ed7ebd2"
+        - $ref: '#/components/parameters/PageableQuery'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EverydayImpactCenterTransactionsResponse'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
   /giving/category:
     get:
       tags:
@@ -1465,7 +1501,6 @@ paths:
           description: Invalid Request
         '405':
           description: Validation Exception
-      security: [ ]
     put:
       tags:
         - management
@@ -1838,6 +1873,83 @@ paths:
         '405':
           description: Validation Exception
       security: [ ]
+  /cst/client/{clientId}/giving/category:
+    post:
+      tags:
+        - cst
+      summary: Create giving category
+      description: Creates client-scoped giving category
+      operationId: createGivingCategory
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          description: ID of client to process for
+          required: true
+          schema:
+            type: string
+            format: guid
+            example: 'client12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GivingCharityCategory"
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharityCategory'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
+    put:
+      tags:
+        - cst
+      summary: Update giving category
+      description: Updates client-scoped giving category
+      operationId: updateGivingCategory
+      parameters:
+        - name: X-SPIRAL-REQUEST-ID
+          in: header
+          description: Unique request ID used for troubleshooting.
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          description: ID of client to process for
+          required: true
+          schema:
+            type: string
+            format: guid
+            example: 'client12345'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GivingCharityCategory"
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GivingCharityCategory'
+        '400':
+          description: Invalid Request
+        '405':
+          description: Validation Exception
+      security: [ ]
   /cst/operation/summary:
     get:
       tags:
@@ -2066,6 +2178,10 @@ components:
       required:
         - instantImpact
       properties:
+        mostRecentRewardedUnitId:
+          type: string
+          description: ID of most recently rewarded unit
+          example: "e286e220-9d3c-4e30-a963-57d4fd49ff7a"
         instantImpact:
           type: array
           items:
@@ -2076,6 +2192,10 @@ components:
       required:
         - rewardUnitName
       properties:
+        charityRewardUnitId:
+          type: string
+          description: Spiral Reward Unit id
+          example: "CHARITY_REWARD12345"
         rewardUnitId:
           type: string
           description: Spiral Reward Unit id
@@ -2970,6 +3090,10 @@ components:
           type: number
           description: Dollar value for associated Instant Impact Category.
           example: 0.15
+        roundupAmount:
+          type: number
+          description: Dollar value of how much was rounded up
+          example: 0.09
         transactionId:
           type: string
           description: Permanent, unique transaction identifier. Must survive changes to pending status or amount.
@@ -3028,6 +3152,7 @@ components:
         - charityId
         - internalCostInCents
         - unit
+        - rewardUnitId
       properties:
         id:
           type: string
@@ -3047,6 +3172,10 @@ components:
           type: integer
           description: Internal cost per one unit in cents
           example: 10
+        rewardUnitId:
+          type: string
+          description: Reward unit ID
+          example: "de98c639-5e62-43a0-941a-bde6470fa40d"
         unit:
           type: string
           description: Reward Unit key
@@ -3119,6 +3248,9 @@ components:
           description: List of Giving Charities belonging to this category
           items:
             $ref: '#/components/schemas/GivingCharity'
+        clientScoped:
+          type: boolean
+          description: Whether this category is client scoped
     # TODO SIS-734
     GivingCharityCategoryResponse:
       type: object
@@ -3198,6 +3330,10 @@ components:
           type: string
           format: guid
           example: "CHAR12345"
+        charityRewardUnitId:
+          type: string
+          format: guid
+          example: "CHARITY_REWARD12345"
         rewardUnitId:
           type: string
           format: guid
@@ -3235,6 +3371,10 @@ components:
           items:
             type: string
           example: [ "b9d0f942-131f-48f6-9367-dbbb3c056ee3", "6cfc6aae-876f-4f61-a4b0-1c8d6e207330" ]
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientGivingCategorySettings'
     ClientGivingExcludedCharitySettings:
       type: object
       properties:
@@ -3250,6 +3390,30 @@ components:
           items:
             type: string
           example: ["4c650458-b5cb-423f-b971-5bc6733c894d", "a2700358-ce6f-4e34-97ca-b0970bad8525"]
+    ClientGivingCategorySettings:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Giving category id
+          format: guid
+          example: "4c650458-b5cb-423f-b971-5bc6733c894d"
+        name:
+          type: string
+          description: Giving category name
+          example: "Category 1"
+        clientScoped:
+          type: boolean
+          description: Whether this category is client scoped
+        enabled:
+          type: boolean
+          description: Whether this category is enabled for client
+        charities:
+          type: array
+          description: List of sorted Charity IDs associated with this category
+          items:
+            type: string
+          example: [ "b9d0f942-131f-48f6-9367-dbbb3c056ee3", "6cfc6aae-876f-4f61-a4b0-1c8d6e207330" ]
     DepositoryOrCreditTransaction:
       type: object
       description: Describes a transaction against a debit or credit card account.
@@ -3414,6 +3578,30 @@ components:
         - INSERT
         - UPDATE
         - DELETE
+    EverydayImpactCenterTransactionsResponse:
+      allOf:
+        - $ref: '#/components/schemas/PaginatedResponse'
+        - type: object
+          required:
+            - content
+          properties:
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/EverydayImpactCenterTransaction'
+    EverydayImpactCenterTransaction:
+      allOf:
+        - $ref: '#/components/schemas/SocialResponsibilityTransactionInstantImpactResponse'
+        - type: object
+          properties:
+            cumulativeImpact:
+              type: number
+              description: Point value for cumulative impact (units) at the time of transaction
+              example: 8.25
+            cumulativeProgress:
+              type: number
+              description: Point value for one unit progress for that transaction. Can be >1 if transaction earned more than 1 unit.
+              example: 0.5
     SocialResponsibilityTransactionListResponse:
       type: object
       required:

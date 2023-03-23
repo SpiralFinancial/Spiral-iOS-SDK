@@ -15,13 +15,15 @@ public struct ExtendedInstantImpactCategoryRewardSelection: Codable, JSONEncodab
 
     public var instantImpactCategoryId: String
     public var charityId: String
+    public var charityRewardUnitId: String?
     public var rewardUnitId: String
     public var rewardUnitName: String
     public var enabled: Bool?
 
-    public init(instantImpactCategoryId: String, charityId: String, rewardUnitId: String, rewardUnitName: String, enabled: Bool? = nil) {
+    public init(instantImpactCategoryId: String, charityId: String, charityRewardUnitId: String? = nil, rewardUnitId: String, rewardUnitName: String, enabled: Bool? = nil) {
         self.instantImpactCategoryId = instantImpactCategoryId
         self.charityId = charityId
+        self.charityRewardUnitId = charityRewardUnitId
         self.rewardUnitId = rewardUnitId
         self.rewardUnitName = rewardUnitName
         self.enabled = enabled
@@ -30,6 +32,7 @@ public struct ExtendedInstantImpactCategoryRewardSelection: Codable, JSONEncodab
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case instantImpactCategoryId
         case charityId
+        case charityRewardUnitId
         case rewardUnitId
         case rewardUnitName
         case enabled
@@ -41,6 +44,7 @@ public struct ExtendedInstantImpactCategoryRewardSelection: Codable, JSONEncodab
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(instantImpactCategoryId, forKey: .instantImpactCategoryId)
         try container.encode(charityId, forKey: .charityId)
+        try container.encodeIfPresent(charityRewardUnitId, forKey: .charityRewardUnitId)
         try container.encode(rewardUnitId, forKey: .rewardUnitId)
         try container.encode(rewardUnitName, forKey: .rewardUnitName)
         try container.encodeIfPresent(enabled, forKey: .enabled)

@@ -52,6 +52,13 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
                                                          padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 0, bottom: 10),
                                                          content: header)
         
+        let categoryBlueCircleImage = SpiralGenericCardImageComponent(url: "https://res.cloudinary.com/spiral/image/upload/v1679508033/sdk/img/everyday-impact-cirlce.png",
+                                                                      fixedWidth: 48,
+                                                                      fixedHeight: 48)
+        let categoryBlueCircleImageComponent = SpiralGenericCardComponent(type: .image,
+                                                                          padding: SpiralGenericCardContentPadding(left: 11, right: 0, top: 8, bottom: 0),
+                                                                snapToEdges: [.left, .top],
+                                                                content: categoryBlueCircleImage)
         
         let categoryImage = SpiralGenericCardImageComponent(url: "https://res.cloudinary.com/spiral/image/upload/v1649955512/socially-responsible-rewards/tree.png",
                                                             fixedWidth: 40,
@@ -93,7 +100,7 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
                                                             content: separator)
         
         
-        let categoryContainer = SpiralGenericCardZComponentContainer(children: [categoryImageComponent, categoryCountComponent, categoryDescriptionComponent, separatorComponent])
+        let categoryContainer = SpiralGenericCardZComponentContainer(children: [categoryBlueCircleImageComponent, categoryImageComponent, categoryCountComponent, categoryDescriptionComponent, separatorComponent])
         let categoryContainerComponent = SpiralGenericCardComponent(type: .zContainer,
                                                                     content: categoryContainer)
         

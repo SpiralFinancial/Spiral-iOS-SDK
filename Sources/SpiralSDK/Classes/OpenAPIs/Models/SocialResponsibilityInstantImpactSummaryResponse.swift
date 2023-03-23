@@ -13,13 +13,17 @@ import AnyCodable
 /** Single customer&#39;s Instant Impact report */
 public struct SocialResponsibilityInstantImpactSummaryResponse: Codable, JSONEncodable, Hashable {
 
+    /** ID of most recently rewarded unit */
+    public var mostRecentRewardedUnitId: String?
     public var instantImpact: [SocialResponsibilityInstantImpactSummaryItem]
 
-    public init(instantImpact: [SocialResponsibilityInstantImpactSummaryItem]) {
+    public init(mostRecentRewardedUnitId: String? = nil, instantImpact: [SocialResponsibilityInstantImpactSummaryItem]) {
+        self.mostRecentRewardedUnitId = mostRecentRewardedUnitId
         self.instantImpact = instantImpact
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case mostRecentRewardedUnitId
         case instantImpact
     }
 
@@ -27,6 +31,7 @@ public struct SocialResponsibilityInstantImpactSummaryResponse: Codable, JSONEnc
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(mostRecentRewardedUnitId, forKey: .mostRecentRewardedUnitId)
         try container.encode(instantImpact, forKey: .instantImpact)
     }
 }

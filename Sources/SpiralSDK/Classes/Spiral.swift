@@ -161,6 +161,34 @@ public class Spiral {
     }
     
     /**
+         Loads the opt-in card into a container view and provides callbacks for view lifecycle
+
+         - Parameters:
+            - view: Container view where the card will be added as a subview.
+                    The card will stretch to all edges and take up maximum space within the container.
+            - delegate: The card view could potentially start a Spiral flow if the user interacts with it.
+                        This delegate object is used to handle the lifecycle of this flow.
+                        See the startFlow documentation for more details.
+            - success: A success callback when the card is loaded into the container view. Can be used to hide a loading indicator.
+                       This closure contains a reference to the card view which was added.
+            - failure: A success callback when the card was unable to load. Can be used to hide the entire container view, show an error message, etc.
+            - updateLayout: This closure is called when the card renders and establishes it's required height.
+                            At this point it may be necessary to reload those cells in a UITableView for example to accomade the needed space.
+    */
+    public func loadOptInCard(into view: UIView,
+                                      delegate: SpiralDelegate?,
+                                      success: ((SpiralGenericCardView) -> Void)?,
+                                      failure: ((ErrorResponse?) -> Void)?,
+                                      updateLayout: EmptyOptionalClosure) {
+        loadContentCard(type: GenericCardType.srSummary.rawValue,
+                        into: view,
+                        delegate: delegate,
+                        success: success,
+                        failure: failure,
+                        updateLayout: updateLayout)
+    }
+    
+    /**
          Loads a custom content card by string ID which is not known ahead of time to the SDK.
          Said content can potentially be configured server side for your organization's needs.
 

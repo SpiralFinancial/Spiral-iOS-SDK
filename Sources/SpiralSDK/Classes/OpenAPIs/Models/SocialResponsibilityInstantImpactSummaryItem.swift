@@ -14,6 +14,8 @@ import AnyCodable
 public struct SocialResponsibilityInstantImpactSummaryItem: Codable, JSONEncodable, Hashable {
 
     /** Spiral Reward Unit id */
+    public var charityRewardUnitId: String?
+    /** Spiral Reward Unit id */
     public var rewardUnitId: String?
     /** Reward unit name */
     public var rewardUnitName: String
@@ -28,7 +30,8 @@ public struct SocialResponsibilityInstantImpactSummaryItem: Codable, JSONEncodab
     /** Aggregated dollar value for associated reward unit */
     public var totalDonatedAmount: Double?
 
-    public init(rewardUnitId: String? = nil, rewardUnitName: String, rewardUnitTitle: String? = nil, rewardUnitSubtitle: String? = nil, rewardUnitIcon: String? = nil, totalImpact: Double? = nil, totalDonatedAmount: Double? = nil) {
+    public init(charityRewardUnitId: String? = nil, rewardUnitId: String? = nil, rewardUnitName: String, rewardUnitTitle: String? = nil, rewardUnitSubtitle: String? = nil, rewardUnitIcon: String? = nil, totalImpact: Double? = nil, totalDonatedAmount: Double? = nil) {
+        self.charityRewardUnitId = charityRewardUnitId
         self.rewardUnitId = rewardUnitId
         self.rewardUnitName = rewardUnitName
         self.rewardUnitTitle = rewardUnitTitle
@@ -39,6 +42,7 @@ public struct SocialResponsibilityInstantImpactSummaryItem: Codable, JSONEncodab
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case charityRewardUnitId
         case rewardUnitId
         case rewardUnitName
         case rewardUnitTitle
@@ -52,6 +56,7 @@ public struct SocialResponsibilityInstantImpactSummaryItem: Codable, JSONEncodab
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(charityRewardUnitId, forKey: .charityRewardUnitId)
         try container.encodeIfPresent(rewardUnitId, forKey: .rewardUnitId)
         try container.encode(rewardUnitName, forKey: .rewardUnitName)
         try container.encodeIfPresent(rewardUnitTitle, forKey: .rewardUnitTitle)
