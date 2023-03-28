@@ -31,6 +31,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     }
     
     private var wasReady: Bool = false
+    private var didFailToStart: Bool = false
     
     private var onExit: (() -> Void)?
     
@@ -62,6 +63,17 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         }
         let linkRequest = URLRequest(url: url)
         webView.load(linkRequest)
+        
+        delay(Constants.Timeout.flowLoadingTimeout) { [weak self] in
+            guard let self = self else { return }
+            if !self.wasReady, !self.didFailToStart {
+                self.didFailToStart = true
+                self.delegate?.onFinishLoadingContent()
+                self.delegate?.onFailedToStart(SpiralError(type: SpiralErrorType.failedToStartFlow.rawValue,
+                                                           code: "1",
+                                                           message: "Unable to start Spiral flow. Please try again later."))
+            }
+        }
     }
     
     public required init?(coder: NSCoder) {
@@ -110,7 +122,8 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
                 
                 self.delegate?.onError(event.payload)
                 
-                if !wasReady {
+                if !self.wasReady, !self.didFailToStart {
+                    self.didFailToStart = true
                     self.delegate?.onFinishLoadingContent()
                     self.delegate?.onFailedToStart(SpiralError(type: SpiralErrorType.failedToStartFlow.rawValue,
                                                                code: event.payload.code,
@@ -127,7 +140,8 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
                  decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
 
         if let response = navigationResponse.response as? HTTPURLResponse {
-            if !wasReady, response.statusCode != 200 {
+            if !wasReady, didFailToStart, response.statusCode != 200 {
+                self.didFailToStart = true
                 self.delegate?.onFinishLoadingContent()
                 self.delegate?.onFailedToStart(SpiralError(type: SpiralErrorType.failedToStartFlow.rawValue,
                                                            code: String(response.statusCode),

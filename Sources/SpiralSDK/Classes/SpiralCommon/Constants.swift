@@ -66,6 +66,10 @@ struct Constants {
         static let defaultLoadingIndicatorDelay = 0.5
     }
     
+    struct Timeout {
+        static let flowLoadingTimeout: TimeInterval = 10
+    }
+    
     struct ErrorCodes {
         static let unauthorizedCode = 403
         static let maintenanceCode = 504
