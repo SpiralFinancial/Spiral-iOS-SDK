@@ -18,13 +18,16 @@ public struct GivingCharityCategoryResponse: Codable, JSONEncodable, Hashable {
     public var name: String
     /** Background image. */
     public var backgroundImageUrl: String?
+    /** Whether this category is client scoped */
+    public var clientScoped: Bool?
     /** List of Giving Charities belonging to this category */
     public var charities: [GivingCharityResponse]?
 
-    public init(id: String, name: String, backgroundImageUrl: String? = nil, charities: [GivingCharityResponse]? = nil) {
+    public init(id: String, name: String, backgroundImageUrl: String? = nil, clientScoped: Bool? = nil, charities: [GivingCharityResponse]? = nil) {
         self.id = id
         self.name = name
         self.backgroundImageUrl = backgroundImageUrl
+        self.clientScoped = clientScoped
         self.charities = charities
     }
 
@@ -32,6 +35,7 @@ public struct GivingCharityCategoryResponse: Codable, JSONEncodable, Hashable {
         case id
         case name
         case backgroundImageUrl
+        case clientScoped
         case charities
     }
 
@@ -42,6 +46,7 @@ public struct GivingCharityCategoryResponse: Codable, JSONEncodable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
         try container.encodeIfPresent(backgroundImageUrl, forKey: .backgroundImageUrl)
+        try container.encodeIfPresent(clientScoped, forKey: .clientScoped)
         try container.encodeIfPresent(charities, forKey: .charities)
     }
 }

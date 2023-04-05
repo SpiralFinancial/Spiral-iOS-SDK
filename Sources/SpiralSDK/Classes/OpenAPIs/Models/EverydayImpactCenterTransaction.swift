@@ -17,9 +17,9 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
     /** Name of the charity category. */
     public var categoryName: String
     public var rewardUnit: CharityRewardUnit?
-    /** Point value for associated Instant Impact Category. */
+    /** Point value for associated Impact Category Unit. */
     public var impact: Double
-    /** Dollar value for associated Instant Impact Category. */
+    /** Dollar value donated to Impact Category Charity. */
     public var donatedAmount: Double?
     /** Dollar value of how much was rounded up */
     public var roundupAmount: Double?
@@ -27,7 +27,7 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
     public var transactionId: String?
     /** Transaction Unix timestamp */
     public var transactionTimestamp: Double?
-    /** The cleand up transaction title. */
+    /** The cleaned up transaction title. */
     public var transactionTitle: String?
     /** The type or source of the transaction */
     public var transactionType: String?

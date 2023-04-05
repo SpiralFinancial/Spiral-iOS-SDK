@@ -463,17 +463,17 @@ open class CstAPI {
     }
 
     /**
-     Mass process client instant impact
+     Mass process client impact
      
      - parameter clientId: (path) ID of client to process II for 
-     - parameter clientInstantImpactProcessRequest: (body)  
+     - parameter clientImpactProcessRequest: (body)  
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func processClientInstantImpact(clientId: String, clientInstantImpactProcessRequest: ClientInstantImpactProcessRequest, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: CstOperationsResponseList?, _ error: Error?) -> Void)) -> RequestTask {
-        return processClientInstantImpactWithRequestBuilder(clientId: clientId, clientInstantImpactProcessRequest: clientInstantImpactProcessRequest, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+    open class func processClientImpact(clientId: String, clientImpactProcessRequest: ClientImpactProcessRequest, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: CstOperationsResponseList?, _ error: Error?) -> Void)) -> RequestTask {
+        return processClientImpactWithRequestBuilder(clientId: clientId, clientImpactProcessRequest: clientImpactProcessRequest, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -484,21 +484,21 @@ open class CstAPI {
     }
 
     /**
-     Mass process client instant impact
-     - PUT /cst/client/{clientId}/instant/impact
-     - Mass process client instant impact
+     Mass process client impact
+     - PUT /cst/client/{clientId}/everyday-impact
+     - Mass process client impact
      - parameter clientId: (path) ID of client to process II for 
-     - parameter clientInstantImpactProcessRequest: (body)  
+     - parameter clientImpactProcessRequest: (body)  
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - returns: RequestBuilder<CstOperationsResponseList> 
      */
-    open class func processClientInstantImpactWithRequestBuilder(clientId: String, clientInstantImpactProcessRequest: ClientInstantImpactProcessRequest, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<CstOperationsResponseList> {
-        var localVariablePath = "/cst/client/{clientId}/instant/impact"
+    open class func processClientImpactWithRequestBuilder(clientId: String, clientImpactProcessRequest: ClientImpactProcessRequest, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<CstOperationsResponseList> {
+        var localVariablePath = "/cst/client/{clientId}/everyday-impact"
         let clientIdPreEscape = "\(APIHelper.mapValueToPathItem(clientId))"
         let clientIdPostEscape = clientIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{clientId}", with: clientIdPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: clientInstantImpactProcessRequest)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: clientImpactProcessRequest)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 

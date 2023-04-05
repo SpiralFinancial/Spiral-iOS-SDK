@@ -117,7 +117,7 @@ open class ManagementAPI {
     }
 
     /**
-     Retrieves client instant impact related settings
+     Retrieves client Everyday Impact related settings
      
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
@@ -125,8 +125,8 @@ open class ManagementAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getClientInstantImpactSettings(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ClientInstantImpactResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getClientInstantImpactSettingsWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+    open class func getClientImpactSettings(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ClientImpactResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getClientImpactSettingsWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -137,18 +137,18 @@ open class ManagementAPI {
     }
 
     /**
-     Retrieves client instant impact related settings
-     - GET /management/settings/client/instant/impact
+     Retrieves client Everyday Impact related settings
+     - GET /management/settings/client/everyday-impact
      - Retrieves client categories, reward units, cost per reward unit and round up values
      - API Key:
        - type: apiKey X-SPIRAL-CLIENT-ID 
        - name: ClientID
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
-     - returns: RequestBuilder<ClientInstantImpactResponse> 
+     - returns: RequestBuilder<ClientImpactResponse> 
      */
-    open class func getClientInstantImpactSettingsWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<ClientInstantImpactResponse> {
-        let localVariablePath = "/management/settings/client/instant/impact"
+    open class func getClientImpactSettingsWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<ClientImpactResponse> {
+        let localVariablePath = "/management/settings/client/everyday-impact"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
@@ -161,7 +161,7 @@ open class ManagementAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ClientInstantImpactResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ClientImpactResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -283,8 +283,8 @@ open class ManagementAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getCustomerInstantImpactCategories(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: SelectedInstantImpactCategoriesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getCustomerInstantImpactCategoriesWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+    open class func getCustomerImpactCategories(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: SelectedImpactCategoriesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getCustomerImpactCategoriesWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -296,17 +296,17 @@ open class ManagementAPI {
 
     /**
      Load customer everyday impact categories selection
-     - GET /management/customer/instant/impact/category
+     - GET /management/customer/everyday-impact/category
      - Load everyday impact categories selected by customer
      - API Key:
        - type: apiKey X-SPIRAL-CLIENT-ID 
        - name: ClientID
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
-     - returns: RequestBuilder<SelectedInstantImpactCategoriesResponse> 
+     - returns: RequestBuilder<SelectedImpactCategoriesResponse> 
      */
-    open class func getCustomerInstantImpactCategoriesWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<SelectedInstantImpactCategoriesResponse> {
-        let localVariablePath = "/management/customer/instant/impact/category"
+    open class func getCustomerImpactCategoriesWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<SelectedImpactCategoriesResponse> {
+        let localVariablePath = "/management/customer/everyday-impact/category"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
@@ -319,7 +319,7 @@ open class ManagementAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SelectedInstantImpactCategoriesResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SelectedImpactCategoriesResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -346,7 +346,7 @@ open class ManagementAPI {
 
     /**
      Retrieves customer settings
-     - GET /management/settings/customer/instant/impact
+     - GET /management/settings/customer/everyday-impact
      - Retrieves customer customer limit selections
      - API Key:
        - type: apiKey X-SPIRAL-CLIENT-ID 
@@ -356,7 +356,7 @@ open class ManagementAPI {
      - returns: RequestBuilder<CustomerSettings> 
      */
     open class func getCustomerSettingsWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<CustomerSettings> {
-        let localVariablePath = "/management/settings/customer/instant/impact"
+        let localVariablePath = "/management/settings/customer/everyday-impact"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
@@ -375,15 +375,15 @@ open class ManagementAPI {
     }
 
     /**
-     Load predefined instant impact categories
+     Load predefined impact categories
      
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getInstantImpactCategories(X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: InstantImpactCategoriesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getInstantImpactCategoriesWithRequestBuilder(X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+    open class func getImpactCategories(X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ImpactCategoriesResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getImpactCategoriesWithRequestBuilder(X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -394,14 +394,14 @@ open class ManagementAPI {
     }
 
     /**
-     Load predefined instant impact categories
-     - GET /management/instant/impact/categories
-     - Load predefined instant impact categories and all of the charities that belong to them
+     Load predefined impact categories
+     - GET /management/everyday-impact/categories
+     - Load predefined impact categories and all of the charities that belong to them
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
-     - returns: RequestBuilder<InstantImpactCategoriesResponse> 
+     - returns: RequestBuilder<ImpactCategoriesResponse> 
      */
-    open class func getInstantImpactCategoriesWithRequestBuilder(X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<InstantImpactCategoriesResponse> {
-        let localVariablePath = "/management/instant/impact/categories"
+    open class func getImpactCategoriesWithRequestBuilder(X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<ImpactCategoriesResponse> {
+        let localVariablePath = "/management/everyday-impact/categories"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
@@ -413,7 +413,7 @@ open class ManagementAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<InstantImpactCategoriesResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ImpactCategoriesResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
     }
@@ -573,15 +573,15 @@ open class ManagementAPI {
     /**
      Updates customer everyday impact category selections
      
-     - parameter selectedInstantImpactCategoriesRequest: (body) Customer everyday impact category selections request 
+     - parameter selectedImpactCategoriesRequest: (body) Customer everyday impact category selections request 
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func setCustomerInstantImpactCategories(selectedInstantImpactCategoriesRequest: SelectedInstantImpactCategoriesRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
-        return setCustomerInstantImpactCategoriesWithRequestBuilder(selectedInstantImpactCategoriesRequest: selectedInstantImpactCategoriesRequest, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+    open class func setCustomerImpactCategories(selectedImpactCategoriesRequest: SelectedImpactCategoriesRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
+        return setCustomerImpactCategoriesWithRequestBuilder(selectedImpactCategoriesRequest: selectedImpactCategoriesRequest, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
             switch result {
             case .success:
                 completion((), nil)
@@ -593,20 +593,20 @@ open class ManagementAPI {
 
     /**
      Updates customer everyday impact category selections
-     - PUT /management/customer/instant/impact/category
+     - PUT /management/customer/everyday-impact/category
      - Updates customer everyday impact category selections
      - API Key:
        - type: apiKey X-SPIRAL-CLIENT-ID 
        - name: ClientID
-     - parameter selectedInstantImpactCategoriesRequest: (body) Customer everyday impact category selections request 
+     - parameter selectedImpactCategoriesRequest: (body) Customer everyday impact category selections request 
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
      - returns: RequestBuilder<Void> 
      */
-    open class func setCustomerInstantImpactCategoriesWithRequestBuilder(selectedInstantImpactCategoriesRequest: SelectedInstantImpactCategoriesRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<Void> {
-        let localVariablePath = "/management/customer/instant/impact/category"
+    open class func setCustomerImpactCategoriesWithRequestBuilder(selectedImpactCategoriesRequest: SelectedImpactCategoriesRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<Void> {
+        let localVariablePath = "/management/customer/everyday-impact/category"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: selectedInstantImpactCategoriesRequest)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: selectedImpactCategoriesRequest)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -645,7 +645,7 @@ open class ManagementAPI {
 
     /**
      Updates customer settings
-     - PUT /management/settings/customer/instant/impact
+     - PUT /management/settings/customer/everyday-impact
      - Updated customer limit selections
      - API Key:
        - type: apiKey X-SPIRAL-CLIENT-ID 
@@ -656,7 +656,7 @@ open class ManagementAPI {
      - returns: RequestBuilder<Void> 
      */
     open class func setCustomerSettingsWithRequestBuilder(customerSettingsRequest: CustomerSettingsRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<Void> {
-        let localVariablePath = "/management/settings/customer/instant/impact"
+        let localVariablePath = "/management/settings/customer/everyday-impact"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: customerSettingsRequest)
 

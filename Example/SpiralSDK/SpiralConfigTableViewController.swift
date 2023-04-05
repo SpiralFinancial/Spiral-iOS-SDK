@@ -251,7 +251,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         return n > 1 ? word + suffix : word
     }
     
-    func impactSummaryText(transactionReward: SocialResponsibilityTransactionInstantImpactResponse) -> String {
+    func impactSummaryText(transactionReward: TransactionImpactResponse) -> String {
         let unit = transactionReward.rewardUnit?.unit
         let count = transactionReward.impact
         

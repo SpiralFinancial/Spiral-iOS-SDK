@@ -133,7 +133,7 @@ public class Spiral {
     }
     
     /**
-         Loads the instant impact summary card into a container view and provides callbacks for view lifecycle
+         Loads the everyday impact summary card into a container view and provides callbacks for view lifecycle
 
          - Parameters:
             - view: Container view where the card will be added as a subview.
@@ -147,7 +147,7 @@ public class Spiral {
             - updateLayout: This closure is called when the card renders and establishes it's required height.
                             At this point it may be necessary to reload those cells in a UITableView for example to accomade the needed space.
     */
-    public func loadInstantImpactCard(into view: UIView,
+    public func loadEverydayImpactCard(into view: UIView,
                                       delegate: SpiralDelegate?,
                                       success: ((SpiralGenericCardView) -> Void)?,
                                       failure: ((ErrorResponse?) -> Void)?,
@@ -173,7 +173,7 @@ public class Spiral {
                        This closure contains a reference to the card view which was added.
             - failure: A success callback when the card was unable to load. Can be used to hide the entire container view, show an error message, etc.
             - updateLayout: This closure is called when the card renders and establishes it's required height.
-                            At this point it may be necessary to reload those cells in a UITableView for example to accomade the needed space.
+                            At this point it may be necessary to reload those cells in a UITableView for example to accomodate the needed space.
     */
     public func loadOptInCard(into view: UIView,
                                       delegate: SpiralDelegate?,
@@ -297,8 +297,8 @@ public class Spiral {
 
          - Returns: A SocialResponsibilityTransactionInstantImpactResponse object representing the customer's impact for this transaction
     */
-    public func getTransactionImpact(transactionId: String, completion: @escaping (SocialResponsibilityTransactionInstantImpactResponse?, ErrorResponse?) -> Void) {
-        let requestBuilder = SocialResponsibilityAPI.getInstantImpactByTransactionIdWithRequestBuilder(transactionId: transactionId)
+    public func getTransactionImpact(transactionId: String, completion: @escaping (TransactionImpactResponse?, ErrorResponse?) -> Void) {
+        let requestBuilder = ReportingAPI.getCustomerImpactByTransactionIdWithRequestBuilder(transactionId: transactionId)
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
             DispatchQueue.main.async {
@@ -322,8 +322,8 @@ public class Spiral {
 
          - Returns: A SocialResponsibilityTransactionListResponse object representing the customer's impact for the given transaction IDs
     */
-    public func getTransactionImpactList(transactionIds: [String], completion: @escaping (SocialResponsibilityTransactionListResponse?, ErrorResponse?) -> Void) {
-        let requestBuilder = SocialResponsibilityAPI.getInstantImpactTransactionsWithRequestBuilder(ids: transactionIds)
+    public func getTransactionImpactList(transactionIds: [String], completion: @escaping (TransactionListResponse?, ErrorResponse?) -> Void) {
+        let requestBuilder = ReportingAPI.getCustomerTransactionsImpactWithRequestBuilder(ids: transactionIds)
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
             DispatchQueue.main.async {

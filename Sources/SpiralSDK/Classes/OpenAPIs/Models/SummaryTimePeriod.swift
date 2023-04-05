@@ -10,7 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Possible periods to choose from for Instant Impact reports */
+/** Possible periods to choose from for Impact reports */
 public enum SummaryTimePeriod: String, Codable, CaseIterable {
     case allTime = "ALL_TIME"
     case lastMonth = "LAST_MONTH"

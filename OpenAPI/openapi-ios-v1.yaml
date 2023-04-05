@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Spiral - Socially Responsible - v1
+  title: Spiral - Everyday Impact - v1
   description: |-
     _Spiral mission statement here_
   termsOfService: http://swagger.io/terms/
@@ -9,7 +9,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.0.0-SNAPSHOT
+  version: 0.0.1
 externalDocs:
   description: Spiral online developer docs
   url: http://swagger.io
@@ -22,12 +22,12 @@ security:
   - ClientID: []
 tags:
   - name: transactionProcessor
-    description: Process transaction synchronous in real time and async offline for Social Responsibility Impact.
+    description: Process transaction synchronous in real time and async offline for Everyday Impact.
     externalDocs:
       description: Find out more
       url: http://spiral.us
-  - name: socialResponsibility
-    description: Obtain a customer's Social Responsibility Impact
+  - name: reporting
+    description: Obtain client's/customer's Everyday Impact reports
     externalDocs:
       description: Find out more
       url: http://spiral.us
@@ -248,13 +248,13 @@ paths:
         '405':
           description: Validation Exception
       security: [ ]
-  /social/instant/impact:
+  /everyday-impact/customer:
     get:
       tags:
-        - socialResponsibility
-      summary: Load a customer's Social Impact
-      description: Load total customer's Social Responsibility Impact
-      operationId: getSocialResponsibilityImpactSummary
+        - reporting
+      summary: Load a customer's Impact
+      description: Load total customer's Impact
+      operationId: getCustomerImpactSummary
       parameters:
         - name: X-SPIRAL-CUSTOMER-ID
           in: header
@@ -277,18 +277,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SocialResponsibilityInstantImpactSummaryResponse'
+                $ref: '#/components/schemas/TransactionImpactSummaryResponse'
         '400':
           description: Invalid Request
         '405':
           description: Validation Exception
-  /social/instant/impact/client:
+  /everyday-impact/client:
     get:
       tags:
-        - socialResponsibility
-      summary: Load a client-level Social Impact
-      description: Load total client-level Social Responsibility Impact
-      operationId: getClientSocialResponsibilityImpactSummary
+        - reporting
+      summary: Load a client-level Impact
+      description: Load total client-level Impact
+      operationId: getClientImpactSummary
       parameters:
         - name: X-SPIRAL-REQUEST-ID
           in: header
@@ -330,18 +330,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SocialResponsibilityInstantImpactSummaryResponse'
+                $ref: '#/components/schemas/TransactionImpactSummaryResponse'
         '400':
           description: Invalid Request
         '405':
           description: Validation Exception
-  /social/instant/impact/{transactionId}:
+  /everyday-impact/{transactionId}:
     get:
       tags:
-        - socialResponsibility
-      summary: Load a customer's Social Impact details for a single transaction
-      description: Load that customer's Social Responsibility Impact details for a single transaction
-      operationId: getInstantImpactByTransactionId
+        - reporting
+      summary: Load a customer's Impact details for a single transaction
+      description: Load that customer's Impact details for a single transaction
+      operationId: getCustomerImpactByTransactionId
       parameters:
         - name: X-SPIRAL-CUSTOMER-ID
           in: header
@@ -355,7 +355,7 @@ paths:
             type: string
         - name: transactionId
           in: path
-          description: Permanent, unique transaction id to retrieve the Social Responsibility Impact details for. Must survive changes to pending status or amount.
+          description: Permanent, unique transaction id to retrieve the Impact details for. Must survive changes to pending status or amount.
           required: true
           schema:
             type: string
@@ -367,20 +367,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SocialResponsibilityTransactionInstantImpactResponse'
+                $ref: '#/components/schemas/TransactionImpactResponse'
         '400':
           description: Invalid Request
         '404':
           description: External Transaction by ID not found
         '405':
           description: Validation Exception
-  /social/instant/impact/transaction:
+  /everyday-impact/transaction:
     get:
       tags:
-        - socialResponsibility
-      summary: Load a customer's detailed Social Impact transactions list based on provided filters
-      description: Load a customer's detailed Social Impact transactions list based on provided filters
-      operationId: getInstantImpactTransactions
+        - reporting
+      summary: Load a customer's detailed Impact transactions list based on provided filters
+      description: Load a customer's detailed Impact transactions list based on provided filters
+      operationId: getCustomerTransactionsImpact
       parameters:
         - name: X-SPIRAL-CUSTOMER-ID
           in: header
@@ -422,18 +422,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SocialResponsibilityTransactionListResponse'
+                $ref: '#/components/schemas/TransactionListResponse'
         '400':
           description: Invalid Request
         '405':
           description: Validation Exception
-  /social/instant/impact/client/transaction:
+  /everyday-impact/client/transaction:
     get:
       tags:
-        - socialResponsibility
-      summary: Load a client-level detailed Social Impact transactions list based on provided filters
-      description: Load a client-level detailed Social Impact transactions list based on provided filters
-      operationId: getClientInstantImpactTransactions
+        - reporting
+      summary: Load a client-level detailed Impact transactions list based on provided filters
+      description: Load a client-level detailed Impact transactions list based on provided filters
+      operationId: getClientTransactionsImpact
       parameters:
         - name: X-SPIRAL-CUSTOMER-ID
           in: header
@@ -496,18 +496,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SocialResponsibilityTransactionListResponse'
+                $ref: '#/components/schemas/TransactionListResponse'
         '400':
           description: Invalid Request
         '405':
           description: Validation Exception
-  /social/everyday/impact/center/transaction:
+  /everyday-impact/center/transaction:
     get:
       tags:
-        - socialResponsibility
-      summary: Load a customer's detailed Social Impact transactions list based on provided filters
-      description: Load a customer's detailed Social Impact transactions list based on provided filters for Impact Center
-      operationId: getImpactCenterTransactions
+        - reporting
+      summary: Load a customer's detailed Impact transactions list based on provided filters
+      description: Load a customer's detailed Impact transactions list based on provided filters for Impact Center
+      operationId: getCustomerImpactCenterTransactions
       parameters:
         - name: X-SPIRAL-CUSTOMER-ID
           in: header
@@ -1418,13 +1418,13 @@ paths:
           description: External Transaction by ID not found
         '405':
           description: Validation Exception
-  /management/settings/client/instant/impact:
+  /management/settings/client/everyday-impact:
     get:
       tags:
         - management
-      summary: Retrieves client instant impact related settings
+      summary: Retrieves client Everyday Impact related settings
       description: Retrieves client categories, reward units, cost per reward unit and round up values
-      operationId: getClientInstantImpactSettings
+      operationId: getClientImpactSettings
       parameters:
         - name: X-SPIRAL-CUSTOMER-ID
           in: header
@@ -1442,18 +1442,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ClientInstantImpactResponse"
+                $ref: "#/components/schemas/ClientImpactResponse"
         '400':
           description: Invalid Request
         '405':
           description: Validation Exception
-  /management/instant/impact/categories:
+  /management/everyday-impact/categories:
     get:
       tags:
         - management
-      summary: Load predefined instant impact categories
-      description: Load predefined instant impact categories and all of the charities that belong to them
-      operationId: getInstantImpactCategories
+      summary: Load predefined impact categories
+      description: Load predefined impact categories and all of the charities that belong to them
+      operationId: getImpactCategories
       parameters:
         - name: X-SPIRAL-REQUEST-ID
           in: header
@@ -1466,19 +1466,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InstantImpactCategoriesResponse"
+                $ref: "#/components/schemas/ImpactCategoriesResponse"
         '400':
           description: Invalid Request
         '405':
           description: Validation Exception
       security: [ ]
-  /management/customer/instant/impact/category:
+  /management/customer/everyday-impact/category:
     get:
       tags:
         - management
       summary: Load customer everyday impact categories selection
       description: Load everyday impact categories selected by customer
-      operationId: getCustomerInstantImpactCategories
+      operationId: getCustomerImpactCategories
       parameters:
         - name: X-SPIRAL-CUSTOMER-ID
           in: header
@@ -1496,7 +1496,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SelectedInstantImpactCategoriesResponse"
+                $ref: "#/components/schemas/SelectedImpactCategoriesResponse"
         '400':
           description: Invalid Request
         '405':
@@ -1506,7 +1506,7 @@ paths:
         - management
       summary: Updates customer everyday impact category selections
       description: Updates customer everyday impact category selections
-      operationId: setCustomerInstantImpactCategories
+      operationId: setCustomerImpactCategories
       parameters:
         - name: X-SPIRAL-CUSTOMER-ID
           in: header
@@ -1524,7 +1524,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SelectedInstantImpactCategoriesRequest"
+              $ref: "#/components/schemas/SelectedImpactCategoriesRequest"
       responses:
         '200':
           description: Successful Operation
@@ -1561,7 +1561,7 @@ paths:
           description: Invalid Request
         '405':
           description: Validation Exception
-  /management/settings/customer/instant/impact:
+  /management/settings/customer/everyday-impact:
     get:
       tags:
         - management
@@ -1834,13 +1834,13 @@ paths:
         '405':
           description: Validation Exception
       security: [ ]
-  /cst/client/{clientId}/instant/impact:
+  /cst/client/{clientId}/everyday-impact:
     put:
       tags:
         - cst
-      summary: Mass process client instant impact
-      description: Mass process client instant impact
-      operationId: processClientInstantImpact
+      summary: Mass process client impact
+      description: Mass process client impact
+      operationId: processClientImpact
       parameters:
         - name: X-SPIRAL-REQUEST-ID
           in: header
@@ -1860,7 +1860,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ClientInstantImpactProcessRequest"
+              $ref: "#/components/schemas/ClientImpactProcessRequest"
       responses:
         '200':
           description: Successful Operation
@@ -2161,34 +2161,34 @@ components:
       type: object
       required:
         - transactionId
-        - instantImpact
+        - impact
         - rewardSettings
       properties:
         transactionId:
           type: string
           description: Permanent, unique transaction id. Must survive changes to pending status or amount.
           example: 'TRX12345'
-        instantImpact:
-          $ref: '#/components/schemas/SocialResponsibilityTransactionInstantImpactResponse'
+        impact:
+          $ref: '#/components/schemas/TransactionImpactResponse'
         rewardSettings:
           $ref: '#/components/schemas/RewardSettings'
-    SocialResponsibilityInstantImpactSummaryResponse:
+    TransactionImpactSummaryResponse:
       type: object
-      description: Single customer's Instant Impact report
+      description: Single customer's Impact report
       required:
-        - instantImpact
+        - impact
       properties:
         mostRecentRewardedUnitId:
           type: string
           description: ID of most recently rewarded unit
           example: "e286e220-9d3c-4e30-a963-57d4fd49ff7a"
-        instantImpact:
+        impact:
           type: array
           items:
-            $ref: '#/components/schemas/SocialResponsibilityInstantImpactSummaryItem'
-    SocialResponsibilityInstantImpactSummaryItem:
+            $ref: '#/components/schemas/TransactionImpactSummaryItem'
+    TransactionImpactSummaryItem:
       type: object
-      description: Customer's Instant Impact summary report per unit
+      description: Customer's Impact summary report per unit
       required:
         - rewardUnitName
       properties:
@@ -2500,7 +2500,7 @@ components:
     ClientSettingResponse:
       allOf:
         - $ref: '#/components/schemas/SettingResponse'
-    InstantImpactCategoriesResponse:
+    ImpactCategoriesResponse:
       type: object
       required:
         - categories
@@ -2508,8 +2508,8 @@ components:
         categories:
           type: array
           items:
-            $ref: '#/components/schemas/InstantImpactCategory'
-    SelectedInstantImpactCategoriesRequest:
+            $ref: '#/components/schemas/ImpactCategory'
+    SelectedImpactCategoriesRequest:
       type: object
       required:
         - categories
@@ -2517,10 +2517,10 @@ components:
         categories:
           type: array
           items:
-            $ref: '#/components/schemas/ExtendedInstantImpactCategoryRewardSelection'
+            $ref: '#/components/schemas/ExtendedImpactCategoryRewardSelection'
         anonymousDonor:
           type: boolean
-    SelectedInstantImpactCategoriesResponse:
+    SelectedImpactCategoriesResponse:
       type: object
       required:
         - categories
@@ -2528,16 +2528,16 @@ components:
         categories:
           type: array
           items:
-            $ref: '#/components/schemas/ExtendedInstantImpactCategoryRewardSelection'
+            $ref: '#/components/schemas/ExtendedImpactCategoryRewardSelection'
         anonymousDonor:
           type: boolean
-    ClientInstantImpactResponse:
+    ClientImpactResponse:
       type: object
       properties:
         categories:
           type: array
           items:
-            $ref: '#/components/schemas/SelectedInstantImpactCategory'
+            $ref: '#/components/schemas/SelectedImpactCategory'
         roundUp:
           $ref: '#/components/schemas/RoundUpSelections'
     ClientCreationRequest:
@@ -2642,18 +2642,18 @@ components:
     ClientProducts:
       type: object
       required:
-        - instantImpact
+        - everydayImpact
         - giving
         - daf
       properties:
-        instantImpact:
+        everydayImpact:
           type: boolean
-          description: Clients instant impact product on/off
+          description: Clients Everyday Impact product on/off
           default: false
           example: "true"
         giving:
           type: boolean
-          description: Clients giving product on/off
+          description: Clients Giving product on/off
           default: false
           example: "true"
         daf:
@@ -2681,9 +2681,36 @@ components:
         rewardCategorySelections:
           type: array
           items:
-            $ref: '#/components/schemas/InstantImpactCategoryRewardSelection'
+            $ref: '#/components/schemas/ImpactCategoryRewardSelection'
         givingSettings:
           $ref: '#/components/schemas/ClientGivingSettings'
+        fonts:
+          $ref: '#/components/schemas/ClientFonts'
+    ClientFonts:
+      type: object
+      properties:
+        headingFont:
+          $ref: '#/components/schemas/ClientFont'
+        bodyFont:
+          $ref: '#/components/schemas/ClientFont'
+    ClientFont:
+      type: object
+      required:
+        - font
+        - type
+      properties:
+        font:
+          type: string
+          description: The font's name
+          example: 'Comic Sans'
+        type:
+          $ref: '#/components/schemas/ClientFontType'
+    ClientFontType:
+      type: string
+      description: Type and source of the selected font
+      enum:
+        - GOOGLE
+        - GOOGLE_OVERRIDE
     CustomerLimits:
       type: object
       properties:
@@ -2695,9 +2722,9 @@ components:
           type: integer
         onTransactionsUnder:
           type: integer
-    CustomerInstantImpactLimitSelections:
+    CustomerImpactLimitSelections:
       type: string
-      description: Available selections for the customer instant impact limit
+      description: Available selections for the customer impact limit
       enum:
         - daily
         - weekly
@@ -2724,7 +2751,7 @@ components:
         roundUp:
           $ref: "#/components/schemas/RoundUpSelections"
         limitSelection:
-          $ref: "#/components/schemas/CustomerInstantImpactLimitSelections"
+          $ref: "#/components/schemas/CustomerImpactLimitSelections"
         limitValue:
           type: number
     CustomerSettingsRequest:
@@ -3041,28 +3068,9 @@ components:
           type: number
           description: Total amount donated to this charity (one-time and processed recurring)
           example: 200.00
-    InstantImpact:
+    TransactionImpactResponse:
       type: object
-      description: A single socially responsible Instant Impact from performing a financial transaction.
-      required:
-        - category
-        - impact
-      properties:
-        category:
-          $ref: '#/components/schemas/InstantImpactCategory'
-        impact:
-          type: integer
-          description: Point value for associated Instant Impact Category.
-          example: 15
-        amountDonated:
-          type: number
-          description: Dollar value for associated Instant Impact Category.
-          example: 35.68
-        transaction:
-          $ref: '#/components/schemas/DepositoryOrCreditTransaction'
-    SocialResponsibilityTransactionInstantImpactResponse:
-      type: object
-      description: A single socially responsible Instant Impact from performing a financial transaction.
+      description: A single Impact from performing a financial transaction.
       required:
         - categoryId
         - categoryName
@@ -3084,11 +3092,11 @@ components:
           $ref: '#/components/schemas/CharityRewardUnit'
         impact:
           type: number
-          description: Point value for associated Instant Impact Category.
+          description: Point value for associated Impact Category Unit.
           example: 1.0
         donatedAmount:
           type: number
-          description: Dollar value for associated Instant Impact Category.
+          description: Dollar value donated to Impact Category Charity.
           example: 0.15
         roundupAmount:
           type: number
@@ -3104,7 +3112,7 @@ components:
           example: 1669647037
         transactionTitle:
           type: string
-          description: The cleand up transaction title.
+          description: The cleaned up transaction title.
           example: "O'Reilly auto parts purchase"
         transactionType:
           type: string
@@ -3122,29 +3130,6 @@ components:
           type: string
           description: Transaction account identifier.
           example: 'ACC12345'
-    TransactionInstantImpactSummary:
-      type: object
-      properties:
-        categoryId:
-          type: string
-          format: guid
-          example: 'CAT12345'
-        categoryName:
-          type: string
-          description: Name of the charity category.
-          example: 'Gas, Transportation'
-        rewardUnitName:
-          type: string
-          description: Reward Unit key
-          example: "TREE"
-        totalImpact:
-          type: number
-          description: Aggregated point value for associated Instant Impact Category.
-          example: 274
-        totalDonatedAmount:
-          type: number
-          description: Aggregated dollar value for associated Instant Impact Category.
-          example: 283.73
     CharityRewardUnit:
       type: object
       required:
@@ -3271,14 +3256,17 @@ components:
           type: string
           description: Background image.
           example: 'https://bla.com/image.png'
+        clientScoped:
+          type: boolean
+          description: Whether this category is client scoped
         charities:
           type: array
           description: List of Giving Charities belonging to this category
           items:
             $ref: '#/components/schemas/GivingCharityResponse'
-    InstantImpactCategory:
+    ImpactCategory:
       type: object
-      description: Instant Impact Category
+      description: Impact Category
       required:
         - name
       properties:
@@ -3300,9 +3288,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Charity'
-    SelectedInstantImpactCategory:
+    SelectedImpactCategory:
       type: object
-      description: Lightweight Instant Impact Category with attributes selected by client
+      description: Lightweight Impact Category with attributes selected by client
       properties:
         categoryName:
           type: string
@@ -3316,16 +3304,18 @@ components:
         internalCostInCents:
           type: integer
           example: 100
-    InstantImpactCategoryRewardSelection:
+    ImpactCategoryRewardSelection:
       type: object
-      description: Instant Impact Category Charity and Reward Unit selection for a Client
+      description: Impact Category Charity and Reward Unit selection for a Client
       required:
-        - instantImpactCategoryId
+        - impactCategoryId
         - charityId
         - rewardUnitId
       properties:
-        instantImpactCategoryId:
+        impactCategoryId:
           type: string
+          format: guid
+          example: "9503fab9-7f0f-494c-a9b0-3c70d95c153d"
         charityId:
           type: string
           format: guid
@@ -3338,11 +3328,11 @@ components:
           type: string
           format: guid
           example: "REWARD12345"
-    ExtendedInstantImpactCategoryRewardSelection:
+    ExtendedImpactCategoryRewardSelection:
       type: object
-      description: Instant Impact Category Charity and Reward Unit selection with additional details
+      description: Impact Category Charity and Reward Unit selection with additional details
       allOf:
-        - $ref: '#/components/schemas/InstantImpactCategoryRewardSelection'
+        - $ref: '#/components/schemas/ImpactCategoryRewardSelection'
         - type: object
           required:
             - rewardUnitName
@@ -3351,8 +3341,11 @@ components:
             rewardUnitName:
               type: string
               example: "Tree"
+              description: Name of the reward unit
             enabled:
               type: boolean
+              example: false
+              description: Is Impact Category enabled for a customer
     ClientGivingSettings:
       type: object
       description: Client settings for Giving Portal
@@ -3591,7 +3584,7 @@ components:
                 $ref: '#/components/schemas/EverydayImpactCenterTransaction'
     EverydayImpactCenterTransaction:
       allOf:
-        - $ref: '#/components/schemas/SocialResponsibilityTransactionInstantImpactResponse'
+        - $ref: '#/components/schemas/TransactionImpactResponse'
         - type: object
           properties:
             cumulativeImpact:
@@ -3602,7 +3595,7 @@ components:
               type: number
               description: Point value for one unit progress for that transaction. Can be >1 if transaction earned more than 1 unit.
               example: 0.5
-    SocialResponsibilityTransactionListResponse:
+    TransactionListResponse:
       type: object
       required:
         - transactions
@@ -3630,7 +3623,7 @@ components:
         transactions:
           type: array
           items:
-            $ref: '#/components/schemas/SocialResponsibilityTransactionInstantImpactResponse'
+            $ref: '#/components/schemas/TransactionImpactResponse'
     ClientDonationListResponse:
       type: object
       required:
@@ -3719,7 +3712,7 @@ components:
           example: 'ACC12345'
     SummaryTimePeriod:
       type: string
-      description: "Possible periods to choose from for Instant Impact reports"
+      description: "Possible periods to choose from for Impact reports"
       enum:
         - ALL_TIME
         - LAST_MONTH
@@ -3729,7 +3722,7 @@ components:
       enum:
         - UNGROUPED
         - CHARITY
-    ClientInstantImpactProcessRequest:
+    ClientImpactProcessRequest:
       type: object
       required:
         - action
@@ -3756,8 +3749,8 @@ components:
           example: [ 'UNIT12345' ]
         transactions:
           type: array
-          description: List of II transaction IDs to process. Optional, but if provided will overwrite the supplied filters and only process these donation IDs.
-          example: [ 'DON12345', 'DON12346' ]
+          description: List of Spiral transaction IDs to process. Optional, but if provided will overwrite the supplied filters and only process these donation IDs.
+          example: [ "09225bc0-4301-4e90-a942-37cd180e100d", "1511da4c-3d0f-4caf-a6bb-a0c91e452e58" ]
           items:
             type: string
     ClientDonationProcessRequest:

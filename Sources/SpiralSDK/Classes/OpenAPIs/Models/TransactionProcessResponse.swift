@@ -14,18 +14,18 @@ public struct TransactionProcessResponse: Codable, JSONEncodable, Hashable {
 
     /** Permanent, unique transaction id. Must survive changes to pending status or amount. */
     public var transactionId: String
-    public var instantImpact: SocialResponsibilityTransactionInstantImpactResponse
+    public var impact: TransactionImpactResponse
     public var rewardSettings: RewardSettings
 
-    public init(transactionId: String, instantImpact: SocialResponsibilityTransactionInstantImpactResponse, rewardSettings: RewardSettings) {
+    public init(transactionId: String, impact: TransactionImpactResponse, rewardSettings: RewardSettings) {
         self.transactionId = transactionId
-        self.instantImpact = instantImpact
+        self.impact = impact
         self.rewardSettings = rewardSettings
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case transactionId
-        case instantImpact
+        case impact
         case rewardSettings
     }
 
@@ -34,7 +34,7 @@ public struct TransactionProcessResponse: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(transactionId, forKey: .transactionId)
-        try container.encode(instantImpact, forKey: .instantImpact)
+        try container.encode(impact, forKey: .impact)
         try container.encode(rewardSettings, forKey: .rewardSettings)
     }
 }

@@ -16,15 +16,17 @@ public struct ClientSettings: Codable, JSONEncodable, Hashable {
     public var brandColors: [String]?
     public var rewardSettings: RewardSettings
     public var customerLimits: CustomerLimits
-    public var rewardCategorySelections: [InstantImpactCategoryRewardSelection]?
+    public var rewardCategorySelections: [ImpactCategoryRewardSelection]?
     public var givingSettings: ClientGivingSettings
+    public var fonts: ClientFonts?
 
-    public init(brandColors: [String]? = nil, rewardSettings: RewardSettings, customerLimits: CustomerLimits, rewardCategorySelections: [InstantImpactCategoryRewardSelection]? = nil, givingSettings: ClientGivingSettings) {
+    public init(brandColors: [String]? = nil, rewardSettings: RewardSettings, customerLimits: CustomerLimits, rewardCategorySelections: [ImpactCategoryRewardSelection]? = nil, givingSettings: ClientGivingSettings, fonts: ClientFonts? = nil) {
         self.brandColors = brandColors
         self.rewardSettings = rewardSettings
         self.customerLimits = customerLimits
         self.rewardCategorySelections = rewardCategorySelections
         self.givingSettings = givingSettings
+        self.fonts = fonts
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -33,6 +35,7 @@ public struct ClientSettings: Codable, JSONEncodable, Hashable {
         case customerLimits
         case rewardCategorySelections
         case givingSettings
+        case fonts
     }
 
     // Encodable protocol methods
@@ -44,6 +47,7 @@ public struct ClientSettings: Codable, JSONEncodable, Hashable {
         try container.encode(customerLimits, forKey: .customerLimits)
         try container.encodeIfPresent(rewardCategorySelections, forKey: .rewardCategorySelections)
         try container.encode(givingSettings, forKey: .givingSettings)
+        try container.encodeIfPresent(fonts, forKey: .fonts)
     }
 }
 

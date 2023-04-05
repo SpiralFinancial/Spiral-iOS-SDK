@@ -12,21 +12,21 @@ import AnyCodable
 
 public struct ClientProducts: Codable, JSONEncodable, Hashable {
 
-    /** Clients instant impact product on/off */
-    public var instantImpact: Bool = false
-    /** Clients giving product on/off */
+    /** Clients Everyday Impact product on/off */
+    public var everydayImpact: Bool = false
+    /** Clients Giving product on/off */
     public var giving: Bool = false
     /** Clients DAF product on/off */
     public var daf: Bool = false
 
-    public init(instantImpact: Bool = false, giving: Bool = false, daf: Bool = false) {
-        self.instantImpact = instantImpact
+    public init(everydayImpact: Bool = false, giving: Bool = false, daf: Bool = false) {
+        self.everydayImpact = everydayImpact
         self.giving = giving
         self.daf = daf
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case instantImpact
+        case everydayImpact
         case giving
         case daf
     }
@@ -35,7 +35,7 @@ public struct ClientProducts: Codable, JSONEncodable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(instantImpact, forKey: .instantImpact)
+        try container.encode(everydayImpact, forKey: .everydayImpact)
         try container.encode(giving, forKey: .giving)
         try container.encode(daf, forKey: .daf)
     }

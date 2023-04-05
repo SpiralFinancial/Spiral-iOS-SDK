@@ -22,10 +22,10 @@ public struct CustomerSettingsRequest: Codable, JSONEncodable, Hashable {
     public var consented: Bool?
     public var optedIn: Bool?
     public var roundUp: RoundUpSelections
-    public var limitSelection: CustomerInstantImpactLimitSelections
+    public var limitSelection: CustomerImpactLimitSelections
     public var limitValue: Double?
 
-    public init(userSponsoredEverOptedIn: Bool? = nil, rewardType: RewardType? = nil, consented: Bool? = nil, optedIn: Bool? = nil, roundUp: RoundUpSelections, limitSelection: CustomerInstantImpactLimitSelections, limitValue: Double? = nil) {
+    public init(userSponsoredEverOptedIn: Bool? = nil, rewardType: RewardType? = nil, consented: Bool? = nil, optedIn: Bool? = nil, roundUp: RoundUpSelections, limitSelection: CustomerImpactLimitSelections, limitValue: Double? = nil) {
         self.userSponsoredEverOptedIn = userSponsoredEverOptedIn
         self.rewardType = rewardType
         self.consented = consented
