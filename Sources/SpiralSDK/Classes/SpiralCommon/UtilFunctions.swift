@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Delay a closure and call it async on the main thread
 ///
