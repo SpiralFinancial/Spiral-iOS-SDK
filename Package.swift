@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 import PackageDescription
 
 let package = Package(
@@ -13,8 +13,9 @@ let package = Package(
     targets: [
         .target(
             name: "SpiralSDK",
-            resources: [.copy("Resources")],
-            dependencies: []),
+            dependencies: [],
+            resources: [.process("Resources")]
+        ),
         .testTarget(
             name: "SpiralSDK_Tests",
             dependencies: ["SpiralSDK"],
