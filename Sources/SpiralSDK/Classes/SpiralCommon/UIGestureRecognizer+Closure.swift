@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 final class BindableTapGestureRecognizer: UITapGestureRecognizer {
     private var action: () -> Void

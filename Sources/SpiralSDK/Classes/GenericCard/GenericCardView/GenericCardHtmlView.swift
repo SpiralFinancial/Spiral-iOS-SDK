@@ -8,6 +8,7 @@
 
 import Foundation
 import WebKit
+import UIKit
 
 class GenericCardHtmlView: GenericCardComponentView {
     
