@@ -13,13 +13,13 @@ let package = Package(
     targets: [
         .target(
             name: "SpiralSDK",
+            resources: [
+                    .process("Resources")
+                ]
             dependencies: []),
         .testTarget(
             name: "SpiralSDK_Tests",
             dependencies: ["SpiralSDK"],
-            resources: [
-                    .process("Resources")
-                ]
             path: "Example/Tests"
         ),
     ]
