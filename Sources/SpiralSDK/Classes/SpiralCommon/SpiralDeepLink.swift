@@ -197,7 +197,8 @@ class SpiralDefaultDeepLinkHandler: SpiralDeepLinkHandler {
         guard let type = deepLink.stringParamForKey("type"),
               let delegate = deepLink.params["delegate"] as? SpiralDelegate else { return }
         
-        let params = deepLink.stringParamForKey("params")
+        var params = deepLink.stringParamForKey("params")
+        if params?.isEmpty ?? true { params = "{}" }
         guard let flow = SpiralFlow(typeStr: type, params: params) else { return }
         
         Spiral.shared.startFlow(flow: flow, delegate: delegate)
