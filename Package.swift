@@ -14,7 +14,11 @@ let package = Package(
         .target(
             name: "SpiralSDK",
             dependencies: [],
-            resources: [.copy("Resources")]
+            resources: [
+                .process("Resources/XIB/*"),
+                .process("Resources/Assets/SpiralAssets.xcassets"),
+                .copy("Resources/Fonts/*")
+            ]
         ),
         .testTarget(
             name: "SpiralSDK_Tests",
