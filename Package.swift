@@ -14,7 +14,7 @@ let package = Package(
         .target(
             name: "SpiralSDK",
             dependencies: [],
-            resources: [.process("Resources")]
+            resources: [.copy("Resources")]
         ),
         .testTarget(
             name: "SpiralSDK_Tests",
