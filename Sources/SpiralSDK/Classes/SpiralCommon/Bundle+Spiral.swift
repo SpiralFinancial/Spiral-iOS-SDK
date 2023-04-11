@@ -9,9 +9,11 @@ import Foundation
 
 extension Bundle {
     static var spiralResourcesBundle: Bundle? {
-        guard let bundleURL = Bundle(for: Spiral.self).url(forResource: "Resources", withExtension: "bundle"),
-              let bundle = Bundle(url: bundleURL) else { return nil }
+        if let bundleURL = Bundle(for: Spiral.self).url(forResource: "Resources", withExtension: "bundle"),
+           let bundle = Bundle(url: bundleURL) {
+            return bundle
+        }
         
-        return bundle
+        return Bundle(for: self)
     }
 }
