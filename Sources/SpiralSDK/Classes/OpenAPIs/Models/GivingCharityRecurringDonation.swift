@@ -12,31 +12,32 @@ import AnyCodable
 
 public struct GivingCharityRecurringDonation: Codable, JSONEncodable, Hashable {
 
+    static let donationAmountRule = NumericRule<Double>(minimum: 0.01, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** External account ID donation is made from */
     public var accountId: String
     /** Spiral ID of Charity to donate to */
     public var charityId: String
-    /** Recurring donation start date as timestamp */
-    public var startDate: Int64
+    /** Recurring donation start datetime */
+    public var startDate: Date
     /** Dollar value that is donated to Charity */
-    public var amount: Double
+    public var donationAmount: Double
     /** Is recurring donation paused */
-    public var paused: Bool
+    public var isPaused: Bool
     /** Is recurring donation stopped */
-    public var stopped: Bool
+    public var isStopped: Bool
     /** Is recurring donation anonymous */
-    public var anonymous: Bool
+    public var isAnonymous: Bool
     /** Does customer agree to cover donation fees */
     public var coverFees: Bool
 
-    public init(accountId: String, charityId: String, startDate: Int64, amount: Double, paused: Bool, stopped: Bool, anonymous: Bool, coverFees: Bool) {
+    public init(accountId: String, charityId: String, startDate: Date, donationAmount: Double, isPaused: Bool, isStopped: Bool, isAnonymous: Bool, coverFees: Bool) {
         self.accountId = accountId
         self.charityId = charityId
         self.startDate = startDate
-        self.amount = amount
-        self.paused = paused
-        self.stopped = stopped
-        self.anonymous = anonymous
+        self.donationAmount = donationAmount
+        self.isPaused = isPaused
+        self.isStopped = isStopped
+        self.isAnonymous = isAnonymous
         self.coverFees = coverFees
     }
 
@@ -44,10 +45,10 @@ public struct GivingCharityRecurringDonation: Codable, JSONEncodable, Hashable {
         case accountId
         case charityId
         case startDate
-        case amount
-        case paused
-        case stopped
-        case anonymous
+        case donationAmount
+        case isPaused
+        case isStopped
+        case isAnonymous
         case coverFees
     }
 
@@ -58,10 +59,10 @@ public struct GivingCharityRecurringDonation: Codable, JSONEncodable, Hashable {
         try container.encode(accountId, forKey: .accountId)
         try container.encode(charityId, forKey: .charityId)
         try container.encode(startDate, forKey: .startDate)
-        try container.encode(amount, forKey: .amount)
-        try container.encode(paused, forKey: .paused)
-        try container.encode(stopped, forKey: .stopped)
-        try container.encode(anonymous, forKey: .anonymous)
+        try container.encode(donationAmount, forKey: .donationAmount)
+        try container.encode(isPaused, forKey: .isPaused)
+        try container.encode(isStopped, forKey: .isStopped)
+        try container.encode(isAnonymous, forKey: .isAnonymous)
         try container.encode(coverFees, forKey: .coverFees)
     }
 }

@@ -15,18 +15,15 @@ public struct TransactionProcessResponse: Codable, JSONEncodable, Hashable {
     /** Permanent, unique transaction id. Must survive changes to pending status or amount. */
     public var transactionId: String
     public var impact: TransactionImpactResponse
-    public var rewardSettings: RewardSettings
 
-    public init(transactionId: String, impact: TransactionImpactResponse, rewardSettings: RewardSettings) {
+    public init(transactionId: String, impact: TransactionImpactResponse) {
         self.transactionId = transactionId
         self.impact = impact
-        self.rewardSettings = rewardSettings
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case transactionId
         case impact
-        case rewardSettings
     }
 
     // Encodable protocol methods
@@ -35,7 +32,6 @@ public struct TransactionProcessResponse: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(transactionId, forKey: .transactionId)
         try container.encode(impact, forKey: .impact)
-        try container.encode(rewardSettings, forKey: .rewardSettings)
     }
 }
 

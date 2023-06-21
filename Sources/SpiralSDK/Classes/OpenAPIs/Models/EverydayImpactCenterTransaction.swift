@@ -18,15 +18,23 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
     public var categoryName: String
     public var rewardUnit: CharityRewardUnit?
     /** Point value for associated Impact Category Unit. */
-    public var impact: Double
+    public var impactUnits: Double
+    /** Total amount collected from the customer, including all fees. */
+    public var collectedAmount: Double?
     /** Dollar value donated to Impact Category Charity. */
     public var donatedAmount: Double?
+    /** Amount collected for external processing fees. */
+    public var externalFeeAmount: Double?
+    /** Amount collected for internal processing fees. */
+    public var internalFeeAmount: Double?
     /** Dollar value of how much was rounded up */
     public var roundupAmount: Double?
     /** Permanent, unique transaction identifier. Must survive changes to pending status or amount. */
     public var transactionId: String?
-    /** Transaction Unix timestamp */
-    public var transactionTimestamp: Double?
+    /** Date and time at which transaction was made */
+    public var transactedAtDate: Date?
+    /** Date and time at which transaction settled */
+    public var settledAtDate: Date?
     /** The cleaned up transaction title. */
     public var transactionTitle: String?
     /** The type or source of the transaction */
@@ -36,29 +44,33 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
     /** Transaction amount with two decimal places. */
     public var transactionAmount: Double?
     /** Transaction account identifier. */
-    public var transactionAccountId: String?
+    public var accountId: String?
     /** Point value for cumulative impact (units) at the time of transaction */
-    public var cumulativeImpact: Double?
+    public var cumulativeImpactUnits: Double?
     /** Point value for one unit progress for that transaction. Can be >1 if transaction earned more than 1 unit. */
-    public var cumulativeProgress: Double?
+    public var cumulativeProgressUnits: Double?
 
-    public init(categoryId: String, customerId: String? = nil, categoryName: String, rewardUnit: CharityRewardUnit? = nil, impact: Double, donatedAmount: Double? = nil, roundupAmount: Double? = nil, transactionId: String? = nil, transactionTimestamp: Double? = nil, transactionTitle: String? = nil, transactionType: String? = nil, statementDescription: String? = nil, transactionAmount: Double? = nil, transactionAccountId: String? = nil, cumulativeImpact: Double? = nil, cumulativeProgress: Double? = nil) {
+    public init(categoryId: String, customerId: String? = nil, categoryName: String, rewardUnit: CharityRewardUnit? = nil, impactUnits: Double, collectedAmount: Double? = nil, donatedAmount: Double? = nil, externalFeeAmount: Double? = nil, internalFeeAmount: Double? = nil, roundupAmount: Double? = nil, transactionId: String? = nil, transactedAtDate: Date? = nil, settledAtDate: Date? = nil, transactionTitle: String? = nil, transactionType: String? = nil, statementDescription: String? = nil, transactionAmount: Double? = nil, accountId: String? = nil, cumulativeImpactUnits: Double? = nil, cumulativeProgressUnits: Double? = nil) {
         self.categoryId = categoryId
         self.customerId = customerId
         self.categoryName = categoryName
         self.rewardUnit = rewardUnit
-        self.impact = impact
+        self.impactUnits = impactUnits
+        self.collectedAmount = collectedAmount
         self.donatedAmount = donatedAmount
+        self.externalFeeAmount = externalFeeAmount
+        self.internalFeeAmount = internalFeeAmount
         self.roundupAmount = roundupAmount
         self.transactionId = transactionId
-        self.transactionTimestamp = transactionTimestamp
+        self.transactedAtDate = transactedAtDate
+        self.settledAtDate = settledAtDate
         self.transactionTitle = transactionTitle
         self.transactionType = transactionType
         self.statementDescription = statementDescription
         self.transactionAmount = transactionAmount
-        self.transactionAccountId = transactionAccountId
-        self.cumulativeImpact = cumulativeImpact
-        self.cumulativeProgress = cumulativeProgress
+        self.accountId = accountId
+        self.cumulativeImpactUnits = cumulativeImpactUnits
+        self.cumulativeProgressUnits = cumulativeProgressUnits
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -66,18 +78,22 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
         case customerId
         case categoryName
         case rewardUnit
-        case impact
+        case impactUnits
+        case collectedAmount
         case donatedAmount
+        case externalFeeAmount
+        case internalFeeAmount
         case roundupAmount
         case transactionId
-        case transactionTimestamp
+        case transactedAtDate
+        case settledAtDate
         case transactionTitle
         case transactionType
         case statementDescription
         case transactionAmount
-        case transactionAccountId
-        case cumulativeImpact
-        case cumulativeProgress
+        case accountId
+        case cumulativeImpactUnits
+        case cumulativeProgressUnits
     }
 
     // Encodable protocol methods
@@ -88,18 +104,22 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
         try container.encodeIfPresent(customerId, forKey: .customerId)
         try container.encode(categoryName, forKey: .categoryName)
         try container.encodeIfPresent(rewardUnit, forKey: .rewardUnit)
-        try container.encode(impact, forKey: .impact)
+        try container.encode(impactUnits, forKey: .impactUnits)
+        try container.encodeIfPresent(collectedAmount, forKey: .collectedAmount)
         try container.encodeIfPresent(donatedAmount, forKey: .donatedAmount)
+        try container.encodeIfPresent(externalFeeAmount, forKey: .externalFeeAmount)
+        try container.encodeIfPresent(internalFeeAmount, forKey: .internalFeeAmount)
         try container.encodeIfPresent(roundupAmount, forKey: .roundupAmount)
         try container.encodeIfPresent(transactionId, forKey: .transactionId)
-        try container.encodeIfPresent(transactionTimestamp, forKey: .transactionTimestamp)
+        try container.encodeIfPresent(transactedAtDate, forKey: .transactedAtDate)
+        try container.encodeIfPresent(settledAtDate, forKey: .settledAtDate)
         try container.encodeIfPresent(transactionTitle, forKey: .transactionTitle)
         try container.encodeIfPresent(transactionType, forKey: .transactionType)
         try container.encodeIfPresent(statementDescription, forKey: .statementDescription)
         try container.encodeIfPresent(transactionAmount, forKey: .transactionAmount)
-        try container.encodeIfPresent(transactionAccountId, forKey: .transactionAccountId)
-        try container.encodeIfPresent(cumulativeImpact, forKey: .cumulativeImpact)
-        try container.encodeIfPresent(cumulativeProgress, forKey: .cumulativeProgress)
+        try container.encodeIfPresent(accountId, forKey: .accountId)
+        try container.encodeIfPresent(cumulativeImpactUnits, forKey: .cumulativeImpactUnits)
+        try container.encodeIfPresent(cumulativeProgressUnits, forKey: .cumulativeProgressUnits)
     }
 }
 

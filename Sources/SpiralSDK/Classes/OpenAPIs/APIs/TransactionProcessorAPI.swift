@@ -17,8 +17,8 @@ open class TransactionProcessorAPI {
      
      - parameter transactionId: (path) Permanent, unique transaction id of transaction to be deleted. 
      - parameter X_SPIRAL_SDK_VERSION: (header) Unique version of the SDK that makes the call (ie. ios-1.2.3 or web-1.2.3) (optional)
-     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -39,12 +39,12 @@ open class TransactionProcessorAPI {
      - DELETE /transaction/{transactionId}
      - Delete processed transaction with specified id
      - API Key:
-       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - type: apiKey X-SPIRAL-CLIENT-ID (HEADER)
        - name: ClientID
      - parameter transactionId: (path) Permanent, unique transaction id of transaction to be deleted. 
      - parameter X_SPIRAL_SDK_VERSION: (header) Unique version of the SDK that makes the call (ie. ios-1.2.3 or web-1.2.3) (optional)
-     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
      - returns: RequestBuilder<Void> 
      */
     open class func deleteTransactionWithRequestBuilder(transactionId: String, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<Void> {
@@ -74,8 +74,8 @@ open class TransactionProcessorAPI {
      Categorize a given financial transaction
      
      - parameter transactionProcessRequest: (body) Transaction to process 
-     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -96,11 +96,11 @@ open class TransactionProcessorAPI {
      - POST /transaction/process
      - Request a financial transaction to be categorized on behalf of a customer.
      - API Key:
-       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - type: apiKey X-SPIRAL-CLIENT-ID (HEADER)
        - name: ClientID
      - parameter transactionProcessRequest: (body) Transaction to process 
-     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
      - returns: RequestBuilder<TransactionProcessResponse?> 
      */
     open class func processTransactionWithRequestBuilder(transactionProcessRequest: TransactionProcessRequest, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<TransactionProcessResponse?> {

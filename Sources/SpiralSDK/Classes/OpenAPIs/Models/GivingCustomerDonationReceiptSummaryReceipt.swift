@@ -14,29 +14,29 @@ public struct GivingCustomerDonationReceiptSummaryReceipt: Codable, JSONEncodabl
 
     /** Receipt ID */
     public var id: String
-    /** Timestamp of the receipt */
-    public var date: Double
+    /** Datetime of the receipt */
+    public var receiptDate: Date
     /** Recipient charity name */
     public var charityName: String
     /** Donation period - one-time or monthly */
     public var period: String
     /** Whether the receipt has been processed and is ready for viewing */
-    public var ready: Bool
+    public var isReady: Bool
 
-    public init(id: String, date: Double, charityName: String, period: String, ready: Bool) {
+    public init(id: String, receiptDate: Date, charityName: String, period: String, isReady: Bool) {
         self.id = id
-        self.date = date
+        self.receiptDate = receiptDate
         self.charityName = charityName
         self.period = period
-        self.ready = ready
+        self.isReady = isReady
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case id
-        case date
+        case receiptDate
         case charityName
         case period
-        case ready
+        case isReady
     }
 
     // Encodable protocol methods
@@ -44,10 +44,10 @@ public struct GivingCustomerDonationReceiptSummaryReceipt: Codable, JSONEncodabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(date, forKey: .date)
+        try container.encode(receiptDate, forKey: .receiptDate)
         try container.encode(charityName, forKey: .charityName)
         try container.encode(period, forKey: .period)
-        try container.encode(ready, forKey: .ready)
+        try container.encode(isReady, forKey: .isReady)
     }
 }
 

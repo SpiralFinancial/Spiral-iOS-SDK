@@ -16,20 +16,21 @@ public struct SelectedImpactCategory: Codable, JSONEncodable, Hashable {
     public var categoryName: String?
     public var charityName: String?
     public var rewardUnitName: String?
-    public var internalCostInCents: Int?
+    /** Internal cost of this reward unit */
+    public var internalCostAmount: Double?
 
-    public init(categoryName: String? = nil, charityName: String? = nil, rewardUnitName: String? = nil, internalCostInCents: Int? = nil) {
+    public init(categoryName: String? = nil, charityName: String? = nil, rewardUnitName: String? = nil, internalCostAmount: Double? = nil) {
         self.categoryName = categoryName
         self.charityName = charityName
         self.rewardUnitName = rewardUnitName
-        self.internalCostInCents = internalCostInCents
+        self.internalCostAmount = internalCostAmount
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case categoryName
         case charityName
         case rewardUnitName
-        case internalCostInCents
+        case internalCostAmount
     }
 
     // Encodable protocol methods
@@ -39,7 +40,7 @@ public struct SelectedImpactCategory: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(categoryName, forKey: .categoryName)
         try container.encodeIfPresent(charityName, forKey: .charityName)
         try container.encodeIfPresent(rewardUnitName, forKey: .rewardUnitName)
-        try container.encodeIfPresent(internalCostInCents, forKey: .internalCostInCents)
+        try container.encodeIfPresent(internalCostAmount, forKey: .internalCostAmount)
     }
 }
 

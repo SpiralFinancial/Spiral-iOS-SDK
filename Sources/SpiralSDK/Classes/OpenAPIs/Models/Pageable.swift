@@ -12,6 +12,8 @@ import AnyCodable
 
 public struct Pageable: Codable, JSONEncodable, Hashable {
 
+    static let pageRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
+    static let sizeRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Zero-based page index (0..N) */
     public var page: Int? = 0
     /** The size of the page to be returned */

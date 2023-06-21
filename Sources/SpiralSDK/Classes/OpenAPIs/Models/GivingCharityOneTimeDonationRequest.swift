@@ -13,31 +13,35 @@ import AnyCodable
 /** One-time donation request */
 public struct GivingCharityOneTimeDonationRequest: Codable, JSONEncodable, Hashable {
 
+    static let donationAmountRule = NumericRule<Double>(minimum: 0.01, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** External account ID to make the donation from */
     public var accountId: String
     /** Spiral ID of selected Charity */
     public var charityId: String
     /** Fixed-point decimal number, carried up to two decimal places. */
-    public var amount: Double
+    public var donationAmount: Double
     /** Is donation anonymous */
-    public var anonymous: Bool
+    public var isAnonymous: Bool
     /** Does customer agree to cover donation fees */
     public var coverFees: Bool
+    public var donorInformation: DonorInformation?
 
-    public init(accountId: String, charityId: String, amount: Double, anonymous: Bool, coverFees: Bool) {
+    public init(accountId: String, charityId: String, donationAmount: Double, isAnonymous: Bool, coverFees: Bool, donorInformation: DonorInformation? = nil) {
         self.accountId = accountId
         self.charityId = charityId
-        self.amount = amount
-        self.anonymous = anonymous
+        self.donationAmount = donationAmount
+        self.isAnonymous = isAnonymous
         self.coverFees = coverFees
+        self.donorInformation = donorInformation
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case accountId
         case charityId
-        case amount
-        case anonymous
+        case donationAmount
+        case isAnonymous
         case coverFees
+        case donorInformation
     }
 
     // Encodable protocol methods
@@ -46,9 +50,10 @@ public struct GivingCharityOneTimeDonationRequest: Codable, JSONEncodable, Hasha
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(accountId, forKey: .accountId)
         try container.encode(charityId, forKey: .charityId)
-        try container.encode(amount, forKey: .amount)
-        try container.encode(anonymous, forKey: .anonymous)
+        try container.encode(donationAmount, forKey: .donationAmount)
+        try container.encode(isAnonymous, forKey: .isAnonymous)
         try container.encode(coverFees, forKey: .coverFees)
+        try container.encodeIfPresent(donorInformation, forKey: .donorInformation)
     }
 }
 

@@ -13,8 +13,8 @@ import AnyCodable
 /** Breakdown of donation fees and disclosures */
 public struct GivingCharityDonationFeesResponse: Codable, JSONEncodable, Hashable {
 
-    /** Total donation fees */
-    public var fees: Double
+    /** Total donation fees. Point decimal, up to 2 decimal. */
+    public var feesAmount: Double
     /** Amount going to the charity (receipt amount) */
     public var charityAmount: Double
     /** Total amount that will be taken from the customer's account */
@@ -24,8 +24,8 @@ public struct GivingCharityDonationFeesResponse: Codable, JSONEncodable, Hashabl
     /** Text to display on a successful donation, with a detailed breakdown of where your funds and fees are going */
     public var successText: String?
 
-    public init(fees: Double, charityAmount: Double, totalAmount: Double, disclosureText: String? = nil, successText: String? = nil) {
-        self.fees = fees
+    public init(feesAmount: Double, charityAmount: Double, totalAmount: Double, disclosureText: String? = nil, successText: String? = nil) {
+        self.feesAmount = feesAmount
         self.charityAmount = charityAmount
         self.totalAmount = totalAmount
         self.disclosureText = disclosureText
@@ -33,7 +33,7 @@ public struct GivingCharityDonationFeesResponse: Codable, JSONEncodable, Hashabl
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case fees
+        case feesAmount
         case charityAmount
         case totalAmount
         case disclosureText
@@ -44,7 +44,7 @@ public struct GivingCharityDonationFeesResponse: Codable, JSONEncodable, Hashabl
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(fees, forKey: .fees)
+        try container.encode(feesAmount, forKey: .feesAmount)
         try container.encode(charityAmount, forKey: .charityAmount)
         try container.encode(totalAmount, forKey: .totalAmount)
         try container.encodeIfPresent(disclosureText, forKey: .disclosureText)

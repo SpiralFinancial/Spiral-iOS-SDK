@@ -15,15 +15,15 @@ open class CmsAPI {
     /**
      Load a specific UI card template
      
-     - parameter type: (path) Unique type for the UI card. 
+     - parameter type: (query) Unique type for the UI card. 
      - parameter X_SPIRAL_SDK_VERSION: (header) Unique version of the SDK that makes the call (ie. ios-1.2.3 or web-1.2.3) (optional)
-     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getGenericCard(type: String, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GenericCardResponse?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func getGenericCard(type: String, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GenericTemplateResponse?, _ error: Error?) -> Void)) -> RequestTask {
         return getGenericCardWithRequestBuilder(type: type, X_SPIRAL_SDK_VERSION: X_SPIRAL_SDK_VERSION, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
@@ -36,26 +36,26 @@ open class CmsAPI {
 
     /**
      Load a specific UI card template
-     - GET /cms/card/generic/{type}
+     - GET /cms/template/generic
      - Load a specific UI card template
      - API Key:
-       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - type: apiKey X-SPIRAL-CLIENT-ID (HEADER)
        - name: ClientID
-     - parameter type: (path) Unique type for the UI card. 
+     - parameter type: (query) Unique type for the UI card. 
      - parameter X_SPIRAL_SDK_VERSION: (header) Unique version of the SDK that makes the call (ie. ios-1.2.3 or web-1.2.3) (optional)
-     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
-     - returns: RequestBuilder<GenericCardResponse> 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
+     - returns: RequestBuilder<GenericTemplateResponse> 
      */
-    open class func getGenericCardWithRequestBuilder(type: String, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<GenericCardResponse> {
-        var localVariablePath = "/cms/card/generic/{type}"
-        let typePreEscape = "\(APIHelper.mapValueToPathItem(type))"
-        let typePostEscape = typePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{type}", with: typePostEscape, options: .literal, range: nil)
+    open class func getGenericCardWithRequestBuilder(type: String, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<GenericTemplateResponse> {
+        let localVariablePath = "/cms/template/generic"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "type": (wrappedValue: type.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             "X-SPIRAL-SDK-VERSION": X_SPIRAL_SDK_VERSION?.encodeToJSON(),
@@ -65,7 +65,7 @@ open class CmsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<GenericCardResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<GenericTemplateResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -73,16 +73,16 @@ open class CmsAPI {
     /**
      Load a specific UI card template by predefined type
      
-     - parameter type: (path) Unique type for the UI card. 
+     - parameter type: (query) Unique type for the UI card. 
      - parameter X_SPIRAL_SDK_VERSION: (header) Unique version of the SDK that makes the call (ie. ios-1.2.3 or web-1.2.3) (optional)
-     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getTypedGenericCard(type: GenericCardType, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GenericCardResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getTypedGenericCardWithRequestBuilder(type: type, X_SPIRAL_SDK_VERSION: X_SPIRAL_SDK_VERSION, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+    open class func getTypedGenericTemplate(type: GenericTemplateType, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GenericTemplateResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getTypedGenericTemplateWithRequestBuilder(type: type, X_SPIRAL_SDK_VERSION: X_SPIRAL_SDK_VERSION, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -94,26 +94,26 @@ open class CmsAPI {
 
     /**
      Load a specific UI card template by predefined type
-     - GET /cms/card/type/{type}
-     - Load a specific UI card template by predefined type defined via GenericCardType.
+     - GET /cms/template
+     - Load a specific UI card template by predefined type defined via GenericTemplateType.
      - API Key:
-       - type: apiKey X-SPIRAL-CLIENT-ID 
+       - type: apiKey X-SPIRAL-CLIENT-ID (HEADER)
        - name: ClientID
-     - parameter type: (path) Unique type for the UI card. 
+     - parameter type: (query) Unique type for the UI card. 
      - parameter X_SPIRAL_SDK_VERSION: (header) Unique version of the SDK that makes the call (ie. ios-1.2.3 or web-1.2.3) (optional)
-     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer ID. (optional)
-     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request ID used for troubleshooting. (optional)
-     - returns: RequestBuilder<GenericCardResponse> 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
+     - returns: RequestBuilder<GenericTemplateResponse> 
      */
-    open class func getTypedGenericCardWithRequestBuilder(type: GenericCardType, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<GenericCardResponse> {
-        var localVariablePath = "/cms/card/type/{type}"
-        let typePreEscape = "\(APIHelper.mapValueToPathItem(type))"
-        let typePostEscape = typePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{type}", with: typePostEscape, options: .literal, range: nil)
+    open class func getTypedGenericTemplateWithRequestBuilder(type: GenericTemplateType, X_SPIRAL_SDK_VERSION: String? = nil, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<GenericTemplateResponse> {
+        let localVariablePath = "/cms/template"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "type": (wrappedValue: type.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             "X-SPIRAL-SDK-VERSION": X_SPIRAL_SDK_VERSION?.encodeToJSON(),
@@ -123,7 +123,7 @@ open class CmsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<GenericCardResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<GenericTemplateResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

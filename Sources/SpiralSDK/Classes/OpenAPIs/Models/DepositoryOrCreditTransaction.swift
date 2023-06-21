@@ -25,14 +25,14 @@ public struct DepositoryOrCreditTransaction: Codable, JSONEncodable, Hashable {
     public var name: String?
     /** Hierarchical categorization, use multi-valued array to indicate hierarchy. */
     public var category: [String]?
-    /** Flat categorization. For hashtags omit leading */
+    /** Flat categorization. For hashtags omit leading #. */
     public var tags: [String]?
     /** Fixed-point decimal number, carried up to two decimal places. */
-    public var endingBalance: Int?
+    public var endingBalance: Double?
     /** The date/time when the transaction was authorized, in the time zone local to the transaction or to the customer. */
-    public var transactedAt: Date
+    public var transactedAtDate: Date
     /** The date/time when the transaction settled, in the time zone local to the customer. Must be null if the transaction is pending. */
-    public var settledAt: Date?
+    public var settledAtDate: Date?
     /** Reference to the identity of the merchant related to this transaction. */
     public var merchantCategoryCode: String
     public var geolocation: GeoLocation?
@@ -43,23 +43,15 @@ public struct DepositoryOrCreditTransaction: Codable, JSONEncodable, Hashable {
     public var type: DepositoryOrCreditTransactionType
     public var method: DepositoryOrCreditTransactionMethod
     /** Indicates that this transaction has not posted. */
-    public var pending: Bool?
+    public var isPending: Bool?
     /** Fixed-point decimal number, carried up to two decimal places. */
-    public var amount: Double
+    public var transactionAmount: Double?
     /** Fixed-point decimal number, carried up to two decimal places. */
     public var feeAmount: Double?
     /** If this transaction is an internal transfer type, references the accountId associated with this transaction. */
     public var transferAccountId: String?
-    /** Fixed-point decimal number, carried up to two decimal places. */
-    public var rewardAmount: Double?
-    /** Fixed-point representation of a normalized rate, carried up to four decimal places. */
-    public var rewardRate: Double?
-    /** ISO 4217 currency code. */
-    public var rewardCurrency: String?
-    /** If the reward contribution is denominated in a non-ISO currency, provide the currency's symbol. */
-    public var rewardNonIsoCurrency: String?
 
-    public init(transactionId: String, customerId: String? = nil, accountId: String? = nil, description: String? = nil, name: String? = nil, category: [String]? = nil, tags: [String]? = nil, endingBalance: Int? = nil, transactedAt: Date, settledAt: Date? = nil, merchantCategoryCode: String, geolocation: GeoLocation? = nil, currency: String? = nil, nonIsoCurrency: String? = nil, type: DepositoryOrCreditTransactionType, method: DepositoryOrCreditTransactionMethod, pending: Bool? = nil, amount: Double, feeAmount: Double? = nil, transferAccountId: String? = nil, rewardAmount: Double? = nil, rewardRate: Double? = nil, rewardCurrency: String? = nil, rewardNonIsoCurrency: String? = nil) {
+    public init(transactionId: String, customerId: String? = nil, accountId: String? = nil, description: String? = nil, name: String? = nil, category: [String]? = nil, tags: [String]? = nil, endingBalance: Double? = nil, transactedAtDate: Date, settledAtDate: Date? = nil, merchantCategoryCode: String, geolocation: GeoLocation? = nil, currency: String? = nil, nonIsoCurrency: String? = nil, type: DepositoryOrCreditTransactionType, method: DepositoryOrCreditTransactionMethod, isPending: Bool? = nil, transactionAmount: Double? = nil, feeAmount: Double? = nil, transferAccountId: String? = nil) {
         self.transactionId = transactionId
         self.customerId = customerId
         self.accountId = accountId
@@ -68,22 +60,18 @@ public struct DepositoryOrCreditTransaction: Codable, JSONEncodable, Hashable {
         self.category = category
         self.tags = tags
         self.endingBalance = endingBalance
-        self.transactedAt = transactedAt
-        self.settledAt = settledAt
+        self.transactedAtDate = transactedAtDate
+        self.settledAtDate = settledAtDate
         self.merchantCategoryCode = merchantCategoryCode
         self.geolocation = geolocation
         self.currency = currency
         self.nonIsoCurrency = nonIsoCurrency
         self.type = type
         self.method = method
-        self.pending = pending
-        self.amount = amount
+        self.isPending = isPending
+        self.transactionAmount = transactionAmount
         self.feeAmount = feeAmount
         self.transferAccountId = transferAccountId
-        self.rewardAmount = rewardAmount
-        self.rewardRate = rewardRate
-        self.rewardCurrency = rewardCurrency
-        self.rewardNonIsoCurrency = rewardNonIsoCurrency
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -95,22 +83,18 @@ public struct DepositoryOrCreditTransaction: Codable, JSONEncodable, Hashable {
         case category
         case tags
         case endingBalance
-        case transactedAt
-        case settledAt
+        case transactedAtDate
+        case settledAtDate
         case merchantCategoryCode
         case geolocation
         case currency
         case nonIsoCurrency
         case type
         case method
-        case pending
-        case amount
+        case isPending
+        case transactionAmount
         case feeAmount
         case transferAccountId
-        case rewardAmount
-        case rewardRate
-        case rewardCurrency
-        case rewardNonIsoCurrency
     }
 
     // Encodable protocol methods
@@ -125,22 +109,18 @@ public struct DepositoryOrCreditTransaction: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(category, forKey: .category)
         try container.encodeIfPresent(tags, forKey: .tags)
         try container.encodeIfPresent(endingBalance, forKey: .endingBalance)
-        try container.encode(transactedAt, forKey: .transactedAt)
-        try container.encodeIfPresent(settledAt, forKey: .settledAt)
+        try container.encode(transactedAtDate, forKey: .transactedAtDate)
+        try container.encodeIfPresent(settledAtDate, forKey: .settledAtDate)
         try container.encode(merchantCategoryCode, forKey: .merchantCategoryCode)
         try container.encodeIfPresent(geolocation, forKey: .geolocation)
         try container.encodeIfPresent(currency, forKey: .currency)
         try container.encodeIfPresent(nonIsoCurrency, forKey: .nonIsoCurrency)
         try container.encode(type, forKey: .type)
         try container.encode(method, forKey: .method)
-        try container.encodeIfPresent(pending, forKey: .pending)
-        try container.encode(amount, forKey: .amount)
+        try container.encodeIfPresent(isPending, forKey: .isPending)
+        try container.encodeIfPresent(transactionAmount, forKey: .transactionAmount)
         try container.encodeIfPresent(feeAmount, forKey: .feeAmount)
         try container.encodeIfPresent(transferAccountId, forKey: .transferAccountId)
-        try container.encodeIfPresent(rewardAmount, forKey: .rewardAmount)
-        try container.encodeIfPresent(rewardRate, forKey: .rewardRate)
-        try container.encodeIfPresent(rewardCurrency, forKey: .rewardCurrency)
-        try container.encodeIfPresent(rewardNonIsoCurrency, forKey: .rewardNonIsoCurrency)
     }
 }
 

@@ -18,17 +18,21 @@ public struct ClientProducts: Codable, JSONEncodable, Hashable {
     public var giving: Bool = false
     /** Clients DAF product on/off */
     public var daf: Bool = false
+    /** Clients Business Impact product on/off */
+    public var businessImpact: Bool = false
 
-    public init(everydayImpact: Bool = false, giving: Bool = false, daf: Bool = false) {
+    public init(everydayImpact: Bool = false, giving: Bool = false, daf: Bool = false, businessImpact: Bool = false) {
         self.everydayImpact = everydayImpact
         self.giving = giving
         self.daf = daf
+        self.businessImpact = businessImpact
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case everydayImpact
         case giving
         case daf
+        case businessImpact
     }
 
     // Encodable protocol methods
@@ -38,6 +42,7 @@ public struct ClientProducts: Codable, JSONEncodable, Hashable {
         try container.encode(everydayImpact, forKey: .everydayImpact)
         try container.encode(giving, forKey: .giving)
         try container.encode(daf, forKey: .daf)
+        try container.encode(businessImpact, forKey: .businessImpact)
     }
 }
 
