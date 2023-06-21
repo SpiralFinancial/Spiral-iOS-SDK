@@ -13,22 +13,26 @@ import AnyCodable
 /** Impact Category Charity and Reward Unit selection with additional details */
 public struct ExtendedImpactCategoryRewardSelection: Codable, JSONEncodable, Hashable {
 
+    /** Unique Everyday Impact Category id */
     public var impactCategoryId: String
+    /** Unique Charity id */
     public var charityId: String
+    /** Unique Charity reward unit id */
     public var charityRewardUnitId: String?
+    /** Unique reward unit id */
     public var rewardUnitId: String
     /** Name of the reward unit */
     public var rewardUnitName: String
     /** Is Impact Category enabled for a customer */
-    public var enabled: Bool?
+    public var isEnabled: Bool?
 
-    public init(impactCategoryId: String, charityId: String, charityRewardUnitId: String? = nil, rewardUnitId: String, rewardUnitName: String, enabled: Bool? = nil) {
+    public init(impactCategoryId: String, charityId: String, charityRewardUnitId: String? = nil, rewardUnitId: String, rewardUnitName: String, isEnabled: Bool? = nil) {
         self.impactCategoryId = impactCategoryId
         self.charityId = charityId
         self.charityRewardUnitId = charityRewardUnitId
         self.rewardUnitId = rewardUnitId
         self.rewardUnitName = rewardUnitName
-        self.enabled = enabled
+        self.isEnabled = isEnabled
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -37,7 +41,7 @@ public struct ExtendedImpactCategoryRewardSelection: Codable, JSONEncodable, Has
         case charityRewardUnitId
         case rewardUnitId
         case rewardUnitName
-        case enabled
+        case isEnabled
     }
 
     // Encodable protocol methods
@@ -49,7 +53,7 @@ public struct ExtendedImpactCategoryRewardSelection: Codable, JSONEncodable, Has
         try container.encodeIfPresent(charityRewardUnitId, forKey: .charityRewardUnitId)
         try container.encode(rewardUnitId, forKey: .rewardUnitId)
         try container.encode(rewardUnitName, forKey: .rewardUnitName)
-        try container.encodeIfPresent(enabled, forKey: .enabled)
+        try container.encodeIfPresent(isEnabled, forKey: .isEnabled)
     }
 }
 

@@ -13,9 +13,9 @@ import AnyCodable
 /** Customer&#39;s Impact summary report per unit */
 public struct TransactionImpactSummaryItem: Codable, JSONEncodable, Hashable {
 
-    /** Spiral Reward Unit id */
+    /** Unique Charity Reward Unit id */
     public var charityRewardUnitId: String?
-    /** Spiral Reward Unit id */
+    /** Unique Reward Unit id */
     public var rewardUnitId: String?
     /** Reward unit name */
     public var rewardUnitName: String
@@ -26,18 +26,18 @@ public struct TransactionImpactSummaryItem: Codable, JSONEncodable, Hashable {
     /** URL for reward unit icon */
     public var rewardUnitIcon: String?
     /** Aggregated point value for associated reward unit */
-    public var totalImpact: Double?
+    public var totalImpactUnits: Double?
     /** Aggregated dollar value for associated reward unit */
     public var totalDonatedAmount: Double?
 
-    public init(charityRewardUnitId: String? = nil, rewardUnitId: String? = nil, rewardUnitName: String, rewardUnitTitle: String? = nil, rewardUnitSubtitle: String? = nil, rewardUnitIcon: String? = nil, totalImpact: Double? = nil, totalDonatedAmount: Double? = nil) {
+    public init(charityRewardUnitId: String? = nil, rewardUnitId: String? = nil, rewardUnitName: String, rewardUnitTitle: String? = nil, rewardUnitSubtitle: String? = nil, rewardUnitIcon: String? = nil, totalImpactUnits: Double? = nil, totalDonatedAmount: Double? = nil) {
         self.charityRewardUnitId = charityRewardUnitId
         self.rewardUnitId = rewardUnitId
         self.rewardUnitName = rewardUnitName
         self.rewardUnitTitle = rewardUnitTitle
         self.rewardUnitSubtitle = rewardUnitSubtitle
         self.rewardUnitIcon = rewardUnitIcon
-        self.totalImpact = totalImpact
+        self.totalImpactUnits = totalImpactUnits
         self.totalDonatedAmount = totalDonatedAmount
     }
 
@@ -48,7 +48,7 @@ public struct TransactionImpactSummaryItem: Codable, JSONEncodable, Hashable {
         case rewardUnitTitle
         case rewardUnitSubtitle
         case rewardUnitIcon
-        case totalImpact
+        case totalImpactUnits
         case totalDonatedAmount
     }
 
@@ -62,7 +62,7 @@ public struct TransactionImpactSummaryItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(rewardUnitTitle, forKey: .rewardUnitTitle)
         try container.encodeIfPresent(rewardUnitSubtitle, forKey: .rewardUnitSubtitle)
         try container.encodeIfPresent(rewardUnitIcon, forKey: .rewardUnitIcon)
-        try container.encodeIfPresent(totalImpact, forKey: .totalImpact)
+        try container.encodeIfPresent(totalImpactUnits, forKey: .totalImpactUnits)
         try container.encodeIfPresent(totalDonatedAmount, forKey: .totalDonatedAmount)
     }
 }

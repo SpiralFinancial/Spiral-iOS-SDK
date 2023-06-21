@@ -153,7 +153,7 @@ public class Spiral {
                                       success: ((SpiralGenericCardView) -> Void)?,
                                       failure: ((ErrorResponse?) -> Void)?,
                                       updateLayout: EmptyOptionalClosure) {
-        loadContentCard(type: GenericCardType.srSummary.rawValue,
+        loadContentCard(type: GenericTemplateType.srSummary.rawValue,
                         into: view,
                         delegate: delegate,
                         success: success,
@@ -181,7 +181,7 @@ public class Spiral {
                                       success: ((SpiralGenericCardView) -> Void)?,
                                       failure: ((ErrorResponse?) -> Void)?,
                                       updateLayout: EmptyOptionalClosure) {
-        loadContentCard(type: GenericCardType.srSummary.rawValue,
+        loadContentCard(type: GenericTemplateType.srSummary.rawValue,
                         into: view,
                         delegate: delegate,
                         success: success,
@@ -219,9 +219,9 @@ public class Spiral {
             DispatchQueue.main.async {
                 switch result {
                 case let .success(response):
-                    if let cardData = response.body.card.value as? GenericCardModel {
+                    if let cardData = response.body.template.value as? GenericCardModel {
                         
-                        let payload = SpiralGenericCardPayloadModel(identifier: 0, type: GenericCardType.srSummary.rawValue, data: cardData, isNew: false)
+                        let payload = SpiralGenericCardPayloadModel(identifier: 0, type: GenericTemplateType.srSummary.rawValue, data: cardData, isNew: false)
                         let genericCardView = SpiralGenericCardView()
                         genericCardView.isHidden = true
                         
@@ -272,9 +272,9 @@ public class Spiral {
             DispatchQueue.main.async {
                 switch result {
                 case let .success(response):
-                    if let cardData = response.body.card.value as? GenericCardModel {
+                    if let cardData = response.body.template.value as? GenericCardModel {
                         
-                        let payload = SpiralGenericCardPayloadModel(identifier: 0, type: GenericCardType.srSummary.rawValue, data: cardData, isNew: false)
+                        let payload = SpiralGenericCardPayloadModel(identifier: 0, type: GenericTemplateType.srSummary.rawValue, data: cardData, isNew: false)
                         let vc = SpiralGenericCardModalViewController.create(with: payload, delegate: delegate)
                         UIApplication.topViewController()?.present(vc, animated: true)
                         
@@ -323,7 +323,7 @@ public class Spiral {
 
          - Returns: A SocialResponsibilityTransactionListResponse object representing the customer's impact for the given transaction IDs
     */
-    public func getTransactionImpactList(transactionIds: [String], completion: @escaping (TransactionListResponse?, ErrorResponse?) -> Void) {
+    public func getTransactionImpactList(transactionIds: [String], completion: @escaping (TransactionsImpactResponse?, ErrorResponse?) -> Void) {
         let requestBuilder = ReportingAPI.getCustomerTransactionsImpactWithRequestBuilder(ids: transactionIds)
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in

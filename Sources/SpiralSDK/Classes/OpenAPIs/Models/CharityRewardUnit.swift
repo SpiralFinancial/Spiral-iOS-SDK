@@ -18,18 +18,18 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
     public var charityId: String
     /** Name of the charity (used in reply of enriched transactions). */
     public var charityName: String?
-    /** Internal cost per one unit in cents */
-    public var internalCostInCents: Int
+    /** Internal cost per one unit. Up to 2 decimal points */
+    public var internalCostAmount: Double?
     /** Reward unit ID */
     public var rewardUnitId: String
     /** Reward Unit key */
     public var unit: String
 
-    public init(id: String, charityId: String, charityName: String? = nil, internalCostInCents: Int, rewardUnitId: String, unit: String) {
+    public init(id: String, charityId: String, charityName: String? = nil, internalCostAmount: Double? = nil, rewardUnitId: String, unit: String) {
         self.id = id
         self.charityId = charityId
         self.charityName = charityName
-        self.internalCostInCents = internalCostInCents
+        self.internalCostAmount = internalCostAmount
         self.rewardUnitId = rewardUnitId
         self.unit = unit
     }
@@ -38,7 +38,7 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
         case id
         case charityId
         case charityName
-        case internalCostInCents
+        case internalCostAmount
         case rewardUnitId
         case unit
     }
@@ -50,7 +50,7 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
         try container.encode(id, forKey: .id)
         try container.encode(charityId, forKey: .charityId)
         try container.encodeIfPresent(charityName, forKey: .charityName)
-        try container.encode(internalCostInCents, forKey: .internalCostInCents)
+        try container.encodeIfPresent(internalCostAmount, forKey: .internalCostAmount)
         try container.encode(rewardUnitId, forKey: .rewardUnitId)
         try container.encode(unit, forKey: .unit)
     }

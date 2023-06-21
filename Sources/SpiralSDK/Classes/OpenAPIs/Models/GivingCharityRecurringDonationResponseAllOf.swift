@@ -14,10 +14,10 @@ public struct GivingCharityRecurringDonationResponseAllOf: Codable, JSONEncodabl
 
     /** Recurring donation ID */
     public var id: String?
-    /** Next donation date as timestamp */
-    public var nextDate: Int64?
+    /** Next donation datetime */
+    public var nextDate: Date?
 
-    public init(id: String? = nil, nextDate: Int64? = nil) {
+    public init(id: String? = nil, nextDate: Date? = nil) {
         self.id = id
         self.nextDate = nextDate
     }

@@ -13,16 +13,17 @@ import AnyCodable
 public struct SelectedImpactCategoriesResponse: Codable, JSONEncodable, Hashable {
 
     public var categories: [ExtendedImpactCategoryRewardSelection]
-    public var anonymousDonor: Bool?
+    /** Do we donate to Charities without sharing customers information? */
+    public var isAnonymousDonor: Bool?
 
-    public init(categories: [ExtendedImpactCategoryRewardSelection], anonymousDonor: Bool? = nil) {
+    public init(categories: [ExtendedImpactCategoryRewardSelection], isAnonymousDonor: Bool? = nil) {
         self.categories = categories
-        self.anonymousDonor = anonymousDonor
+        self.isAnonymousDonor = isAnonymousDonor
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case categories
-        case anonymousDonor
+        case isAnonymousDonor
     }
 
     // Encodable protocol methods
@@ -30,7 +31,7 @@ public struct SelectedImpactCategoriesResponse: Codable, JSONEncodable, Hashable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(categories, forKey: .categories)
-        try container.encodeIfPresent(anonymousDonor, forKey: .anonymousDonor)
+        try container.encodeIfPresent(isAnonymousDonor, forKey: .isAnonymousDonor)
     }
 }
 

@@ -15,13 +15,16 @@ public struct CustomerClientSettings: Codable, JSONEncodable, Hashable {
 
     /** Hierarchical order of brand colors in HTML/CSS values */
     public var brandColors: [String]
+    public var fonts: ClientFonts?
 
-    public init(brandColors: [String]) {
+    public init(brandColors: [String], fonts: ClientFonts? = nil) {
         self.brandColors = brandColors
+        self.fonts = fonts
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case brandColors
+        case fonts
     }
 
     // Encodable protocol methods
@@ -29,6 +32,7 @@ public struct CustomerClientSettings: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(brandColors, forKey: .brandColors)
+        try container.encodeIfPresent(fonts, forKey: .fonts)
     }
 }
 

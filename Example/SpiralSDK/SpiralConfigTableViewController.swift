@@ -71,7 +71,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         Spiral.shared.setup(config: SpiralConfig(mode: .sandbox,
                                                  environment: .staging,
                                                  proxyAuth: SpiralProxyAuth(proxyUrl: "https://staging-api.spiral.us/passthrough/sdk",
-                                                                            authToken: "67c47067-fa9c-4ee2-bbd5-29bcde5fae35")
+                                                                            authToken: "737d1982-915e-47b2-a0ae-c968606606a6")
                                                  ))
         
         refresh()
@@ -129,8 +129,8 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
                 let hasCustomerEverOptedIn = customerSettings.userSponsoredEverOptedIn ?? false
                 
                 let contentType = (isCustomerSponsored && !hasCustomerEverOptedIn) ?
-                                                            GenericCardType.userSponsoredOptIn.rawValue :
-                                                            GenericCardType.srSummary.rawValue
+                GenericTemplateType.userSponsoredOptIn.rawValue :
+                GenericTemplateType.srSummary.rawValue
                 
                 Spiral.shared.loadContentCard(type: contentType,
                                               into: impactCell.contentView,
@@ -253,7 +253,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     
     func impactSummaryText(transactionReward: TransactionImpactResponse) -> String {
         let unit = transactionReward.rewardUnit?.unit
-        let count = transactionReward.impact
+        let count = transactionReward.impactUnits
         
         switch unit {
         case "TREE": return "We donated to pay for \(Int(count)) \(plural(word: "tree", suffix: "s", n: count)) to clean the air."

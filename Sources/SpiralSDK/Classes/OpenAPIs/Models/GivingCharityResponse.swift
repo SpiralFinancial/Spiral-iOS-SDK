@@ -21,13 +21,13 @@ public struct GivingCharityResponse: Codable, JSONEncodable, Hashable {
     /** Short description of giving charity */
     public var description: String?
     /** List of categories giving charity is assigned to */
-    public var categories: [GivingCharityCategory]?
+    public var categories: [GivingCharityInnerCategory]?
     /** List of giving charity images */
     public var images: [CharityImage]?
     /** City and state the charity is located in */
     public var location: String?
 
-    public init(id: String, name: String, ein: String, description: String? = nil, categories: [GivingCharityCategory]? = nil, images: [CharityImage]? = nil, location: String? = nil) {
+    public init(id: String, name: String, ein: String, description: String? = nil, categories: [GivingCharityInnerCategory]? = nil, images: [CharityImage]? = nil, location: String? = nil) {
         self.id = id
         self.name = name
         self.ein = ein

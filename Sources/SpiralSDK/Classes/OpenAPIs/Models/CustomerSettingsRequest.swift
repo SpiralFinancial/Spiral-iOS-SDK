@@ -19,10 +19,13 @@ public struct CustomerSettingsRequest: Codable, JSONEncodable, Hashable {
     /** True if the customer has ever opted in to round up in the user-sponsored flow. */
     public var userSponsoredEverOptedIn: Bool?
     public var rewardType: RewardType?
+    /** Has customer ever consented to our TOS */
     public var consented: Bool?
+    /** Is user currently opted in for everyday impact */
     public var optedIn: Bool?
     public var roundUp: RoundUpSelections
     public var limitSelection: CustomerImpactLimitSelections
+    /** Customer's limit value as in dollar amount */
     public var limitValue: Double?
 
     public init(userSponsoredEverOptedIn: Bool? = nil, rewardType: RewardType? = nil, consented: Bool? = nil, optedIn: Bool? = nil, roundUp: RoundUpSelections, limitSelection: CustomerImpactLimitSelections, limitValue: Double? = nil) {

@@ -12,11 +12,11 @@ import AnyCodable
 
 public struct CharityImage: Codable, JSONEncodable, Hashable {
 
-    /** Unique internal ID */
+    /** Unique Charity image id */
     public var id: String?
     /** URL within Cloudinary */
     public var url: String
-    /** Enum value */
+    /** Image type */
     public var type: String
 
     public init(id: String? = nil, url: String, type: String) {

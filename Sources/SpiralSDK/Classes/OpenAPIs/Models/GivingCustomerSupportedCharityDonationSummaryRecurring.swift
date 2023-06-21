@@ -13,21 +13,21 @@ import AnyCodable
 public struct GivingCustomerSupportedCharityDonationSummaryRecurring: Codable, JSONEncodable, Hashable {
 
     /** Is recurring donation paused */
-    public var paused: Bool?
+    public var isPaused: Bool?
     /** Recurring donation amount */
-    public var amount: Double?
+    public var donationAmount: Double?
     /** Recurring donation id */
     public var id: String?
 
-    public init(paused: Bool? = nil, amount: Double? = nil, id: String? = nil) {
-        self.paused = paused
-        self.amount = amount
+    public init(isPaused: Bool? = nil, donationAmount: Double? = nil, id: String? = nil) {
+        self.isPaused = isPaused
+        self.donationAmount = donationAmount
         self.id = id
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case paused
-        case amount
+        case isPaused
+        case donationAmount
         case id
     }
 
@@ -35,8 +35,8 @@ public struct GivingCustomerSupportedCharityDonationSummaryRecurring: Codable, J
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(paused, forKey: .paused)
-        try container.encodeIfPresent(amount, forKey: .amount)
+        try container.encodeIfPresent(isPaused, forKey: .isPaused)
+        try container.encodeIfPresent(donationAmount, forKey: .donationAmount)
         try container.encodeIfPresent(id, forKey: .id)
     }
 }

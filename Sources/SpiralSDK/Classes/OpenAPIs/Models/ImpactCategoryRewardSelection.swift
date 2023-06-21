@@ -13,9 +13,13 @@ import AnyCodable
 /** Impact Category Charity and Reward Unit selection for a Client */
 public struct ImpactCategoryRewardSelection: Codable, JSONEncodable, Hashable {
 
+    /** Unique Everyday Impact Category id */
     public var impactCategoryId: String
+    /** Unique Charity id */
     public var charityId: String
+    /** Unique Charity reward unit id */
     public var charityRewardUnitId: String?
+    /** Unique reward unit id */
     public var rewardUnitId: String
 
     public init(impactCategoryId: String, charityId: String, charityRewardUnitId: String? = nil, rewardUnitId: String) {

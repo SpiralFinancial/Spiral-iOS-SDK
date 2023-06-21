@@ -16,12 +16,18 @@ public struct CustomerClientSettingsResponse: Codable, JSONEncodable, Hashable {
     public var brandName: String
     /** Client logo url */
     public var logo: String?
+    /** Colored client logo url */
+    public var colorLogo: String?
+    /** White-alpha client logo url */
+    public var whiteAlphaLogo: String?
     public var clientSettings: CustomerClientSettings
     public var products: ClientProducts
 
-    public init(brandName: String, logo: String? = nil, clientSettings: CustomerClientSettings, products: ClientProducts) {
+    public init(brandName: String, logo: String? = nil, colorLogo: String? = nil, whiteAlphaLogo: String? = nil, clientSettings: CustomerClientSettings, products: ClientProducts) {
         self.brandName = brandName
         self.logo = logo
+        self.colorLogo = colorLogo
+        self.whiteAlphaLogo = whiteAlphaLogo
         self.clientSettings = clientSettings
         self.products = products
     }
@@ -29,6 +35,8 @@ public struct CustomerClientSettingsResponse: Codable, JSONEncodable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case brandName
         case logo
+        case colorLogo
+        case whiteAlphaLogo
         case clientSettings
         case products
     }
@@ -39,6 +47,8 @@ public struct CustomerClientSettingsResponse: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(brandName, forKey: .brandName)
         try container.encodeIfPresent(logo, forKey: .logo)
+        try container.encodeIfPresent(colorLogo, forKey: .colorLogo)
+        try container.encodeIfPresent(whiteAlphaLogo, forKey: .whiteAlphaLogo)
         try container.encode(clientSettings, forKey: .clientSettings)
         try container.encode(products, forKey: .products)
     }
