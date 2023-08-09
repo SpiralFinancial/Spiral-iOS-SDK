@@ -11,6 +11,13 @@ import UIKit
 
 class GenericCardTextView: GenericCardComponentView {
     
+    static var htmlParser: ZHTMLParser = {
+        let parser = ZHTMLParserBuilder.initWithDefault()
+            .set(rootStyle: MarkupStyle(font: MarkupStyleFont(size: 13)))
+            .build()
+        return parser
+    }()
+    
     @IBOutlet private weak var textView: NoPaddingTextView! {
         didSet {
             textView.linkTextAttributes = [.foregroundColor: UIColor.black]
@@ -28,10 +35,7 @@ class GenericCardTextView: GenericCardComponentView {
 //            let fontWrappedHtml = wrapWithHTMLFontStyles(html: html)
 //            let attributedString = NSMutableAttributedString(html: fontWrappedHtml)
                         
-            let parser = ZHTMLParserBuilder.initWithDefault()
-                .set(rootStyle: MarkupStyle(font: MarkupStyleFont(size: 13)))
-                .build()
-            let attributedString = NSMutableAttributedString(attributedString: parser.render(html))
+            let attributedString = NSMutableAttributedString(attributedString: GenericCardTextView.htmlParser.render(html))
             
             if let textColorHex = textComponentData.textColor,
                let textColor = UIColor(hexString: textColorHex) {
