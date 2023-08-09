@@ -86,6 +86,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         
         switch message.name {
         case SpiralEventHandler.openEventHandler.rawValue:
+            guard !didFailToStart else { return }
             self.delegate?.onEvent(name: .open, event: nil)
             self.delegate?.onFinishLoadingContent()
             self.delegate?.onReady(controller: self)

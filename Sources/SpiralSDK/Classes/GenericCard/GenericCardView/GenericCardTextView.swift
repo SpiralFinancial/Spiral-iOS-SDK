@@ -24,8 +24,14 @@ class GenericCardTextView: GenericCardComponentView {
         guard let textComponentData = data.componentModel.content as? SpiralGenericCardTextComponent else { return }
         
         if let html = textComponentData.html {
-            let fontWrappedHtml = wrapWithHTMLFontStyles(html: html)
-            let attributedString = NSMutableAttributedString(html: fontWrappedHtml)
+            
+//            let fontWrappedHtml = wrapWithHTMLFontStyles(html: html)
+//            let attributedString = NSMutableAttributedString(html: fontWrappedHtml)
+                        
+            let parser = ZHTMLParserBuilder.initWithDefault()
+                .set(rootStyle: MarkupStyle(font: MarkupStyleFont(size: 13)))
+                .build()
+            let attributedString = NSMutableAttributedString(attributedString: parser.render(html))
             
             if let textColorHex = textComponentData.textColor,
                let textColor = UIColor(hexString: textColorHex) {
