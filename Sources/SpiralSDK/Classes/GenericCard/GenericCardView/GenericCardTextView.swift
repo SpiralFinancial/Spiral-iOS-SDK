@@ -97,36 +97,36 @@ class GenericCardTextView: GenericCardComponentView {
         return size.height
     }
     
-    func wrapWithHTMLFontStyles(html: String) -> String {
-        var wrappedHtml = html
-        if !wrappedHtml.hasPrefix("<html>") {
-
-            // Register available fonts
-            SpiralCustomFonts.registerFontsIfNeeded()
-            
-            var prefixHtml = "<html><style>"
-            UIFont.familyNames.forEach({ familyName in
-                let fontNames = UIFont.fontNames(forFamilyName: familyName)
-                fontNames.forEach { fontName in
-                    prefixHtml.append("""
-                    @font-face {
-                        font-family: \(fontName);
-                        font-style: normal;
-                        font-weight: 300;
-                        src: local("\(fontName)");
-                    }
-                    """)
-                }
-            })
-            prefixHtml.append("</style>")
-            
-            wrappedHtml.insert(contentsOf: prefixHtml, at: wrappedHtml.startIndex)
-        }
-        if !wrappedHtml.hasSuffix("</html>") {
-            wrappedHtml.append("</html>")
-        }
-        return wrappedHtml
-    }
+//    func wrapWithHTMLFontStyles(html: String) -> String {
+//        var wrappedHtml = html
+//        if !wrappedHtml.hasPrefix("<html>") {
+//
+//            // Register available fonts
+//            SpiralCustomFonts.registerFontsIfNeeded()
+//
+//            var prefixHtml = "<html><style>"
+//            UIFont.familyNames.forEach({ familyName in
+//                let fontNames = UIFont.fontNames(forFamilyName: familyName)
+//                fontNames.forEach { fontName in
+//                    prefixHtml.append("""
+//                    @font-face {
+//                        font-family: \(fontName);
+//                        font-style: normal;
+//                        font-weight: 300;
+//                        src: local("\(fontName)");
+//                    }
+//                    """)
+//                }
+//            })
+//            prefixHtml.append("</style>")
+//
+//            wrappedHtml.insert(contentsOf: prefixHtml, at: wrappedHtml.startIndex)
+//        }
+//        if !wrappedHtml.hasSuffix("</html>") {
+//            wrappedHtml.append("</html>")
+//        }
+//        return wrappedHtml
+//    }
 }
 
 // MARK: - UITextViewDelegate

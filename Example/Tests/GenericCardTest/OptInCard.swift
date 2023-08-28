@@ -15,51 +15,58 @@ struct OptInCard: GenericCardTestModelProtocol {
     
     var cardModel: GenericCardModel? {
         
-        let image = SpiralGenericCardImageComponent(url: "https://res.cloudinary.com/spiral/image/upload/v1671046939/sdkClients/Piggybank-icon.png",
-                                              fixedHeight: 60)
-        let imageComponent = SpiralGenericCardComponent(type: .image,
-                                                        padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 20, bottom: 20), content: image)
+        let imageBg = SpiralGenericCardImageComponent(url: "https://res.cloudinary.com/spiral/image/upload/v1692986460/sdk/img/forest_bg_mobile.png",
+                                                      contentMode: .aspectFill)
+        let imageBgComponent = SpiralGenericCardComponent(type: .image,
+                                                          padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 0, bottom: 0),
+                                                          content: imageBg)
+        
+        let notification = SpiralGenericCardImageComponent(url: "https://res.cloudinary.com/spiral/image/upload/v1692986744/sdk/img/Notification3_shelter.png")
+        let notificationComponent = SpiralGenericCardComponent(type: .image,
+                                                               fixedHeight: 72,
+                                                        padding: SpiralGenericCardContentPadding(left: 10, right: 10, top: 27, bottom: 24), content: notification)
         
         let title = SpiralGenericCardTextComponent(html:
                                                 """
-                                                <span style=\"font-family: SFProRounded-Regular; font-size:22px; line-height: 28px; color:black;\">Introducing Social Impact Rewards</span>
+                                                <span style=\"font-family: SFProRounded-Bold; font-size:18px; line-height: 28px; color:white;\">BE AN EVERYDAY HERO<br />WITH EVERYDAY PURCHASES</span>
                                                 """,
                                                    alignment: .center
         )
         let titleComponent = SpiralGenericCardComponent(type: .text,
-                                                 padding: SpiralGenericCardContentPadding(left: 18, right: 18, top: 0, bottom: 10),
+                                                 padding: SpiralGenericCardContentPadding(left: 18, right: 18, top: 0, bottom: 15),
                                                  content: title)
         
         let description = SpiralGenericCardTextComponent(html:
                                                 """
-                                                <span style=\"font-family: SFProRounded-Regular; font-size:16px; line-height: 24px; color:black;\">When you make certain purchases with your debit card, your transaction amount will be rounded up and the money will be used as a charitable contribution.</span>
+                                                <span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 24px; color:white;\">Support charities and communities you care about by rounding up card purchases you already make. Adjust anytime.</span>
                                                 """,
                                                    alignment: .center
         )
         let descriptionComponent = SpiralGenericCardComponent(type: .text,
-                                                 padding: SpiralGenericCardContentPadding(left: 16, right: 16, top: 0, bottom: 10),
+                                                 padding: SpiralGenericCardContentPadding(left: 16, right: 16, top: 0, bottom: 25),
                                                  content: description)
         
-        let howItWorksButton = SpiralGenericCardButtonComponent(text: "How does this work?", textColor: "#D73275", borderColor: "ffffff", fixedWidth: 200)
-        let howItWorksButtonComponent = SpiralGenericCardComponent(type: .button,
-                                                   padding: SpiralGenericCardContentPadding(left: 0, right: 0, top: 0, bottom: 10),
-                                                   link: "/actions/showModal?type=HOW_IT_WORKS",
-                                                   content: howItWorksButton)
-        
-        let button = SpiralGenericCardButtonComponent(text: "Set up Instant Impact", textColor: "#ffffff", borderColor: "#D73275")
+        let button = SpiralGenericCardButtonComponent(text: "Select My Impact", textColor: "#ffffff", textSize: 16, borderColor: "#D73275")
         let buttonComponent = SpiralGenericCardComponent(type: .button,
                                                          backgroundColor: "#D73275",
-                                                   padding: SpiralGenericCardContentPadding(left: 16, right: 16, top: 0, bottom: 25),
+                                                         fixedHeight: 50,
+                                                   padding: SpiralGenericCardContentPadding(left: 16, right: 16, top: 0, bottom: 30),
                                                    link: "/flow?type=customerSettings",
                                                    content: button)
         
-        return GenericCardModel(root: SpiralGenericCardComponent(type: .container,
-                                                           content: SpiralGenericCardComponentContainer(children:
-                                                                                                    [imageComponent,
-                                                                                                     titleComponent,
-                                                                                                     descriptionComponent,
-                                                                                                     howItWorksButtonComponent,
-                                                                                                     buttonComponent
+        let containerComponent = SpiralGenericCardComponent(type: .container,
+                                                   content: SpiralGenericCardComponentContainer(children:
+                                                                                            [notificationComponent,
+                                                                                             titleComponent,
+                                                                                             descriptionComponent,
+                                                                                             buttonComponent
+                                                                                            ]))
+        
+        return GenericCardModel(root: SpiralGenericCardComponent(type: .zContainer,
+                                                           content: SpiralGenericCardZComponentContainer(children:
+                                                                                                    [
+                                                                                                        imageBgComponent,
+                                                                                                        containerComponent
                                                                                                     ])))
     }
     

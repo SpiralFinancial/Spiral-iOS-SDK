@@ -105,6 +105,8 @@ public class Spiral {
     */
     public func setup(config: SpiralConfig) {
         _config = config
+        
+        SpiralCustomFonts.registerFontsIfNeeded()
     }
     
     /**
@@ -467,7 +469,7 @@ public enum SpiralFlow {
     /// you can pass through required information here.
     case custom(type: String, params: String, url: String?)
     
-    static let defaultUrlStr = "v0.0.1/apps/web-sdk/index.html"
+    static let defaultUrlStr = "v1/apps/web-sdk/index.html"
     
     var url: String {
         let baseUrl = Spiral.shared.config()?.webBaseUrl ?? .empty

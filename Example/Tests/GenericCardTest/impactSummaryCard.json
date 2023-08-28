@@ -39,12 +39,7 @@
                                 },
                                 "type" : "text",
                                 "content" : {
-                                    [# th:if="${ctx.isClientBankSponsored}"]
-                                    "html" : "<span style=\"font-family: SFProRounded-Light; font-size:17px; line-height: 22px; color:white;\">Your Everyday Impact<\/span>"
-                                    [/]
-                                    [# th:if="${ctx.isClientCustomerSponsored}"]
-                                    "html" : "<span style=\"font-family: SFProRounded-Light; font-size:17px; line-height: 22px; color:white;\">Everyday Impact rewards are [# th:if="${ctx.isCustomerSponsored}"]<b>ON<\/b>[/][# th:if="${not ctx.isCustomerSponsored}"]<b>OFF<\/b>[/]<\/span>"
-                                    [/]
+                                    "html" : "<span style=\"font-family: SFProRounded-Medium; font-size:17px; line-height: 22px; color:white;\">Your Everyday Impact<\/span>"
                                 }
                             },
                             {
@@ -84,7 +79,7 @@
                                 "content" : {
                                     "children" : [
                                         [# th:each="unit,unitsStatus : ${ctx.units}"]
-                                        [# th:if="${ctx.isClientBankSponsored or (ctx.isClientCustomerSponsored and ctx.isCustomerSponsored and (unit.isEnabled or unit.count > 0))}"]
+                                        [# th:if="${ctx.isClientBankSponsored or (ctx.isClientCustomerSponsored and (unit.isEnabled or unit.count > 0))}"]
                                         [# th:if="${not unitsStatus.first}"],[/]
                                         {
                                             "type": "z_container",
@@ -92,49 +87,12 @@
                                                 "children": [
                                                     {
                                                         "snap_to_edges": [
-                                                            "left",
-                                                            "top"
-                                                        ],
-                                                        "padding": {
-                                                            "bottom": 0,
-                                                            "top": 12,
-                                                            "right": 0,
-                                                            "left": 15
-                                                        },
-                                                        "type": "image",
-                                                        "content": {
-                                                            "url": "[(${unit.icon})]",
-                                                            "fixed_width": 40,
-                                                            "fixed_height": 40
-                                                        }
-                                                    },
-                                                    // SHOW ONLY IF THE MOST RECENTLY CATEGORIZED
-                                                    {
-                                                        "snap_to_edges": [
-                                                            "left",
-                                                            "top"
-                                                        ],
-                                                        "padding": {
-                                                            "bottom": 0,
-                                                            "top": 8,
-                                                            "right": 0,
-                                                            "left": 11
-                                                        },
-                                                        "type": "image",
-                                                        "content": {
-                                                            "url": "https://res.cloudinary.com/spiral/image/upload/v1679508033/sdk/img/everyday-impact-cirlce.png",
-                                                            "fixed_width": 48,
-                                                            "fixed_height": 48
-                                                        }
-                                                    },
-                                                    {
-                                                        "snap_to_edges": [
                                                             "top",
                                                             "left"
                                                         ],
                                                         "padding": {
                                                             "bottom": 0,
-                                                            "top": 11,
+                                                            "top": 14,
                                                             "right": 0,
                                                             "left": 65
                                                         },
@@ -160,7 +118,7 @@
                                                         },
                                                         "type": "text",
                                                         "content": {
-                                                            "html": "<span style=\"font-family: SFProRounded-Medium; font-size:14px; line-height: 17px; color:black;\">[(${unit.title})]<\/span><br \/>\n<span style=\"font-family: SFProRounded-Regular; font-size:14px; line-height: 17px; color:black;\">[(${unit.subtitle})]<\/span>"
+                                                            "html": "<span style=\"font-family: SFProRounded-Bold; font-size:14px; line-height: 17px; color:[(${ctx.clientPrimaryColor})];\">[(${unit.title})]<\/span><br \/>\n<span style=\"font-family: SFProRounded-Regular; font-size:14px; line-height: 17px; color:black;\">[(${unit.subtitle})]<\/span>"
                                                         }
                                                     },
                                                     {
@@ -182,13 +140,58 @@
                                                             "children": [
                                                             ]
                                                         }
+                                                    },
+                                                    {
+                                                        "snap_to_edges": [
+                                                            "left",
+                                                            "top"
+                                                        ],
+                                                        "padding": {
+                                                            "bottom": 0,
+                                                            "top": 12,
+                                                            "right": 0,
+                                                            "left": 15
+                                                        },
+                                                        "type": "image",
+                                                        "content": {
+                                                            "url": "[(${unit.icon})]",
+                                                            "fixed_width": 40,
+                                                            "fixed_height": 40
+                                                        }
+                                                    },
+                                                    {
+                                                        "snap_to_edges": [
+                                                            "left",
+                                                            "top"
+                                                        ],
+                                                        "padding": {
+                                                            "bottom": 0,
+                                                            "top": 8,
+                                                            "right": 0,
+                                                            "left": 11
+                                                        },
+                                                        "type": "image",
+                                                        "content": {
+                                                            [# th:if="${ctx.mostRecentRewardedUnitId == unit.id}"]
+                                                            "url": "https://res.cloudinary.com/spiral/image/upload/v1679508033/sdk/img/everyday-impact-cirlce.png",
+                                                            [/]
+                                                            [# th:if="${ctx.mostRecentRewardedUnitId != unit.id}"]
+                                                            "url": "https://res.cloudinary.com/spiral/image/upload/v1679508033/sdk/img/everyday-impact-circle-gray.png",
+                                                            [/]
+                                                            "fixed_width": 48,
+                                                            "fixed_height": 48
+                                                        }
+                                                        [# th:if="${ctx.mostRecentRewardedUnitId == unit.id}"]
+                                                        ,
+                                                        "link": "\/flow?type=everydayImpactCenter&params=%7B%7D"
+                                                        [/]
                                                     }
-                                                    [# th:if="${ctx.isClientCustomerSponsored and ctx.isCustomerSponsored and not unit.isEnabled and unit.count > 0}"]
+                                                    [# th:if="${(ctx.isClientCustomerSponsored and not ctx.isCustomerSponsored and unit.count > 0) or (ctx.isClientCustomerSponsored and ctx.isCustomerSponsored and not unit.isEnabled and unit.count > 0)}"]
                                                     ,
                                                     {
                                                         "content" : {
                                                             "children" : [
-​
+
                                                             ]
                                                         },
                                                         "background_color" : "ffffff",
@@ -208,65 +211,29 @@
                     }
                 },
                 {
-                    "content" : {
-                        "html": "<a href=\"\/actions\/showModal?type=HOW_IT_WORKS\"><span style=\"font-family: SFProRounded-Regular; font-size:14px; line-height: 20px; color:[(${ctx.clientPrimaryColor})];\">How does this work?<\/span><\/a>",
-                        "alignment": "center",
-                        "text_color": "[(${ctx.clientPrimaryColor})]"
-                    },
-                    "padding" : {
-                        [# th:if="${ctx.isClientCustomerSponsored}"]
-                        "bottom" : 18,
-                        [/]
-                        [# th:if="${not ctx.isClientCustomerSponsored}"]
-                        "bottom": 27,
-                        [/]
-                        "top" : 21,
-                        "right" : 0,
-                        "left" : 0
-                    },
-                    "type" : "text",
-                    "link" : "\/actions\/showModal?type=HOW_IT_WORKS"
+                    "type": "z_container",
+                    "content": {
+                        "children": [
+                            {
+                                "content" : {
+                                    "border_color" : "#000000",
+                                    "text_color" : "#000000",
+                                    "text_size" : 14,
+                                    "text_weight" : "medium",
+                                    "text" : "View all of your impact"
+                                },
+                                "padding" : {
+                                    "bottom" : 27,
+                                    "top" : 18,
+                                    "right" : 40,
+                                    "left" : 40
+                                },
+                                "type" : "button",
+                                "link" : "\/flow?type=everydayImpactCenter&params=%7B%7D"
+                            }
+                        ]
+                    }
                 }
-                [# th:if="${ctx.isClientCustomerSponsored and ctx.isCustomerSponsored}"]
-                ,
-                {
-                    "content" : {
-                        "border_color" : "#000000",
-                        "text_color" : "#000000",
-                        "text_size" : 14,
-                        "text_weight" : "medium",
-                        "text" : "Everyday Impact Settings"
-                    },
-                    "padding" : {
-                        "bottom" : 27,
-                        "top" : 0,
-                        "right" : 40,
-                        "left" : 40
-                    },
-                    "type" : "button",
-                    "link" : "\/flow?type=customerSettings"
-                }[/]
-                [# th:if="${ctx.isClientCustomerSponsored and not ctx.isCustomerSponsored}"]
-                ,
-                {
-                    "content" : {
-                        "border_color" : "[(${ctx.clientPrimaryColor})]",
-                        "text_color" : "#ffffff",
-                        "text_size" : 14,
-                        "text_weight" : "medium",
-                        "text" : "Turn on Everyday Impact"
-                    },
-                    "padding" : {
-                        "bottom" : 27,
-                        "top" : 0,
-                        "right" : 40,
-                        "left" : 40
-                    },
-                    "type" : "button",
-                    "background_color" : "[(${ctx.clientPrimaryColor})]",
-                    "link" : "\/flow?type=customerSettings"
-                }
-                [/]
             ]
         }
     }

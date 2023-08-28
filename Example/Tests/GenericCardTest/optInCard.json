@@ -1,78 +1,86 @@
 {
-    "root" : {
-        "type" : "container",
-        "content" : {
+  "root" : {
+    "type" : "z_container",
+    "content" : {
+      "children" : [
+        {
+          "type" : "image",
+          "padding" : {
+            "bottom" : 0,
+            "top" : 0,
+            "right" : 0,
+            "left" : 0
+          },
+          "content" : {
+            "url" : "https:\/\/res.cloudinary.com\/spiral\/image\/upload\/v1692986460\/sdk\/img\/forest_bg_mobile.png",
+            "content_mode" : "aspect_fill"
+          }
+        },
+        {
+          "type" : "container",
+          "content" : {
             "children" : [
-                {
-                    "type" : "image",
-                    "padding" : {
-                        "bottom" : 20,
-                        "top" : 20,
-                        "right" : 0,
-                        "left" : 0
-                    },
-                    "content" : {
-                        "url" : "https:\/\/res.cloudinary.com\/spiral\/image\/upload\/v1671046939\/sdkClients\/Everyday_Impact_Icon.png",
-                        "fixed_height" : 60
-                    }
+              {
+                "fixed_height" : 72,
+                "content" : {
+                  "url" : "https:\/\/res.cloudinary.com\/spiral\/image\/upload\/v1692986744\/sdk\/img\/Notification3_shelter.png"
                 },
-                {
-                    "type" : "text",
-                    "padding" : {
-                        "bottom" : 10,
-                        "top" : 0,
-                        "right" : 18,
-                        "left" : 18
-                    },
-                    "content" : {
-                        "html" : "<span style=\"font-family: SFProRounded-Regular; font-size:22px; line-height: 28px; color:black;\">Introducing<br />Everyday Impact rewards<\/span>",
-                        "alignment" : "center"
-                    }
+                "padding" : {
+                  "bottom" : 24,
+                  "top" : 27,
+                  "right" : 10,
+                  "left" : 10
                 },
-                {
-                    "type" : "text",
-                    "padding" : {
-                        "bottom" : 0,
-                        "top" : 0,
-                        "right" : 16,
-                        "left" : 16
-                    },
-                    "content" : {
-                        "html" : "<span style=\"font-family: SFProRounded-Regular; font-size:16px; line-height: 24px; color:black;\">When you make certain purchases with your card, your transaction amount will be rounded up and the money will be used as a charitable contribution.<\/span>",
-                        "alignment" : "center"
-                    }
+                "type" : "image"
+              },
+              {
+                "type" : "text",
+                "padding" : {
+                  "bottom" : 15,
+                  "top" : 0,
+                  "right" : 18,
+                  "left" : 18
                 },
-                {
-                    "content" : {
-                        "html": "<a href=\"\/actions\/showModal?type=HOW_IT_WORKS\"><span style=\"font-family: SFProRounded-Regular; font-size:14px; line-height: 20px; color:[(${primaryClientColor})];\">How does this work?<\/span><\/a>",
-                        "alignment": "center",
-                        "text_color": "[(${primaryClientColor})]"
-                    },
-                    "padding" : {
-                        "bottom" : 30,
-                        "top" : 30,
-                        "right" : 0,
-                        "left" : 0
-                    },
-                    "type" : "text"
-                },
-                {
-                    "content" : {
-                        "text_color" : "#ffffff",
-                        "text" : "Set up Everyday Impact",
-                        "border_color" : "[(${primaryClientColor})]"
-                    },
-                    "padding" : {
-                        "bottom" : 25,
-                        "top" : 0,
-                        "right" : 16,
-                        "left" : 16
-                    },
-                    "type" : "button",
-                    "background_color" : "[(${primaryClientColor})]",
-                    "link" : "\/flow?type=customerSettings"
+                "content" : {
+                  "html" : "<span style=\"font-family: SFProRounded-Bold; font-size:18px; line-height: 28px; color:white;\">BE AN EVERYDAY HERO<br \/>WITH EVERYDAY PURCHASES<\/span>",
+                  "alignment" : "center"
                 }
+              },
+              {
+                "type" : "text",
+                "padding" : {
+                  "bottom" : 25,
+                  "top" : 0,
+                  "right" : 16,
+                  "left" : 16
+                },
+                "content" : {
+                  "html" : "<span style=\"font-family: SFProRounded-Regular; font-size:15px; line-height: 24px; color:white;\">Support charities and communities you care about by rounding up card purchases you already make. Adjust anytime.<\/span>",
+                  "alignment" : "center"
+                }
+              },
+              {
+                "fixed_height" : 50,
+                "content" : {
+                  "text_color" : "#ffffff",
+                  "text_size" : 16,
+                  "border_color" : "[(${ctx.clientPrimaryColor})]",
+                  "text" : "Select My Impact"
+                },
+                "padding" : {
+                  "bottom" : 30,
+                  "top" : 0,
+                  "right" : 16,
+                  "left" : 16
+                },
+                "type" : "button",
+                "background_color" : "[(${ctx.clientPrimaryColor})]",
+                "link" : "\/flow?type=customerSettings"
+              }
             ]
+          }
         }
+      ]
     }
+  }
 }
