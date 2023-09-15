@@ -59,6 +59,8 @@ extension _AnyDecodable {
             #endif
         } else if let genericCard = try? container.decode(GenericCardModel.self) {
             self.init(genericCard)
+        } else if let flow = try? container.decode(SpiralFlow.self) {
+            self.init(flow)
         } else if let bool = try? container.decode(Bool.self) {
             self.init(bool)
         } else if let int = try? container.decode(Int.self) {
@@ -114,6 +116,8 @@ extension AnyDecodable: Equatable {
             return lhs == rhs
         case let (lhs as String, rhs as String):
             return lhs == rhs
+        case let (lhs as SpiralFlow, rhs as SpiralFlow):
+            return lhs.stringVal == rhs.stringVal
         case let (lhs as [String: AnyDecodable], rhs as [String: AnyDecodable]):
             return lhs == rhs
         case let (lhs as [AnyDecodable], rhs as [AnyDecodable]):
@@ -179,6 +183,8 @@ extension AnyDecodable: Hashable {
             hasher.combine(value)
         case let value as String:
             hasher.combine(value)
+        case let value as SpiralFlow:
+            hasher.combine(value.stringVal)
         case let value as [String: AnyDecodable]:
             hasher.combine(value)
         case let value as [AnyDecodable]:

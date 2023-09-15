@@ -445,7 +445,7 @@ public enum SpiralEnvironment: Equatable {
     case production
 }
 
-public enum SpiralFlow {
+public enum SpiralFlow: Codable {
     /// Donation initiation flow for a specific charity.
     case donateToCharityById(charityId: String)
     
@@ -519,7 +519,7 @@ public enum SpiralFlow {
         }
     }
     
-    init?(typeStr: String, params: String?, url: String? = nil) {
+    init(typeStr: String, params: String?, url: String? = nil) {
         if url != nil && url != SpiralFlow.defaultUrlStr {
             self = .custom(type: typeStr, params: params ?? .empty, url: url)
             return
@@ -534,6 +534,28 @@ public enum SpiralFlow {
         case "receipts": self = .receipts
         default: self = .custom(type: typeStr, params: params ?? .empty, url: url)
         }
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case params
+        case url
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(stringVal, forKey: .type)
+        try container.encodeIfPresent(params, forKey: .params)
+        try container.encodeIfPresent(url, forKey: .url)
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try values.decode(String.self, forKey: .type)
+        let params = try values.decodeIfPresent(String.self, forKey: .params)
+        let url = try values.decodeIfPresent(String.self, forKey: .url)
+                
+        self.init(typeStr: type, params: params, url: url)
     }
 }
 

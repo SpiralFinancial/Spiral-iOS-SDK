@@ -15,7 +15,7 @@ The Spiral SDK is used to open up as a modal in your application. Through the mo
 
   s.ios.deployment_target = '12.0'
 
-  s.source_files = 'Sources/**/*.swift'
+  s.source_files = "Sources/**/*.swift", "Sources/**/*.h"
 
   s.resource_bundles = {
     'Resources' => ['Sources/SpiralSDK/Resources/*/*.*']

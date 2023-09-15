@@ -55,6 +55,8 @@ extension AnyCodable: Equatable {
             return lhs == rhs
         case let (lhs as String, rhs as String):
             return lhs == rhs
+        case let (lhs as SpiralFlow, rhs as SpiralFlow):
+            return lhs.stringVal == rhs.stringVal
         case let (lhs as [String: AnyCodable], rhs as [String: AnyCodable]):
             return lhs == rhs
         case let (lhs as [AnyCodable], rhs as [AnyCodable]):
@@ -136,6 +138,8 @@ extension AnyCodable: Hashable {
             hasher.combine(value)
         case let value as String:
             hasher.combine(value)
+        case let value as SpiralFlow:
+            hasher.combine(value.stringVal)
         case let value as [String: AnyCodable]:
             hasher.combine(value)
         case let value as [AnyCodable]:
