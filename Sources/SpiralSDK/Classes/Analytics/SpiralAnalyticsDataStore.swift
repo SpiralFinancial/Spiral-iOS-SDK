@@ -120,15 +120,11 @@ public struct SpiralAnalyticsEvent: Codable, FetchableRecord, PersistableRecord 
     var properties: String
     var time: Date
     
-    init(id: String, event: String, properties: [String: AnyCodable], date: Date) {
+    init(id: String = UUID().uuidString, event: String, properties: [String: AnyCodable], date: Date = Date()) {
         self.id = id
         self.event = event
         self.time = date
                 
-//        if let jsonData = try?  JSONSerialization.data(
-//            withJSONObject: properties,
-//            options: .prettyPrinted
-//        ),
         if let jsonData = try? SpiralAnalyticsEvent.jsonEncoder.encode(properties),
            let jsonText = String(data: jsonData,
                                     encoding: String.Encoding.ascii) {
@@ -136,5 +132,9 @@ public struct SpiralAnalyticsEvent: Codable, FetchableRecord, PersistableRecord 
         } else {
             self.properties = "{}"
         }
+    }
+    
+    init(sdkEvent: SpiralSDKEvent, properties: [String: AnyCodable]) {
+        self.init(event: sdkEvent.rawValue, properties: properties)
     }
 }
