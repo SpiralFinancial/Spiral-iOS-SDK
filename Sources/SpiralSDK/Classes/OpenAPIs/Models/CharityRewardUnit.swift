@@ -24,14 +24,17 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
     public var rewardUnitId: String
     /** Reward Unit key */
     public var unit: String
+    /** Whether the unit is represented as donated currency */
+    public var isMonetaryUnit: Bool?
 
-    public init(id: String, charityId: String, charityName: String? = nil, internalCostAmount: Double? = nil, rewardUnitId: String, unit: String) {
+    public init(id: String, charityId: String, charityName: String? = nil, internalCostAmount: Double? = nil, rewardUnitId: String, unit: String, isMonetaryUnit: Bool? = nil) {
         self.id = id
         self.charityId = charityId
         self.charityName = charityName
         self.internalCostAmount = internalCostAmount
         self.rewardUnitId = rewardUnitId
         self.unit = unit
+        self.isMonetaryUnit = isMonetaryUnit
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -41,6 +44,7 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
         case internalCostAmount
         case rewardUnitId
         case unit
+        case isMonetaryUnit
     }
 
     // Encodable protocol methods
@@ -53,6 +57,7 @@ public struct CharityRewardUnit: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(internalCostAmount, forKey: .internalCostAmount)
         try container.encode(rewardUnitId, forKey: .rewardUnitId)
         try container.encode(unit, forKey: .unit)
+        try container.encodeIfPresent(isMonetaryUnit, forKey: .isMonetaryUnit)
     }
 }
 

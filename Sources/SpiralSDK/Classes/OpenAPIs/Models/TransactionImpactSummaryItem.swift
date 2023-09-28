@@ -29,8 +29,12 @@ public struct TransactionImpactSummaryItem: Codable, JSONEncodable, Hashable {
     public var totalImpactUnits: Double?
     /** Aggregated dollar value for associated reward unit */
     public var totalDonatedAmount: Double?
+    /** Is reward a monetary amount */
+    public var isMonetaryAmount: Bool?
+    /** Charity name */
+    public var charityName: String?
 
-    public init(charityRewardUnitId: String? = nil, rewardUnitId: String? = nil, rewardUnitName: String, rewardUnitTitle: String? = nil, rewardUnitSubtitle: String? = nil, rewardUnitIcon: String? = nil, totalImpactUnits: Double? = nil, totalDonatedAmount: Double? = nil) {
+    public init(charityRewardUnitId: String? = nil, rewardUnitId: String? = nil, rewardUnitName: String, rewardUnitTitle: String? = nil, rewardUnitSubtitle: String? = nil, rewardUnitIcon: String? = nil, totalImpactUnits: Double? = nil, totalDonatedAmount: Double? = nil, isMonetaryAmount: Bool? = nil, charityName: String? = nil) {
         self.charityRewardUnitId = charityRewardUnitId
         self.rewardUnitId = rewardUnitId
         self.rewardUnitName = rewardUnitName
@@ -39,6 +43,8 @@ public struct TransactionImpactSummaryItem: Codable, JSONEncodable, Hashable {
         self.rewardUnitIcon = rewardUnitIcon
         self.totalImpactUnits = totalImpactUnits
         self.totalDonatedAmount = totalDonatedAmount
+        self.isMonetaryAmount = isMonetaryAmount
+        self.charityName = charityName
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -50,6 +56,8 @@ public struct TransactionImpactSummaryItem: Codable, JSONEncodable, Hashable {
         case rewardUnitIcon
         case totalImpactUnits
         case totalDonatedAmount
+        case isMonetaryAmount
+        case charityName
     }
 
     // Encodable protocol methods
@@ -64,6 +72,8 @@ public struct TransactionImpactSummaryItem: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(rewardUnitIcon, forKey: .rewardUnitIcon)
         try container.encodeIfPresent(totalImpactUnits, forKey: .totalImpactUnits)
         try container.encodeIfPresent(totalDonatedAmount, forKey: .totalDonatedAmount)
+        try container.encodeIfPresent(isMonetaryAmount, forKey: .isMonetaryAmount)
+        try container.encodeIfPresent(charityName, forKey: .charityName)
     }
 }
 

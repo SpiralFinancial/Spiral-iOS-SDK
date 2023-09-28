@@ -25,14 +25,20 @@ public struct ExtendedImpactCategoryRewardSelection: Codable, JSONEncodable, Has
     public var rewardUnitName: String
     /** Is Impact Category enabled for a customer */
     public var isEnabled: Bool?
+    /** Whether this category can be selected together with other categories or if it's exclusive. */
+    public var isCategoryOverride: Bool?
+    /** Charity name */
+    public var charityName: String?
 
-    public init(impactCategoryId: String, charityId: String, charityRewardUnitId: String? = nil, rewardUnitId: String, rewardUnitName: String, isEnabled: Bool? = nil) {
+    public init(impactCategoryId: String, charityId: String, charityRewardUnitId: String? = nil, rewardUnitId: String, rewardUnitName: String, isEnabled: Bool? = nil, isCategoryOverride: Bool? = nil, charityName: String? = nil) {
         self.impactCategoryId = impactCategoryId
         self.charityId = charityId
         self.charityRewardUnitId = charityRewardUnitId
         self.rewardUnitId = rewardUnitId
         self.rewardUnitName = rewardUnitName
         self.isEnabled = isEnabled
+        self.isCategoryOverride = isCategoryOverride
+        self.charityName = charityName
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -42,6 +48,8 @@ public struct ExtendedImpactCategoryRewardSelection: Codable, JSONEncodable, Has
         case rewardUnitId
         case rewardUnitName
         case isEnabled
+        case isCategoryOverride
+        case charityName
     }
 
     // Encodable protocol methods
@@ -54,6 +62,8 @@ public struct ExtendedImpactCategoryRewardSelection: Codable, JSONEncodable, Has
         try container.encode(rewardUnitId, forKey: .rewardUnitId)
         try container.encode(rewardUnitName, forKey: .rewardUnitName)
         try container.encodeIfPresent(isEnabled, forKey: .isEnabled)
+        try container.encodeIfPresent(isCategoryOverride, forKey: .isCategoryOverride)
+        try container.encodeIfPresent(charityName, forKey: .charityName)
     }
 }
 

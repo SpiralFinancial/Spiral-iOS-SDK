@@ -437,17 +437,71 @@ open class GivingAPI {
     }
 
     /**
-     Load customer giving donation receipts
+     Load customer giving Everyday Impact receipt report
      
+     - parameter id: (path) EI Donation Receipt Id 
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
-     - parameter groupBy: (query) The grouping to use for the receipts. If not provided, defaults to UNGROUPED. (optional)
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getCustomerDonationReceiptSummary(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, groupBy: DonationReceiptSummaryGrouping? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GivingCustomerDonationReceiptSummaryResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getCustomerDonationReceiptSummaryWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID, groupBy: groupBy).execute(apiResponseQueue) { result in
+    open class func getCustomerDonationReceiptImpactReport(id: String, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: DonationReceiptEverydayImpactReport?, _ error: Error?) -> Void)) -> RequestTask {
+        return getCustomerDonationReceiptImpactReportWithRequestBuilder(id: id, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Load customer giving Everyday Impact receipt report
+     - GET /giving/customer/everyday-impact/receipt/report/{id}
+     - Load customer giving Everyday Impact receipt report by id
+     - API Key:
+       - type: apiKey X-SPIRAL-CLIENT-ID (HEADER)
+       - name: ClientID
+     - parameter id: (path) EI Donation Receipt Id 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
+     - returns: RequestBuilder<DonationReceiptEverydayImpactReport> 
+     */
+    open class func getCustomerDonationReceiptImpactReportWithRequestBuilder(id: String, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<DonationReceiptEverydayImpactReport> {
+        var localVariablePath = "/giving/customer/everyday-impact/receipt/report/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-CUSTOMER-ID": X_SPIRAL_CUSTOMER_ID?.encodeToJSON(),
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DonationReceiptEverydayImpactReport>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Load customer giving donation receipts
+     
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getCustomerDonationReceiptSummary(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: GivingCustomerDonationReceiptSummaryResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getCustomerDonationReceiptSummaryWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -466,18 +520,14 @@ open class GivingAPI {
        - name: ClientID
      - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
      - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
-     - parameter groupBy: (query) The grouping to use for the receipts. If not provided, defaults to UNGROUPED. (optional)
      - returns: RequestBuilder<GivingCustomerDonationReceiptSummaryResponse> 
      */
-    open class func getCustomerDonationReceiptSummaryWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, groupBy: DonationReceiptSummaryGrouping? = nil) -> RequestBuilder<GivingCustomerDonationReceiptSummaryResponse> {
+    open class func getCustomerDonationReceiptSummaryWithRequestBuilder(X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<GivingCustomerDonationReceiptSummaryResponse> {
         let localVariablePath = "/giving/customer/donation/receipt"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "groupBy": (wrappedValue: groupBy?.encodeToJSON(), isExplode: true),
-        ])
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
             "X-SPIRAL-CUSTOMER-ID": X_SPIRAL_CUSTOMER_ID?.encodeToJSON(),
@@ -487,6 +537,121 @@ open class GivingAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<GivingCustomerDonationReceiptSummaryResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Load customer giving donation receipts for a specific month
+     
+     - parameter year: (path) Year number to get donation receipts for 
+     - parameter month: (path) Month number to get donation receipts for 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getCustomerDonationReceiptSummaryByMonth(year: Int, month: Int, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: DonationReceiptMonthlyDetailedSummary?, _ error: Error?) -> Void)) -> RequestTask {
+        return getCustomerDonationReceiptSummaryByMonthWithRequestBuilder(year: year, month: month, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Load customer giving donation receipts for a specific month
+     - GET /giving/customer/donation/receipt/year/{year}/month/{month}
+     - Load customer giving donation receipt for a specific month, grouped by charity
+     - API Key:
+       - type: apiKey X-SPIRAL-CLIENT-ID (HEADER)
+       - name: ClientID
+     - parameter year: (path) Year number to get donation receipts for 
+     - parameter month: (path) Month number to get donation receipts for 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
+     - returns: RequestBuilder<DonationReceiptMonthlyDetailedSummary> 
+     */
+    open class func getCustomerDonationReceiptSummaryByMonthWithRequestBuilder(year: Int, month: Int, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<DonationReceiptMonthlyDetailedSummary> {
+        var localVariablePath = "/giving/customer/donation/receipt/year/{year}/month/{month}"
+        let yearPreEscape = "\(APIHelper.mapValueToPathItem(year))"
+        let yearPostEscape = yearPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{year}", with: yearPostEscape, options: .literal, range: nil)
+        let monthPreEscape = "\(APIHelper.mapValueToPathItem(month))"
+        let monthPostEscape = monthPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{month}", with: monthPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-CUSTOMER-ID": X_SPIRAL_CUSTOMER_ID?.encodeToJSON(),
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DonationReceiptMonthlyDetailedSummary>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Load customer giving donation receipts for a specific year
+     
+     - parameter year: (path) Year number to get donation receipts for 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getCustomerDonationReceiptSummaryByYear(year: Int, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: DonationReceiptAnnualDetailedSummary?, _ error: Error?) -> Void)) -> RequestTask {
+        return getCustomerDonationReceiptSummaryByYearWithRequestBuilder(year: year, X_SPIRAL_CUSTOMER_ID: X_SPIRAL_CUSTOMER_ID, X_SPIRAL_REQUEST_ID: X_SPIRAL_REQUEST_ID).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Load customer giving donation receipts for a specific year
+     - GET /giving/customer/donation/receipt/year/{year}
+     - Load customer giving donation receipt for a specific year, grouped by month
+     - API Key:
+       - type: apiKey X-SPIRAL-CLIENT-ID (HEADER)
+       - name: ClientID
+     - parameter year: (path) Year number to get donation receipts for 
+     - parameter X_SPIRAL_CUSTOMER_ID: (header) Unique end user bank customer Id. (optional)
+     - parameter X_SPIRAL_REQUEST_ID: (header) Unique request Id used for troubleshooting. (optional)
+     - returns: RequestBuilder<DonationReceiptAnnualDetailedSummary> 
+     */
+    open class func getCustomerDonationReceiptSummaryByYearWithRequestBuilder(year: Int, X_SPIRAL_CUSTOMER_ID: String? = nil, X_SPIRAL_REQUEST_ID: String? = nil) -> RequestBuilder<DonationReceiptAnnualDetailedSummary> {
+        var localVariablePath = "/giving/customer/donation/receipt/year/{year}"
+        let yearPreEscape = "\(APIHelper.mapValueToPathItem(year))"
+        let yearPostEscape = yearPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{year}", with: yearPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-SPIRAL-CUSTOMER-ID": X_SPIRAL_CUSTOMER_ID?.encodeToJSON(),
+            "X-SPIRAL-REQUEST-ID": X_SPIRAL_REQUEST_ID?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<DonationReceiptAnnualDetailedSummary>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

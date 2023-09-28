@@ -71,7 +71,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         Spiral.shared.setup(config: SpiralConfig(mode: .sandbox,
                                                  environment: .integration,
                                                  proxyAuth: SpiralProxyAuth(proxyUrl: "https://staging-api.spiral.us/passthrough/sdk",
-                                                                            authToken: "af73885b-0337-45be-9585-3756781704f1")
+                                                                            authToken: "040593b2-7432-4662-bb57-1ff579b4c0ba")
                                                  ))
         
         refresh()

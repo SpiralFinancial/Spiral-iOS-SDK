@@ -23,6 +23,8 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
     public var collectedAmount: Double?
     /** Dollar value donated to Impact Category Charity. */
     public var donatedAmount: Double?
+    /** Amount withheld for processing fees. */
+    public var feesWithheldAmount: Double?
     /** Amount collected for external processing fees. */
     public var externalFeeAmount: Double?
     /** Amount collected for internal processing fees. */
@@ -50,7 +52,7 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
     /** Point value for one unit progress for that transaction. Can be >1 if transaction earned more than 1 unit. */
     public var cumulativeProgressUnits: Double?
 
-    public init(categoryId: String, customerId: String? = nil, categoryName: String, rewardUnit: CharityRewardUnit? = nil, impactUnits: Double, collectedAmount: Double? = nil, donatedAmount: Double? = nil, externalFeeAmount: Double? = nil, internalFeeAmount: Double? = nil, roundupAmount: Double? = nil, transactionId: String? = nil, transactedAtDate: Date? = nil, settledAtDate: Date? = nil, transactionTitle: String? = nil, transactionType: String? = nil, statementDescription: String? = nil, transactionAmount: Double? = nil, accountId: String? = nil, cumulativeImpactUnits: Double? = nil, cumulativeProgressUnits: Double? = nil) {
+    public init(categoryId: String, customerId: String? = nil, categoryName: String, rewardUnit: CharityRewardUnit? = nil, impactUnits: Double, collectedAmount: Double? = nil, donatedAmount: Double? = nil, feesWithheldAmount: Double? = nil, externalFeeAmount: Double? = nil, internalFeeAmount: Double? = nil, roundupAmount: Double? = nil, transactionId: String? = nil, transactedAtDate: Date? = nil, settledAtDate: Date? = nil, transactionTitle: String? = nil, transactionType: String? = nil, statementDescription: String? = nil, transactionAmount: Double? = nil, accountId: String? = nil, cumulativeImpactUnits: Double? = nil, cumulativeProgressUnits: Double? = nil) {
         self.categoryId = categoryId
         self.customerId = customerId
         self.categoryName = categoryName
@@ -58,6 +60,7 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
         self.impactUnits = impactUnits
         self.collectedAmount = collectedAmount
         self.donatedAmount = donatedAmount
+        self.feesWithheldAmount = feesWithheldAmount
         self.externalFeeAmount = externalFeeAmount
         self.internalFeeAmount = internalFeeAmount
         self.roundupAmount = roundupAmount
@@ -81,6 +84,7 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
         case impactUnits
         case collectedAmount
         case donatedAmount
+        case feesWithheldAmount
         case externalFeeAmount
         case internalFeeAmount
         case roundupAmount
@@ -107,6 +111,7 @@ public struct EverydayImpactCenterTransaction: Codable, JSONEncodable, Hashable 
         try container.encode(impactUnits, forKey: .impactUnits)
         try container.encodeIfPresent(collectedAmount, forKey: .collectedAmount)
         try container.encodeIfPresent(donatedAmount, forKey: .donatedAmount)
+        try container.encodeIfPresent(feesWithheldAmount, forKey: .feesWithheldAmount)
         try container.encodeIfPresent(externalFeeAmount, forKey: .externalFeeAmount)
         try container.encodeIfPresent(internalFeeAmount, forKey: .internalFeeAmount)
         try container.encodeIfPresent(roundupAmount, forKey: .roundupAmount)

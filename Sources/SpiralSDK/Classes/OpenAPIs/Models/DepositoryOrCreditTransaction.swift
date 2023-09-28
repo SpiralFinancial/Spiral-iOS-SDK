@@ -44,6 +44,7 @@ public struct DepositoryOrCreditTransaction: Codable, JSONEncodable, Hashable {
     public var method: DepositoryOrCreditTransactionMethod
     /** Indicates that this transaction has not posted. */
     public var isPending: Bool?
+    public var status: TransactionStatus
     /** Fixed-point decimal number, carried up to two decimal places. */
     public var transactionAmount: Double?
     /** Fixed-point decimal number, carried up to two decimal places. */
@@ -51,7 +52,7 @@ public struct DepositoryOrCreditTransaction: Codable, JSONEncodable, Hashable {
     /** If this transaction is an internal transfer type, references the accountId associated with this transaction. */
     public var transferAccountId: String?
 
-    public init(transactionId: String, customerId: String? = nil, accountId: String? = nil, description: String? = nil, name: String? = nil, category: [String]? = nil, tags: [String]? = nil, endingBalance: Double? = nil, transactedAtDate: Date, settledAtDate: Date? = nil, merchantCategoryCode: String, geolocation: GeoLocation? = nil, currency: String? = nil, nonIsoCurrency: String? = nil, type: DepositoryOrCreditTransactionType, method: DepositoryOrCreditTransactionMethod, isPending: Bool? = nil, transactionAmount: Double? = nil, feeAmount: Double? = nil, transferAccountId: String? = nil) {
+    public init(transactionId: String, customerId: String? = nil, accountId: String? = nil, description: String? = nil, name: String? = nil, category: [String]? = nil, tags: [String]? = nil, endingBalance: Double? = nil, transactedAtDate: Date, settledAtDate: Date? = nil, merchantCategoryCode: String, geolocation: GeoLocation? = nil, currency: String? = nil, nonIsoCurrency: String? = nil, type: DepositoryOrCreditTransactionType, method: DepositoryOrCreditTransactionMethod, isPending: Bool? = nil, status: TransactionStatus, transactionAmount: Double? = nil, feeAmount: Double? = nil, transferAccountId: String? = nil) {
         self.transactionId = transactionId
         self.customerId = customerId
         self.accountId = accountId
@@ -69,6 +70,7 @@ public struct DepositoryOrCreditTransaction: Codable, JSONEncodable, Hashable {
         self.type = type
         self.method = method
         self.isPending = isPending
+        self.status = status
         self.transactionAmount = transactionAmount
         self.feeAmount = feeAmount
         self.transferAccountId = transferAccountId
@@ -92,6 +94,7 @@ public struct DepositoryOrCreditTransaction: Codable, JSONEncodable, Hashable {
         case type
         case method
         case isPending
+        case status
         case transactionAmount
         case feeAmount
         case transferAccountId
@@ -118,6 +121,7 @@ public struct DepositoryOrCreditTransaction: Codable, JSONEncodable, Hashable {
         try container.encode(type, forKey: .type)
         try container.encode(method, forKey: .method)
         try container.encodeIfPresent(isPending, forKey: .isPending)
+        try container.encode(status, forKey: .status)
         try container.encodeIfPresent(transactionAmount, forKey: .transactionAmount)
         try container.encodeIfPresent(feeAmount, forKey: .feeAmount)
         try container.encodeIfPresent(transferAccountId, forKey: .transferAccountId)

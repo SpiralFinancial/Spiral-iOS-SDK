@@ -16,6 +16,8 @@ public class SpiralAnalyticsDataStore {
     
     var dbQueue: DatabaseQueue? = nil
     
+    static private let maxEventResults = 100
+    
     private init() {
         if let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
             let dirPath = appSupportDir.appendingPathComponent(Self.spiralSdkDir)
@@ -44,9 +46,6 @@ public class SpiralAnalyticsDataStore {
         } else {
             dbQueue = nil
         }
-        
-        let allEvents = getEvents()
-        print(allEvents)
     }
     
     private func createTables() {
@@ -96,7 +95,9 @@ public class SpiralAnalyticsDataStore {
     public func getEvents() -> [SpiralAnalyticsEvent] {
         do {
             let events: [SpiralAnalyticsEvent]? = try dbQueue?.read { db in
-                try SpiralAnalyticsEvent.fetchAll(db)
+                try SpiralAnalyticsEvent
+                    .limit(SpiralAnalyticsDataStore.maxEventResults)
+                    .fetchAll(db)
             }
             return events ?? []
         } catch {

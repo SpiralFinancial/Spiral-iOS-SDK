@@ -14,10 +14,16 @@ public class Spiral {
     
     fileprivate static let sdkVersion = "1.0.0"
     
+    static let apiVersion = "v2"
+    
     private var _config: SpiralConfig?
     
     private var _apiHeaders: [String: String] {
         var headers =  ["X-SPIRAL-SDK-VERSION": "ios-" + Spiral.sdkVersion]
+        
+        // TODO: DEBUG!!
+        headers.add(["X-SPIRAL-CUSTOMER-ID": "1133413950162432",
+                     "X-SPIRAL-CLIENT-ID": "f6529d98-9457-4973-b530-f6d6d8c32166"])
         
         if let proxyAuth = _config?.proxyAuth {
             headers.add(["X-AUTH-TOKEN": proxyAuth.authToken])
@@ -25,10 +31,16 @@ public class Spiral {
         
         if let clientSecretAuth = _config?.clientSecretAuth {
             headers.add(["X-SPIRAL-CUSTOMER-ID": clientSecretAuth.customerId,
-                         "X-SPIRAL-CLIENT-ID": clientSecretAuth.clientId])
+                         "X-SPIRAL-CLIENT-ID": clientSecretAuth.clientId,
+                         "X-SPIRAL-CLIENT-SECRET": clientSecretAuth.secret])
         }
         
         return headers
+    }
+    
+    private var _sessionId: String = UUID().uuidString
+    public func sessionId() -> String {
+        return _sessionId
     }
     
     public func config() -> SpiralConfig? {
@@ -108,9 +120,11 @@ public class Spiral {
     */
     public func setup(config: SpiralConfig) {
         _config = config
+        _sessionId = UUID().uuidString
         
         SpiralCustomFonts.registerFontsIfNeeded()
         
+        SpiralAnalyticsManager.shared.uploadEvents()
         SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .sdkStart,
                                                                              properties: [:]))
     }
@@ -395,6 +409,28 @@ public class Spiral {
             }
         }
     }
+    
+    public func trackAnalyticsEvents(events: [SpiralAnalyticsEvent], completion: @escaping (Bool, ErrorResponse?) -> Void) {
+        let apiEvents = events.map { CreateAnalyticsEventRequest(id: $0.id,
+                                                                 sessionId: _sessionId,
+                                                                 type: $0.event,
+                                                                 context: $0.properties,
+                                                                 eventDate: $0.time) }
+        let batchRequest = CreateAnalyticsEventBatchRequest(events: apiEvents)
+        
+        let requestBuilder = SpiralAnalyticsAPI.createAnalyticsEventsWithRequestBuilder(createAnalyticsEventBatchRequest: batchRequest)
+        requestBuilder.addHeaders(_apiHeaders)
+        requestBuilder.execute { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    completion(true, nil)
+                case let .failure(error):
+                    completion(false, error)
+                }
+            }
+        }
+    }
 
     private func proxyRequestForBuilder<T: Decodable>(requestBuilder: RequestBuilder<T>) -> RequestBuilder<T> {
         
@@ -415,9 +451,7 @@ public class Spiral {
         
         let localNillableVariableParameters: [String: Encodable?] = [
             "method": requestBuilder.method,
-            "endpoint": "/v1" + endpoint,
-//            "clientId": _config?.clientId,
-//            "customerId": _config?.customerId,
+            "endpoint": "/" + Spiral.apiVersion + endpoint,
             "body": bodyStr,
             "version": "ios-" + Spiral.sdkVersion
         ]

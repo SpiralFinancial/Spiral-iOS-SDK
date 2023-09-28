@@ -18,12 +18,15 @@ public struct SelectedImpactCategory: Codable, JSONEncodable, Hashable {
     public var rewardUnitName: String?
     /** Internal cost of this reward unit */
     public var internalCostAmount: Double?
+    /** Whether this category can be selected together with other categories or if it's exclusive. */
+    public var isCategoryOverride: Bool?
 
-    public init(categoryName: String? = nil, charityName: String? = nil, rewardUnitName: String? = nil, internalCostAmount: Double? = nil) {
+    public init(categoryName: String? = nil, charityName: String? = nil, rewardUnitName: String? = nil, internalCostAmount: Double? = nil, isCategoryOverride: Bool? = nil) {
         self.categoryName = categoryName
         self.charityName = charityName
         self.rewardUnitName = rewardUnitName
         self.internalCostAmount = internalCostAmount
+        self.isCategoryOverride = isCategoryOverride
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -31,6 +34,7 @@ public struct SelectedImpactCategory: Codable, JSONEncodable, Hashable {
         case charityName
         case rewardUnitName
         case internalCostAmount
+        case isCategoryOverride
     }
 
     // Encodable protocol methods
@@ -41,6 +45,7 @@ public struct SelectedImpactCategory: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(charityName, forKey: .charityName)
         try container.encodeIfPresent(rewardUnitName, forKey: .rewardUnitName)
         try container.encodeIfPresent(internalCostAmount, forKey: .internalCostAmount)
+        try container.encodeIfPresent(isCategoryOverride, forKey: .isCategoryOverride)
     }
 }
 

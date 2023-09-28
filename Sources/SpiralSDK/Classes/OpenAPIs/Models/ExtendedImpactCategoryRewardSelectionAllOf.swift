@@ -16,15 +16,23 @@ public struct ExtendedImpactCategoryRewardSelectionAllOf: Codable, JSONEncodable
     public var rewardUnitName: String
     /** Is Impact Category enabled for a customer */
     public var isEnabled: Bool?
+    /** Whether this category can be selected together with other categories or if it's exclusive. */
+    public var isCategoryOverride: Bool?
+    /** Charity name */
+    public var charityName: String?
 
-    public init(rewardUnitName: String, isEnabled: Bool? = nil) {
+    public init(rewardUnitName: String, isEnabled: Bool? = nil, isCategoryOverride: Bool? = nil, charityName: String? = nil) {
         self.rewardUnitName = rewardUnitName
         self.isEnabled = isEnabled
+        self.isCategoryOverride = isCategoryOverride
+        self.charityName = charityName
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case rewardUnitName
         case isEnabled
+        case isCategoryOverride
+        case charityName
     }
 
     // Encodable protocol methods
@@ -33,6 +41,8 @@ public struct ExtendedImpactCategoryRewardSelectionAllOf: Codable, JSONEncodable
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(rewardUnitName, forKey: .rewardUnitName)
         try container.encodeIfPresent(isEnabled, forKey: .isEnabled)
+        try container.encodeIfPresent(isCategoryOverride, forKey: .isCategoryOverride)
+        try container.encodeIfPresent(charityName, forKey: .charityName)
     }
 }
 

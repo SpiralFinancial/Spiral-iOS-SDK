@@ -8,5 +8,5 @@
 import Foundation
 
 public struct SpiralOpenPayload: SpiralEventPayload {
-    public let action: String
+    
 }

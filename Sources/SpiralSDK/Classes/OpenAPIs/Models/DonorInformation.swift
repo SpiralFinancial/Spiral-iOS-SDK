@@ -19,6 +19,8 @@ public struct DonorInformation: Codable, JSONEncodable, Hashable {
     public var lastName: String
     /** Donor's email */
     public var email: String
+    /** Donor's phone number */
+    public var phoneNumber: String?
     /** Donor's city */
     public var city: String
     /** Donor's country */
@@ -32,10 +34,11 @@ public struct DonorInformation: Codable, JSONEncodable, Hashable {
     /** Donor's zip code */
     public var zip: String
 
-    public init(firstName: String, lastName: String, email: String, city: String, country: String, addressLine1: String, addressLine2: String? = nil, state: String, zip: String) {
+    public init(firstName: String, lastName: String, email: String, phoneNumber: String? = nil, city: String, country: String, addressLine1: String, addressLine2: String? = nil, state: String, zip: String) {
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
+        self.phoneNumber = phoneNumber
         self.city = city
         self.country = country
         self.addressLine1 = addressLine1
@@ -48,6 +51,7 @@ public struct DonorInformation: Codable, JSONEncodable, Hashable {
         case firstName
         case lastName
         case email
+        case phoneNumber
         case city
         case country
         case addressLine1
@@ -63,6 +67,7 @@ public struct DonorInformation: Codable, JSONEncodable, Hashable {
         try container.encode(firstName, forKey: .firstName)
         try container.encode(lastName, forKey: .lastName)
         try container.encode(email, forKey: .email)
+        try container.encodeIfPresent(phoneNumber, forKey: .phoneNumber)
         try container.encode(city, forKey: .city)
         try container.encode(country, forKey: .country)
         try container.encode(addressLine1, forKey: .addressLine1)
