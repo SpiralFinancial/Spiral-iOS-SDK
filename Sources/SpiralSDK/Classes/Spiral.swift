@@ -256,9 +256,11 @@ public class Spiral {
                 case let .success(response):
                     if let cardData = response.body.template.value as? GenericCardModel {
                         
-                        let payload = SpiralGenericCardPayloadModel(identifier: 0, type: GenericTemplateType.srSummary.rawValue, data: cardData, isNew: false)
+                        let payload = SpiralGenericCardPayloadModel(identifier: 0, type: type, data: cardData, isNew: false)
                         let genericCardView = SpiralGenericCardView()
                         genericCardView.isHidden = true
+                        
+                        genericCardView.analyticsIdentifier = "generic-\(type)"
                         
                         genericCardView.embed(in: view)
                         genericCardView.configureWith(GenericCardDisplayModel(cardData: payload,

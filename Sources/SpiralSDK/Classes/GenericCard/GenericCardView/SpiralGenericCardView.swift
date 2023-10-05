@@ -276,6 +276,10 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
             configureWith(cardData)
         }
     }
+    
+    public func trackDisplayEvent() {
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(fullAnalyticsIdentifier).show", properties: [:]))
+    }
 }
 
 class GenericCardViewBuilder {

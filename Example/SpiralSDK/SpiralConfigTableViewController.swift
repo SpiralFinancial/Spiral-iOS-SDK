@@ -143,6 +143,8 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
                     
                     self.currentlyLoadedImpactCard = impactView
                     
+                    impactView.trackDisplayEvent()
+                    
                 } failure: { error in
                     print("failure: " + (error?.localizedDescription ?? ""))
                 } updateLayout: {
