@@ -12,7 +12,6 @@ public enum SpiralSDKEvent: String {
     case loadCustomerSettings = "load-customer-settings"
     case loadCustomerSettingsSuccess = "load-customer-settings-success"
     case loadCustomerSettingsError = "load-customer-settings-error"
-    case startFlow = "flow-start"
     case loadGenericContent = "load-generic-content"
     case loadGenericContentSuccess = "load-generic-content-success"
     case loadGenericContentError = "load-generic-content-error"

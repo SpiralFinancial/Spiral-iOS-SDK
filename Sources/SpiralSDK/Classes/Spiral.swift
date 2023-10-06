@@ -108,7 +108,7 @@ public class Spiral {
             self?._currentFlowController = nil
         })
         
-        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .startFlow,
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "flow-\(flow.stringVal)-start",
                                                                              properties: ["type" : AnyCodable(flow)]))
     }
     
@@ -432,6 +432,13 @@ public class Spiral {
                 }
             }
         }
+    }
+    
+    public func trackSpiralContentViewedEvent(containerView: UIView) {
+        containerView.findViews(subclassOf: SpiralGenericCardView.self).forEach { contentView in
+            contentView.trackDisplayEvent()
+        }
+        
     }
 
     private func proxyRequestForBuilder<T: Decodable>(requestBuilder: RequestBuilder<T>) -> RequestBuilder<T> {
