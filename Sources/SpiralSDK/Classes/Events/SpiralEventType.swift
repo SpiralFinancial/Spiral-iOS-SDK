@@ -42,7 +42,7 @@ public extension SpiralEvent {
         properties["platform"] = AnyCodable("ios")
         
         let event = SpiralAnalyticsEvent(id: UUID().uuidString,
-                                         event: ("flow-\(flow.stringVal)-\(eventName)").formattedForAnalytics,
+                                         event: ("flow-\(flow.stringVal)-\(eventName)"),
                                          properties: properties,
                                          date: date)
         return event

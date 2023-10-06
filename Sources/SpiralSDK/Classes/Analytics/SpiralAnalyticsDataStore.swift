@@ -123,7 +123,7 @@ public struct SpiralAnalyticsEvent: Codable, FetchableRecord, PersistableRecord 
     
     init(id: String = UUID().uuidString, event: String, properties: [String: AnyCodable], date: Date = Date()) {
         self.id = id
-        self.event = event
+        self.event = event.formattedForAnalytics
         self.time = date
                 
         if let jsonData = try? SpiralAnalyticsEvent.jsonEncoder.encode(properties),

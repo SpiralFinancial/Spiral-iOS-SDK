@@ -260,7 +260,7 @@ public class Spiral {
                         let genericCardView = SpiralGenericCardView()
                         genericCardView.isHidden = true
                         
-                        genericCardView.analyticsIdentifier = "generic-\(type)"
+                        genericCardView.spiralAnalyticsIdentifier = "generic-\(type)"
                         
                         genericCardView.embed(in: view)
                         genericCardView.configureWith(GenericCardDisplayModel(cardData: payload,

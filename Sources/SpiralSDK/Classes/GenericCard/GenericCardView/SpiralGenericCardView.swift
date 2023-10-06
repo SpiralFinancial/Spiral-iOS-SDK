@@ -278,7 +278,10 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
     }
     
     public func trackDisplayEvent() {
-        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(fullAnalyticsIdentifier).show", properties: [:]))
+        FunctionCoalescer.coalesce(context: "track-\(fullSpiralAnalyticsIdentifier)", timeout: 0.5) { [weak self] in
+            guard let self = self else { return }
+            SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(self.fullSpiralAnalyticsIdentifier).show", properties: [:]))
+        }
     }
 }
 

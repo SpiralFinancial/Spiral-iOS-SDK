@@ -8,104 +8,104 @@
 
 import Foundation
 
-private var analyticsIdentifierKey: Void?
-private var analyticsViewStartTimeKey: Void?
-private var analyticsFlowIdentifierKey: Void?
+private var spiralAnalyticsIdentifierKey: Void?
+private var spiralAnalyticsViewStartTimeKey: Void?
+private var spiralAnalyticsFlowIdentifierKey: Void?
 
 extension UIView {
     
     @objc var showLogViewEvent: Bool { true }
     
     // class level
-    @objc var analyticsIdentifierForClass: String? {
+    @objc var spiralAnalyticsIdentifierForClass: String? {
         return nil
     }
     
     // swiftlint:disable implicit_getter superfluous_disable_command
-    @objc var analyticsIdentifier: String? {
+    @objc var spiralAnalyticsIdentifier: String? {
         get {
-            let identifier = objc_getAssociatedObject(self, &analyticsIdentifierKey) as? String
+            let identifier = objc_getAssociatedObject(self, &spiralAnalyticsIdentifierKey) as? String
             // if not available, use class level (also if available)
-            return identifier ?? analyticsIdentifierForClass
+            return identifier ?? spiralAnalyticsIdentifierForClass
         }
         set {
-            objc_setAssociatedObject(self, &analyticsIdentifierKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(self, &spiralAnalyticsIdentifierKey, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
     }
     
     // swiftlint:disable implicit_getter superfluous_disable_command
-    @objc var analyticsFlowIdentifier: String? {
+    @objc var spiralAnalyticsFlowIdentifier: String? {
         get {
-            let identifier = objc_getAssociatedObject(self, &analyticsFlowIdentifierKey) as? String
+            let identifier = objc_getAssociatedObject(self, &spiralAnalyticsFlowIdentifierKey) as? String
             // if not available, use class level (also if available)
             return identifier
         }
         set {
-            objc_setAssociatedObject(self, &analyticsFlowIdentifierKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(self, &spiralAnalyticsFlowIdentifierKey, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
     }
     
-    @objc private var analyticsViewStartTime: TimeInterval {
+    @objc private var spiralAnalyticsViewStartTime: TimeInterval {
         get {
-            return (objc_getAssociatedObject(self, &analyticsViewStartTimeKey) as? TimeInterval) ?? 0
+            return (objc_getAssociatedObject(self, &spiralAnalyticsViewStartTimeKey) as? TimeInterval) ?? 0
         }
         set {
-            objc_setAssociatedObject(self, &analyticsViewStartTimeKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(self, &spiralAnalyticsViewStartTimeKey, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
     }
     
-    var analyticsViewTime: TimeInterval {
-        return Date().timeIntervalSince1970 - analyticsViewStartTime
+    var spiralAnalyticsViewTime: TimeInterval {
+        return Date().timeIntervalSince1970 - spiralAnalyticsViewStartTime
     }
     
-    @objc var fullAnalyticsIdentifier: String {
+    @objc var fullSpiralAnalyticsIdentifier: String {
         var prefix: String = .empty
-        if let superviewIdentifier = superview?.fullAnalyticsIdentifier {
+        if let superviewIdentifier = superview?.fullSpiralAnalyticsIdentifier {
             prefix = superviewIdentifier
         }
         
         var fullIdentifier = prefix
-        if let analyticsIdentifier = analyticsIdentifier {
-            fullIdentifier += (fullIdentifier.count > 0 ? "." : "") + analyticsIdentifier
+        if let spiralAnalyticsIdentifier = spiralAnalyticsIdentifier {
+            fullIdentifier += (fullIdentifier.count > 0 ? "." : "") + spiralAnalyticsIdentifier
         }
         
         return fullIdentifier
     }
     
     @objc func handleAnalyticsTapEvent() {
-        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(fullAnalyticsIdentifier).click", properties: [:]))
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(fullSpiralAnalyticsIdentifier).click", properties: [:]))
     }
     
     func addAnalyticsTapHandling(identifier: String? = nil) {
         if let identifier = identifier {
-            analyticsIdentifier = identifier
+            spiralAnalyticsIdentifier = identifier
         }
         
         // Don't add more than once
         gestureRecognizers?.removeAll(where: { (gr) -> Bool in
-            return gr.name == Constants.analyticsTapGestureRecognizerName
+            return gr.name == Constants.spiralAnalyticsTapGestureRecognizerName
         })
         
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleAnalyticsTapEvent))
-        gestureRecognizer.name = Constants.analyticsTapGestureRecognizerName
+        gestureRecognizer.name = Constants.spiralAnalyticsTapGestureRecognizerName
         gestureRecognizer.cancelsTouchesInView = false
         addGestureRecognizer(gestureRecognizer)
     }
     
     func startTrackingViewTime() {
-        analyticsViewStartTime = Date().timeIntervalSince1970
+        spiralAnalyticsViewStartTime = Date().timeIntervalSince1970
     }
     
 }
 
 extension UIButton {
-    @objc override var analyticsIdentifier: String? {
+    @objc override var spiralAnalyticsIdentifier: String? {
         get {
             // Use button title if not available
-            return super.analyticsIdentifier ?? title(for: .normal)?.formattedForAnalytics
+            return super.spiralAnalyticsIdentifier ?? title(for: .normal)?.formattedForAnalytics
         }
         set {
-            super.analyticsIdentifier = newValue
+            super.spiralAnalyticsIdentifier = newValue
             addAnalyticsTapHandling()
         }
     }
@@ -118,12 +118,12 @@ extension UIButton {
 
 extension UITextField {
     func addAnalyticsHandling(identifier: String) {
-        analyticsIdentifier = identifier
+        spiralAnalyticsIdentifier = identifier
         addTarget(self, action: #selector(handleAnalyticsFocusEvent), for: .editingDidBegin)
     }
     
     @objc func handleAnalyticsFocusEvent() {
-        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(fullAnalyticsIdentifier).focus", properties: [:]))
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(fullSpiralAnalyticsIdentifier).focus", properties: [:]))
     }
     
     func addAnalyticsTypedHandling() {
@@ -131,7 +131,7 @@ extension UITextField {
     }
     
     @objc func handleAnalyticsTypedEvent() {
-        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(fullAnalyticsIdentifier).types", properties: ["text": AnyCodable(text ?? .empty)]))
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(fullSpiralAnalyticsIdentifier).types", properties: ["text": AnyCodable(text ?? .empty)]))
     }
 }
 
@@ -146,5 +146,5 @@ extension String {
 }
 
 fileprivate extension Constants {
-    static let analyticsTapGestureRecognizerName = "analyticsTapGesture"
+    static let spiralAnalyticsTapGestureRecognizerName = "spiralAnalyticsTapGesture"
 }
