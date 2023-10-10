@@ -29,4 +29,5 @@ public enum GenericTemplateType: String, Codable, CaseIterable {
     case notificationDetailsDonationUnableToProcess = "NOTIFICATION_DETAILS_DONATION_UNABLE_TO_PROCESS"
     case sgnEverydayImpactDonationFeeDisclosure = "SGN_EVERYDAY_IMPACT_DONATION_FEE_DISCLOSURE"
     case sgnUnderstandMyDonation = "SGN_UNDERSTAND_MY_DONATION"
+    case everydayImpactDonationDisclosure = "EVERYDAY_IMPACT_DONATION_DISCLOSURE"
 }

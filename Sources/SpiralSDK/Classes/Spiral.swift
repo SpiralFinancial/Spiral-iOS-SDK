@@ -14,10 +14,16 @@ public class Spiral {
     
     fileprivate static let sdkVersion = "1.0.0"
     
+    static let apiVersion = "v2"
+    
     private var _config: SpiralConfig?
     
     private var _apiHeaders: [String: String] {
         var headers =  ["X-SPIRAL-SDK-VERSION": "ios-" + Spiral.sdkVersion]
+        
+        // TODO: DEBUG!!
+        headers.add(["X-SPIRAL-CUSTOMER-ID": "1133413950162432",
+                     "X-SPIRAL-CLIENT-ID": "f6529d98-9457-4973-b530-f6d6d8c32166"])
         
         if let proxyAuth = _config?.proxyAuth {
             headers.add(["X-AUTH-TOKEN": proxyAuth.authToken])
@@ -25,10 +31,16 @@ public class Spiral {
         
         if let clientSecretAuth = _config?.clientSecretAuth {
             headers.add(["X-SPIRAL-CUSTOMER-ID": clientSecretAuth.customerId,
-                         "X-SPIRAL-CLIENT-ID": clientSecretAuth.clientId])
+                         "X-SPIRAL-CLIENT-ID": clientSecretAuth.clientId,
+                         "X-SPIRAL-CLIENT-SECRET": clientSecretAuth.secret])
         }
         
         return headers
+    }
+    
+    private var _sessionId: String = UUID().uuidString
+    public func sessionId() -> String {
+        return _sessionId
     }
     
     public func config() -> SpiralConfig? {
@@ -95,6 +107,9 @@ public class Spiral {
         _currentFlowController = SpiralViewController(flow: flow, delegate: delegate, onExit: { [weak self] in
             self?._currentFlowController = nil
         })
+        
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "flow-\(flow.stringVal)-start",
+                                                                             properties: ["type" : AnyCodable(flow)]))
     }
     
     /**
@@ -105,8 +120,13 @@ public class Spiral {
     */
     public func setup(config: SpiralConfig) {
         _config = config
+        _sessionId = UUID().uuidString
         
         SpiralCustomFonts.registerFontsIfNeeded()
+        
+        SpiralAnalyticsManager.shared.uploadEvents()
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .sdkStart,
+                                                                             properties: [:]))
     }
     
     /**
@@ -121,6 +141,10 @@ public class Spiral {
     */
     public func getCustomerSettings(success: ((CustomerSettings) -> Void)?,
                                     failure: ((ErrorResponse?) -> Void)?) {
+        
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadCustomerSettings,
+                                                                             properties: [:]))
+        
         let requestBuilder = ManagementAPI.getCustomerSettingsWithRequestBuilder()
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
@@ -128,8 +152,14 @@ public class Spiral {
                 switch result {
                 case let .success(response):
                     success?(response.body)
+                    
+                    SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadCustomerSettingsSuccess,
+                                                                                         properties: [:]))
                 case let .failure(error):
                     failure?(error)
+                    
+                    SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadCustomerSettingsError,
+                                                                                         properties: ["error": AnyCodable(error.message)]))
                 }
             }
         }
@@ -215,6 +245,9 @@ public class Spiral {
                                 failure: ((ErrorResponse?) -> Void)?,
                                 updateLayout: EmptyOptionalClosure) {
         
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadGenericContent,
+                                                                             properties: ["type": AnyCodable(type)]))
+        
         let requestBuilder = CmsAPI.getGenericCardWithRequestBuilder(type: type)
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
@@ -223,9 +256,11 @@ public class Spiral {
                 case let .success(response):
                     if let cardData = response.body.template.value as? GenericCardModel {
                         
-                        let payload = SpiralGenericCardPayloadModel(identifier: 0, type: GenericTemplateType.srSummary.rawValue, data: cardData, isNew: false)
+                        let payload = SpiralGenericCardPayloadModel(identifier: 0, type: type, data: cardData, isNew: false)
                         let genericCardView = SpiralGenericCardView()
                         genericCardView.isHidden = true
+                        
+                        genericCardView.spiralAnalyticsIdentifier = "generic-\(type)"
                         
                         genericCardView.embed(in: view)
                         genericCardView.configureWith(GenericCardDisplayModel(cardData: payload,
@@ -240,11 +275,18 @@ public class Spiral {
                         genericCardView.isHidden = false
                         
                         success?(genericCardView)
+                        
+                        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadGenericContentSuccess,
+                                                                                             properties: ["type": AnyCodable(type)]))
                     } else {
                         failure?(nil)
                     }
                 case let .failure(error):
                     failure?(error)
+                    
+                    SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadGenericContentError,
+                                                                                         properties: ["type": AnyCodable(type),
+                                                                                                      "error": AnyCodable(error.message)]))
                 }
             }
         }
@@ -268,6 +310,9 @@ public class Spiral {
                                  failure: ((ErrorResponse?) -> Void)?,
                                  delegate: SpiralDelegate) {
         
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadModalContent,
+                                                                             properties: ["type": AnyCodable(type)]))
+        
         let requestBuilder = CmsAPI.getGenericCardWithRequestBuilder(type: type)
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
@@ -281,11 +326,18 @@ public class Spiral {
                         UIApplication.topViewController()?.present(vc, animated: true)
                         
                         success?()
+                        
+                        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadModalContentSuccess,
+                                                                                             properties: ["type": AnyCodable(type)]))
                     } else {
                         failure?(nil)
                     }
                 case let .failure(error):
                     failure?(error)
+                    
+                    SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadModalContentError,
+                                                                                         properties: ["type": AnyCodable(type),
+                                                                                                      "error": AnyCodable(error.message)]))
                 }
             }
         }
@@ -301,6 +353,9 @@ public class Spiral {
          - Returns: A SocialResponsibilityTransactionInstantImpactResponse object representing the customer's impact for this transaction
     */
     public func getTransactionImpact(transactionId: String, completion: @escaping (TransactionImpactResponse?, ErrorResponse?) -> Void) {
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadTransactionImpact,
+                                                                             properties: [:]))
+        
         let requestBuilder = ReportingAPI.getCustomerImpactByTransactionIdWithRequestBuilder(transactionId: transactionId)
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
@@ -309,8 +364,14 @@ public class Spiral {
                 case let .success(response):
                     let impactResponse = response.body
                     completion(impactResponse, nil)
+                    
+                    SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadTransactionImpactSuccess,
+                                                                                         properties: [:]))
                 case let .failure(error):
                     completion(nil, error)
+                    
+                    SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadTransactionImpactError,
+                                                                                         properties: ["error": AnyCodable(error.message)]))
                 }
             }
         }
@@ -326,6 +387,10 @@ public class Spiral {
          - Returns: A SocialResponsibilityTransactionListResponse object representing the customer's impact for the given transaction IDs
     */
     public func getTransactionImpactList(transactionIds: [String], completion: @escaping (TransactionsImpactResponse?, ErrorResponse?) -> Void) {
+        
+        SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadTransactionsImpactList,
+                                                                             properties: [:]))
+        
         let requestBuilder = ReportingAPI.getCustomerTransactionsImpactWithRequestBuilder(ids: transactionIds)
         requestBuilder.addHeaders(_apiHeaders)
         proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
@@ -334,11 +399,46 @@ public class Spiral {
                 case let .success(response):
                     let impactResponse = response.body
                     completion(impactResponse, nil)
+                    
+                    SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadTransactionsImpactListSuccess,
+                                                                                         properties: [:]))
                 case let .failure(error):
                     completion(nil, error)
+                    
+                    SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(sdkEvent: .loadTransactionsImpactListError,
+                                                                                         properties: ["error": AnyCodable(error.message)]))
                 }
             }
         }
+    }
+    
+    public func trackAnalyticsEvents(events: [SpiralAnalyticsEvent], completion: @escaping (Bool, ErrorResponse?) -> Void) {
+        let apiEvents = events.map { CreateAnalyticsEventRequest(id: $0.id,
+                                                                 sessionId: _sessionId,
+                                                                 type: $0.event,
+                                                                 context: $0.properties,
+                                                                 eventDate: $0.time) }
+        let batchRequest = CreateAnalyticsEventBatchRequest(events: apiEvents)
+        
+        let requestBuilder = SpiralAnalyticsAPI.createAnalyticsEventsWithRequestBuilder(createAnalyticsEventBatchRequest: batchRequest)
+        requestBuilder.addHeaders(_apiHeaders)
+        requestBuilder.execute { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    completion(true, nil)
+                case let .failure(error):
+                    completion(false, error)
+                }
+            }
+        }
+    }
+    
+    public func trackSpiralContentViewedEvent(containerView: UIView) {
+        containerView.findViews(subclassOf: SpiralGenericCardView.self).forEach { contentView in
+            contentView.trackDisplayEvent()
+        }
+        
     }
 
     private func proxyRequestForBuilder<T: Decodable>(requestBuilder: RequestBuilder<T>) -> RequestBuilder<T> {
@@ -360,9 +460,7 @@ public class Spiral {
         
         let localNillableVariableParameters: [String: Encodable?] = [
             "method": requestBuilder.method,
-            "endpoint": "/v1" + endpoint,
-//            "clientId": _config?.clientId,
-//            "customerId": _config?.customerId,
+            "endpoint": "/" + Spiral.apiVersion + endpoint,
             "body": bodyStr,
             "version": "ios-" + Spiral.sdkVersion
         ]
@@ -445,7 +543,7 @@ public enum SpiralEnvironment: Equatable {
     case production
 }
 
-public enum SpiralFlow {
+public enum SpiralFlow: Codable {
     /// Donation initiation flow for a specific charity.
     case donateToCharityById(charityId: String)
     
@@ -519,7 +617,7 @@ public enum SpiralFlow {
         }
     }
     
-    init?(typeStr: String, params: String?, url: String? = nil) {
+    init(typeStr: String, params: String?, url: String? = nil) {
         if url != nil && url != SpiralFlow.defaultUrlStr {
             self = .custom(type: typeStr, params: params ?? .empty, url: url)
             return
@@ -534,6 +632,28 @@ public enum SpiralFlow {
         case "receipts": self = .receipts
         default: self = .custom(type: typeStr, params: params ?? .empty, url: url)
         }
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case params
+        case url
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(stringVal, forKey: .type)
+        try container.encodeIfPresent(params, forKey: .params)
+        try container.encodeIfPresent(url, forKey: .url)
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try values.decode(String.self, forKey: .type)
+        let params = try values.decodeIfPresent(String.self, forKey: .params)
+        let url = try values.decodeIfPresent(String.self, forKey: .url)
+                
+        self.init(typeStr: type, params: params, url: url)
     }
 }
 

@@ -19,15 +19,18 @@ public struct TransactionProcessRequest: Codable, JSONEncodable, Hashable {
     /** Processing Type */
     public var type: ModelType
     public var transaction: DepositoryOrCreditTransaction
+    public var customerInformation: DonorInformation
 
-    public init(type: ModelType, transaction: DepositoryOrCreditTransaction) {
+    public init(type: ModelType, transaction: DepositoryOrCreditTransaction, customerInformation: DonorInformation) {
         self.type = type
         self.transaction = transaction
+        self.customerInformation = customerInformation
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case type
         case transaction
+        case customerInformation
     }
 
     // Encodable protocol methods
@@ -36,6 +39,7 @@ public struct TransactionProcessRequest: Codable, JSONEncodable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .type)
         try container.encode(transaction, forKey: .transaction)
+        try container.encode(customerInformation, forKey: .customerInformation)
     }
 }
 

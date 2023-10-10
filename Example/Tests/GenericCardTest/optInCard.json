@@ -64,7 +64,7 @@
                 "content" : {
                   "text_color" : "#ffffff",
                   "text_size" : 16,
-                  "border_color" : "[(${ctx.clientPrimaryColor})]",
+                  "border_color" : "[(${primaryClientColor})]",
                   "text" : "Select My Impact"
                 },
                 "padding" : {
@@ -74,7 +74,7 @@
                   "left" : 16
                 },
                 "type" : "button",
-                "background_color" : "[(${ctx.clientPrimaryColor})]",
+                "background_color" : "[(${primaryClientColor})]",
                 "link" : "\/flow?type=customerSettings"
               }
             ]

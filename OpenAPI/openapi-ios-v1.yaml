@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Spiral - Everyday Impact - v1
+  title: Spiral - Everyday Impact - v2
   description: _Spiral mission statement here_
   termsOfService: http://swagger.io/terms/
   contact:
@@ -8,14 +8,14 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: "0.0.3-6"
+  version: "2.0.18"
 externalDocs:
   description: Spiral online developer docs
   url: http://swagger.io
 servers:
-- url: https://sdk-api-stage1.spiral.us/v1
+- url: https://sdk-api-stage1.spiral.us/v2
   description: Staging Server (uses test data)
-- url: https://sdk-api-qa.spiral.us/v1
+- url: https://sdk-api-qa.spiral.us/v2
   description: QA Staging Environment (uses test data)
 security:
 - ClientID: []
@@ -42,7 +42,17 @@ tags:
     description: Find out more
     url: http://spiral.us
 - name: cms
-  description: Allow client apps to defined their own API responses
+  description: Allow client apps to define their own API responses
+  externalDocs:
+    description: Find out more
+    url: http://spiral.us
+- name: logging
+  description: Allow clients to push log messages directly into Spiral
+  externalDocs:
+    description: Find out more
+    url: http://spiral.us
+- name: analytics
+  description: Allow clients to push analytics events directly into Spiral
   externalDocs:
     description: Find out more
     url: http://spiral.us
@@ -952,15 +962,6 @@ paths:
           type: string
           format: guid
           example: b1df1812-ee1c-4178-87ed-89c711a01672
-      - name: groupBy
-        in: query
-        description: "The grouping to use for the receipts. If not provided, defaults\
-          \ to UNGROUPED."
-        required: false
-        style: form
-        explode: true
-        schema:
-          $ref: '#/components/schemas/DonationReceiptSummaryGrouping'
       responses:
         "200":
           description: Successful Operation
@@ -998,8 +999,6 @@ paths:
         in: path
         description: The receipt's unique ID
         required: true
-        style: simple
-        explode: false
         schema:
           type: string
         example: 229ab10d-d3f8-4c72-b292-2d9841a9ffdb
@@ -1010,6 +1009,145 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FileResponse'
+        "400":
+          description: Invalid Request
+        "405":
+          description: Validation Exception
+  /giving/customer/donation/receipt/year/{year}:
+    get:
+      tags:
+      - giving
+      summary: Load customer giving donation receipts for a specific year
+      description: "Load customer giving donation receipt for a specific year, grouped\
+        \ by month"
+      operationId: getCustomerDonationReceiptSummaryByYear
+      parameters:
+      - name: X-SPIRAL-CUSTOMER-ID
+        in: header
+        description: Unique end user bank customer Id.
+        schema:
+          type: string
+          format: guid
+          example: 9556c434-780a-4452-82dd-0bdaa299bea4
+      - name: X-SPIRAL-REQUEST-ID
+        in: header
+        description: Unique request Id used for troubleshooting.
+        schema:
+          type: string
+          format: guid
+          example: b1df1812-ee1c-4178-87ed-89c711a01672
+      - name: year
+        in: path
+        description: Year number to get donation receipts for
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 2023
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DonationReceiptAnnualDetailedSummary'
+        "400":
+          description: Invalid Request
+        "405":
+          description: Validation Exception
+  /giving/customer/donation/receipt/year/{year}/month/{month}:
+    get:
+      tags:
+      - giving
+      summary: Load customer giving donation receipts for a specific month
+      description: "Load customer giving donation receipt for a specific month, grouped\
+        \ by charity"
+      operationId: getCustomerDonationReceiptSummaryByMonth
+      parameters:
+      - name: X-SPIRAL-CUSTOMER-ID
+        in: header
+        description: Unique end user bank customer Id.
+        schema:
+          type: string
+          format: guid
+          example: 9556c434-780a-4452-82dd-0bdaa299bea4
+      - name: X-SPIRAL-REQUEST-ID
+        in: header
+        description: Unique request Id used for troubleshooting.
+        schema:
+          type: string
+          format: guid
+          example: b1df1812-ee1c-4178-87ed-89c711a01672
+      - name: year
+        in: path
+        description: Year number to get donation receipts for
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 2023
+      - name: month
+        in: path
+        description: Month number to get donation receipts for
+        required: true
+        style: simple
+        explode: false
+        schema:
+          maximum: 12
+          minimum: 1
+          type: integer
+          example: 8
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DonationReceiptMonthlyDetailedSummary'
+        "400":
+          description: Invalid Request
+        "405":
+          description: Validation Exception
+  /giving/customer/everyday-impact/receipt/report/{id}:
+    get:
+      tags:
+      - giving
+      summary: Load customer giving Everyday Impact receipt report
+      description: Load customer giving Everyday Impact receipt report by id
+      operationId: getCustomerDonationReceiptImpactReport
+      parameters:
+      - name: X-SPIRAL-CUSTOMER-ID
+        in: header
+        description: Unique end user bank customer Id.
+        schema:
+          type: string
+          format: guid
+          example: 9556c434-780a-4452-82dd-0bdaa299bea4
+      - name: X-SPIRAL-REQUEST-ID
+        in: header
+        description: Unique request Id used for troubleshooting.
+        schema:
+          type: string
+          format: guid
+          example: b1df1812-ee1c-4178-87ed-89c711a01672
+      - name: id
+        in: path
+        description: EI Donation Receipt Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: 26c2ce68-1d43-41d4-af3b-efbe57d41263
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DonationReceiptEverydayImpactReport'
         "400":
           description: Invalid Request
         "405":
@@ -1398,6 +1536,39 @@ paths:
           description: Invalid Request
         "405":
           description: Validation Exception
+  /management/client/agreements:
+    get:
+      tags:
+      - management
+      summary: Retrieve client agreements
+      description: Retrieve client terms and conditions and privacy policy docs
+      operationId: getClientAgreements
+      parameters:
+      - name: X-SPIRAL-CUSTOMER-ID
+        in: header
+        description: Unique end user bank customer Id.
+        schema:
+          type: string
+          format: guid
+          example: 9556c434-780a-4452-82dd-0bdaa299bea4
+      - name: X-SPIRAL-REQUEST-ID
+        in: header
+        description: Unique request Id used for troubleshooting.
+        schema:
+          type: string
+          format: guid
+          example: b1df1812-ee1c-4178-87ed-89c711a01672
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientAgreementsResponse'
+        "400":
+          description: Invalid Request
+        "405":
+          description: Validation Exception
   /management/customer/settings/everyday-impact:
     get:
       tags:
@@ -1506,10 +1677,127 @@ paths:
           description: Invalid Request
         "405":
           description: Validation Exception
+  /management/customer/feature-flag:
+    get:
+      tags:
+      - management
+      summary: Retrieve feature flag values for Customer
+      description: Retrieves feature flags and their values for Customer
+      operationId: getFeatureFlagsForCustomer
+      parameters:
+      - name: X-SPIRAL-CLIENT-ID
+        in: header
+        description: Unique bank client Id.
+        schema:
+          type: string
+          format: guid
+          example: c81ad7dc-7668-4962-a453-8ebc058831d0
+      - name: X-SPIRAL-CUSTOMER-ID
+        in: header
+        description: Unique end user bank customer Id.
+        schema:
+          type: string
+          format: guid
+          example: 9556c434-780a-4452-82dd-0bdaa299bea4
+      - name: X-SPIRAL-REQUEST-ID
+        in: header
+        description: Unique request Id used for troubleshooting.
+        schema:
+          type: string
+          format: guid
+          example: b1df1812-ee1c-4178-87ed-89c711a01672
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureFlagsResponse'
+        "400":
+          description: Invalid Request
+        "405":
+          description: Validation Exception
+  /log:
+    post:
+      tags:
+      - logging
+      summary: Push immutable log entry into Spiral
+      description: Push immutable log entry into Spiral
+      operationId: createLogEntry
+      parameters:
+      - name: X-SPIRAL-CUSTOMER-ID
+        in: header
+        description: Unique end user bank customer Id.
+        schema:
+          type: string
+          format: guid
+          example: 9556c434-780a-4452-82dd-0bdaa299bea4
+      - name: X-SPIRAL-REQUEST-ID
+        in: header
+        description: Unique request Id used for troubleshooting.
+        schema:
+          type: string
+          format: guid
+          example: b1df1812-ee1c-4178-87ed-89c711a01672
+      requestBody:
+        description: Log to push into Spiral
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLogEntryRequest'
+        required: true
+      responses:
+        "201":
+          description: Log entry created
+        "400":
+          description: Invalid Request
+        "405":
+          description: Validation Exception
+        "406":
+          description: Not Acceptable
+  /analytics-event:
+    post:
+      tags:
+      - analytics
+      summary: Push one or multiple immutable analytics events into Spiral
+      description: Push one or multiple immutable analytics events into Spiral
+      operationId: createAnalyticsEvents
+      parameters:
+      - name: X-SPIRAL-CUSTOMER-ID
+        in: header
+        description: Unique end user bank customer Id.
+        schema:
+          type: string
+          format: guid
+          example: 9556c434-780a-4452-82dd-0bdaa299bea4
+      - name: X-SPIRAL-REQUEST-ID
+        in: header
+        description: Unique request Id used for troubleshooting.
+        schema:
+          type: string
+          format: guid
+          example: b1df1812-ee1c-4178-87ed-89c711a01672
+      requestBody:
+        description: Analytics events to push into Spiral
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnalyticsEventBatchRequest'
+        required: true
+      responses:
+        "201":
+          description: Analytics event entry created
+        "400":
+          description: Invalid Request
+        "405":
+          description: Validation Exception
+        "406":
+          description: Not Acceptable
 components:
   schemas:
     TransactionProcessRequest:
       required:
+      - customerInformation
       - transaction
       - type
       type: object
@@ -1523,6 +1811,8 @@ components:
           - async
         transaction:
           $ref: '#/components/schemas/DepositoryOrCreditTransaction'
+        customerInformation:
+          $ref: '#/components/schemas/DonorInformation'
     TransactionProcessResponse:
       required:
       - impact
@@ -1559,6 +1849,7 @@ components:
       - NOTIFICATION_DETAILS_DONATION_UNABLE_TO_PROCESS
       - SGN_EVERYDAY_IMPACT_DONATION_FEE_DISCLOSURE
       - SGN_UNDERSTAND_MY_DONATION
+      - EVERYDAY_IMPACT_DONATION_DISCLOSURE
     GenericTemplateResponse:
       required:
       - template
@@ -1621,6 +1912,10 @@ components:
           type: number
           description: Dollar value donated to Impact Category Charity.
           example: 0.15
+        feesWithheldAmount:
+          type: number
+          description: Amount withheld for processing fees.
+          example: 0.06
         externalFeeAmount:
           type: number
           description: Amount collected for external processing fees.
@@ -1757,6 +2052,7 @@ components:
       type: object
       properties:
         query:
+          minLength: 3
           type: string
           description: "Search query term for a Charity lookup by ID, name or EIN."
           example: '*doctor | EIN'
@@ -1909,23 +2205,19 @@ components:
             type: string
             description: Recurring donation ID
             example: 559a2425-67a1-40e4-bfa0-b58f6ae002d3
-    DonationReceiptSummaryGrouping:
-      type: string
-      description: Possible groupings to select when getting receipt summary - ungrouped
-        or grouped by charity
-      enum:
-      - UNGROUPED
-      - CHARITY
     GivingCustomerDonationReceiptSummaryResponse:
       required:
-      - years
+      - currentYear
+      - pastYears
       type: object
       properties:
-        years:
+        currentYear:
+          $ref: '#/components/schemas/DonationReceiptAnnualDetailedSummary'
+        pastYears:
           type: array
-          description: List of years that donation receipt summary is available for
+          description: List of summaries for past years
           items:
-            $ref: '#/components/schemas/GivingCustomerDonationReceiptSummaryYear'
+            $ref: '#/components/schemas/DonationReceiptAnnualSimpleSummary'
     FileResponse:
       required:
       - content
@@ -1940,6 +2232,67 @@ components:
           type: string
           description: Base64-encoded byte content
           example: JVBERi0xLj...
+    DonationReceiptAnnualDetailedSummary:
+      required:
+      - months
+      - year
+      type: object
+      properties:
+        year:
+          type: integer
+          description: Year number
+          example: 2023
+        months:
+          type: array
+          description: List of month simple summaries
+          items:
+            $ref: '#/components/schemas/DonationReceiptMonthlySimpleSummary'
+    DonationReceiptMonthlyDetailedSummary:
+      required:
+      - content
+      - month
+      type: object
+      properties:
+        year:
+          type: integer
+          description: Year number
+          example: 2023
+        month:
+          type: integer
+          description: Month number
+          example: 1
+        charities:
+          type: array
+          description: List of donations grouped by charity
+          items:
+            $ref: '#/components/schemas/DonationReceiptCharityElement'
+    DonationReceiptEverydayImpactReport:
+      required:
+      - content
+      - month
+      - receiptId
+      - year
+      type: object
+      properties:
+        year:
+          type: integer
+          description: Year receipt was issued for
+          example: 2023
+        month:
+          maximum: 12
+          minimum: 1
+          type: integer
+          description: Month receipt was issued for
+          example: 1
+        receiptId:
+          type: string
+          description: Everyday Impact Receipt Id
+          format: guid
+          example: 53eb37b6-7d85-4e2c-9ca2-4cc808fb1241
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/DonationReceiptEverydayImpactReportElement'
     GivingCustomerCharitiesSummaryResponse:
       type: object
       properties:
@@ -2069,6 +2422,15 @@ components:
           example: Praesentium sapiente et aliquam. Est quae aperiam esse sapiente.
             Consequatur minus similique vel. Adipisci perspiciatis recusandae et.
             Dignissimos voluptatem et dolor cum qui et qui.
+    ClientAgreementsResponse:
+      required:
+      - agreements
+      type: object
+      properties:
+        agreements:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientAgreementResponse'
     CustomerSettings:
       required:
       - roundUp
@@ -2134,11 +2496,40 @@ components:
           $ref: '#/components/schemas/CustomerClientSettings'
         products:
           $ref: '#/components/schemas/ClientProducts'
+    FeatureFlagsResponse:
+      required:
+      - featureFlags
+      type: object
+      properties:
+        featureFlags:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureFlag'
+      description: List of feature flags and their values
+    CreateLogEntryRequest:
+      type: object
+      properties:
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
+          type: string
+          description: The log message
+          example: Connection established successfully
+    CreateAnalyticsEventBatchRequest:
+      required:
+      - events
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateAnalyticsEventRequest'
     DepositoryOrCreditTransaction:
       required:
       - amount
       - merchantCategoryCode
       - method
+      - status
       - transactedAtDate
       - transactionId
       - type
@@ -2214,6 +2605,8 @@ components:
         isPending:
           type: boolean
           description: Indicates that this transaction has not posted.
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
         transactionAmount:
           type: number
           description: "Fixed-point decimal number, carried up to two decimal places."
@@ -2228,6 +2621,59 @@ components:
             \ the accountId associated with this transaction."
           format: guid
       description: Describes a transaction against a debit or credit card account.
+    DonorInformation:
+      required:
+      - addressLine1
+      - city
+      - country
+      - email
+      - firstName
+      - lastName
+      - state
+      - zip
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: Donor's first name
+          example: John
+        lastName:
+          type: string
+          description: Donor's last name
+          example: Smith
+        email:
+          type: string
+          description: Donor's email
+          example: john@smith.com
+        phoneNumber:
+          type: string
+          description: Donor's phone number
+          example: 827-525-7466
+        city:
+          type: string
+          description: Donor's city
+          example: Sun Prairie
+        country:
+          type: string
+          description: Donor's country
+          example: USA
+        addressLine1:
+          type: string
+          description: Donor's address line 1
+          example: 710 W Main St
+        addressLine2:
+          type: string
+          description: Donor's address line 2
+          example: Suite 23
+        state:
+          type: string
+          description: Donor's email
+          example: WV
+        zip:
+          type: string
+          description: Donor's zip code
+          example: "53590"
+      description: "Donor details, for receipt purposes."
     TransactionImpactSummaryItem:
       required:
       - rewardUnitName
@@ -2267,6 +2713,14 @@ components:
           type: number
           description: Aggregated dollar value for associated reward unit
           example: 10.0
+        isMonetaryAmount:
+          type: boolean
+          description: Is reward a monetary amount
+          example: false
+        charityName:
+          type: string
+          description: Charity name
+          example: World Food Programme
       description: Customer's Impact summary report per unit
     CharityRewardUnit:
       required:
@@ -2303,6 +2757,10 @@ components:
           type: string
           description: Reward Unit key
           example: TREE
+        isMonetaryUnit:
+          type: boolean
+          description: Whether the unit is represented as donated currency
+          example: false
     PaginatedResponse:
       required:
       - empty
@@ -2397,56 +2855,11 @@ components:
           type: number
           description: Amount donated
           example: 10.0
+        proccessedAmount:
+          type: number
+          description: Amount processed for the requested period
+          example: 3.0
       description: Customer giving donations summary item
-    DonorInformation:
-      required:
-      - addressLine1
-      - city
-      - country
-      - email
-      - firstName
-      - lastName
-      - state
-      - zip
-      type: object
-      properties:
-        firstName:
-          type: string
-          description: Donor's first name
-          example: John
-        lastName:
-          type: string
-          description: Donor's last name
-          example: Smith
-        email:
-          type: string
-          description: Donor's email
-          example: john@smith.com
-        city:
-          type: string
-          description: Donor's city
-          example: Sun Prairie
-        country:
-          type: string
-          description: Donor's country
-          example: USA
-        addressLine1:
-          type: string
-          description: Donor's address line 1
-          example: 710 W Main St
-        addressLine2:
-          type: string
-          description: Donor's address line 2
-          example: Suite 23
-        state:
-          type: string
-          description: Donor's email
-          example: WV
-        zip:
-          type: string
-          description: Donor's zip code
-          example: "53590"
-      description: "Donor details, for receipt purposes."
     GivingCharityRecurringDonation:
       required:
       - accountId
@@ -2493,22 +2906,89 @@ components:
           type: boolean
           description: Does customer agree to cover donation fees
           example: false
-    GivingCustomerDonationReceiptSummaryYear:
+    DonationReceiptAnnualSimpleSummary:
       required:
-      - months
+      - content
       - year
       type: object
       properties:
         year:
-          type: string
-          description: The given year
-          example: "2023"
-        months:
+          type: integer
+          description: Summary year
+          example: 2022
+        content:
           type: array
-          description: List of months of the given year that donation receipt summary
-            is available for
+          description: List of contents
           items:
-            $ref: '#/components/schemas/GivingCustomerDonationReceiptSummaryMonth'
+            $ref: '#/components/schemas/DonationReceiptSummarySimpleElement'
+      description: Donation Receipt annual simple summary
+    DonationReceiptMonthlySimpleSummary:
+      required:
+      - content
+      - month
+      type: object
+      properties:
+        month:
+          type: integer
+          description: Month number
+          example: 1
+        content:
+          type: array
+          description: List of months donation summary grouped by product
+          items:
+            $ref: '#/components/schemas/DonationReceiptSummarySimpleElement'
+    DonationReceiptCharityElement:
+      required:
+      - content
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Charity name
+          example: Eden
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/DonationReceiptCharityDonationElement'
+    DonationReceiptEverydayImpactReportElement:
+      required:
+      - charityEin
+      - charityName
+      - totalDonatedAmount
+      - totalImpactUnits
+      - unit
+      - unitLabel
+      type: object
+      properties:
+        charityName:
+          type: string
+          description: Charity name
+          example: Eden Reforestation
+        charityEin:
+          type: string
+          description: Charity EIN
+          example: 12-1234567
+        charityLogoUrl:
+          type: string
+          description: Charity Logo url
+          example: www.abel-smitham.org
+        unit:
+          type: string
+          description: Reward unit key
+          example: TREE
+        unitLabel:
+          type: string
+          description: Human readable reward unit label
+          example: Total trees planted
+        totalDonatedAmount:
+          type: number
+          description: Total amount customer donated to this charity for this unit
+          example: 200.02
+        totalImpactUnits:
+          type: integer
+          description: Number of units customer donated for
+          example: 12
     GivingCustomerRecurringCharityDonationResponse:
       type: object
       properties:
@@ -2557,6 +3037,11 @@ components:
           type: number
           description: Internal cost of this reward unit
           example: 0.1
+        isCategoryOverride:
+          type: boolean
+          description: Whether this category can be selected together with other categories
+            or if it's exclusive.
+          example: false
       description: Lightweight Impact Category with attributes selected by client
     RoundUpSelections:
       type: string
@@ -2584,6 +3069,15 @@ components:
             type: boolean
             description: Is Impact Category enabled for a customer
             example: false
+          isCategoryOverride:
+            type: boolean
+            description: Whether this category can be selected together with other
+              categories or if it's exclusive.
+            example: false
+          charityName:
+            type: string
+            description: Charity name
+            example: World Food Programme
     NotificationResponse:
       required:
       - content
@@ -2624,6 +3118,27 @@ components:
             type: boolean
             description: Does notification require customer action
             example: false
+    ClientAgreementResponse:
+      required:
+      - href
+      - title
+      - type
+      type: object
+      properties:
+        title:
+          type: string
+          description: Agreement title
+        href:
+          type: string
+          description: Agreement URI
+        type:
+          type: string
+          description: Agreement type
+          enum:
+          - SPIRAL_TERMS
+          - SPIRAL_PRIVACY
+          - PROVIDER_TERMS
+          - PROVIDER_PRIVACY
     CustomerImpactLimitSelections:
       type: string
       description: Available selections for the customer impact limit
@@ -2673,6 +3188,56 @@ components:
           description: Clients Business Impact product on/off
           example: true
           default: false
+    FeatureFlag:
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/FeatureFlagKey'
+        value:
+          type: string
+          description: Feature Flag Value
+          example: "true"
+      description: Feature Flag key and value
+    LogLevel:
+      type: string
+      description: Allowable log levels
+      enum:
+      - INFO
+      - ERROR
+      - DEBUG
+      - TRACE
+    CreateAnalyticsEventRequest:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Universally unique event ID
+          example: 016838ef-ccae-4c9d-900f-98dd879c3038
+        sessionId:
+          type: string
+          description: "Unique session ID for the user session, links multiple events\
+            \ together"
+          example: a92aad8c-6d3b-4585-b216-541b5c181633
+        type:
+          type: string
+          description: The event type
+          example: user_start_flow_entered
+        context:
+          type: string
+          description: Freeform event context to enhance information. Will be passed
+            as-is to analytics processor.
+          example: "{\"firstTimeLoad\":true}"
+        eventDate:
+          type: string
+          description: Datetime the event was triggered
+          format: date-time
+          example: 2023-05-09T21:55:06-04:00
     GeoLocation:
       type: object
       properties:
@@ -2709,6 +3274,12 @@ components:
       - card not present
       - check
       - eft
+    TransactionStatus:
+      type: string
+      description: Transaction authorization status
+      enum:
+      - PENDING
+      - SETTLED
     SortResponse:
       required:
       - empty
@@ -2792,27 +3363,36 @@ components:
           type: number
           description: Total amount of donations
           example: 134.0
-    GivingCustomerDonationReceiptSummaryMonth:
+    DonationReceiptSummarySimpleElement:
       required:
-      - groups
-      - month
-      - title
+      - type
       type: object
       properties:
-        month:
+        type:
+          $ref: '#/components/schemas/DonationReceiptSummarySimpleElementType'
+        id:
           type: string
-          description: The given month
-          example: February
-        title:
+          description: Id for the entity related to the given element
+          format: guid
+          example: 2c33d6a4-1413-4a64-9503-579edff25404
+    DonationReceiptCharityDonationElement:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DonationType'
+        id:
           type: string
-          description: Title to display in the summary list
-          example: February donation receipts
-        groups:
-          type: array
-          description: "List of grouped receipts for the given month, based on the\
-            \ provided grouping setting"
-          items:
-            $ref: '#/components/schemas/GivingCustomerDonationReceiptSummaryGroup'
+          description: Unique Receipt ID
+          format: guid
+          example: 2c33d6a4-1413-4a64-9503-579edff25404
+        createdAtDate:
+          type: string
+          description: Creation date
+          format: date-time
+          example: 2023-08-15T18:12:05+02:00
     ImpactCategoryRewardSelection:
       required:
       - charityId
@@ -2848,6 +3428,11 @@ components:
           $ref: '#/components/schemas/ClientFont'
         bodyFont:
           $ref: '#/components/schemas/ClientFont'
+    FeatureFlagKey:
+      type: string
+      description: Feature Flags Keys
+      enum:
+      - RECURRING_GIVING_ENABLED
     GeoCoordinates:
       type: object
       properties:
@@ -2893,22 +3478,20 @@ components:
           type: string
           description: Image type
           example: Logo
-    GivingCustomerDonationReceiptSummaryGroup:
-      required:
-      - groupTitle
-      - receipts
-      type: object
-      properties:
-        groupTitle:
-          type: string
-          description: "The group title to display, based on the provided grouping\
-            \ setting"
-          example: All
-        receipts:
-          type: array
-          description: List of receipts in the given group
-          items:
-            $ref: '#/components/schemas/GivingCustomerDonationReceiptSummaryReceipt'
+    DonationReceiptSummarySimpleElementType:
+      type: string
+      description: Donation Receipt summary simple list element type
+      enum:
+      - GIVING
+      - EVERYDAY_IMPACT
+      - EOY_GIVING_REPORT
+    DonationType:
+      type: string
+      description: Donation Type
+      enum:
+      - ONE_TIME
+      - RECURRING
+      - EVERYDAY_IMPACT
     ClientFont:
       required:
       - font
@@ -2921,36 +3504,6 @@ components:
           example: Comic Sans
         type:
           $ref: '#/components/schemas/ClientFontType'
-    GivingCustomerDonationReceiptSummaryReceipt:
-      required:
-      - charityName
-      - id
-      - isReady
-      - period
-      - receiptDate
-      type: object
-      properties:
-        id:
-          type: string
-          description: Receipt ID
-          example: a150e67a-c1c6-4395-bc5a-3371aac0076b
-        receiptDate:
-          type: string
-          description: Datetime of the receipt
-          format: date-time
-          example: 2023-04-14T11:43:58-04:00
-        charityName:
-          type: string
-          description: Recipient charity name
-          example: American Red Cross
-        period:
-          type: string
-          description: Donation period - one-time or monthly
-          example: One-time
-        isReady:
-          type: boolean
-          description: Whether the receipt has been processed and is ready for viewing
-          example: true
     ClientFontType:
       type: string
       description: Type and source of the selected font
@@ -3004,6 +3557,14 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/Pageable'
+    ReceiptIdPath:
+      name: receiptId
+      in: path
+      description: The receipt's unique ID
+      required: true
+      schema:
+        type: string
+      example: 229ab10d-d3f8-4c72-b292-2d9841a9ffdb
     ClientIdHeader:
       name: X-SPIRAL-CLIENT-ID
       in: header

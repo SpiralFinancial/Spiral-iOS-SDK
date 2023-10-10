@@ -87,24 +87,31 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
         switch message.name {
         case SpiralEventHandler.openEventHandler.rawValue:
             guard !didFailToStart else { return }
-            self.delegate?.onEvent(name: .open, event: nil)
+            
+            if let bodyData = bodyDataFromMessage(message),
+               let event = try? JSONDecoder().decode(SpiralOpenEvent.self, from: bodyData) {
+                self.handleEvent(event: event)
+            }
+            
             self.delegate?.onFinishLoadingContent()
             self.delegate?.onReady(controller: self)
             self.wasReady = true
         case SpiralEventHandler.closeEventHandler.rawValue:
-            self.delegate?.onEvent(name: .close, event: nil)
+            if let bodyData = bodyDataFromMessage(message),
+               let event = try? JSONDecoder().decode(SpiralCloseEvent.self, from: bodyData) {
+                self.handleEvent(event: event)
+            }
         case SpiralEventHandler.initEventHandler.rawValue:
             if let bodyData = bodyDataFromMessage(message),
                let event = try? JSONDecoder().decode(SpiralInitEvent.self, from: bodyData) {
-                
-                self.delegate?.onEvent(name: .initialized, event: event.payload)
+                self.handleEvent(event: event)
             }
         case SpiralEventHandler.exitEventHandler.rawValue:
             if let bodyData = bodyDataFromMessage(message),
                let event = try? JSONDecoder().decode(SpiralExitEvent.self, from: bodyData) {
                 
-                self.delegate?.onEvent(name: .exit, event: event.payload?.error)
-                self.delegate?.onExit(event.payload?.error)
+                self.handleEvent(event: event)
+                self.delegate?.onExit((event.payload as? SpiralExitPayload)?.error)
                 
                 self.onExit?()
             }
@@ -112,22 +119,28 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
             if let bodyData = bodyDataFromMessage(message),
                let event = try? JSONDecoder().decode(SpiralSuccessEvent.self, from: bodyData) {
 
-                self.delegate?.onEvent(name: .success, event: event.payload)
-                self.delegate?.onSuccess(event.payload)
+                self.handleEvent(event: event)
+                if let successPayload = event.payload as? SpiralSuccessPayload {
+                    self.delegate?.onSuccess(successPayload)
+                }
             }
         case SpiralEventHandler.errorEventHandler.rawValue:
             if let bodyData = bodyDataFromMessage(message),
                let event = try? JSONDecoder().decode(SpiralErrorEvent.self, from: bodyData) {
                 
-                self.delegate?.onEvent(name: .error, event: event.payload)
+                self.handleEvent(event: event)
                 
-                self.delegate?.onError(event.payload)
+                let error = event.payload as? SpiralError ?? SpiralError(type: "unknown_error",
+                                                                         code: "unknown_error",
+                                                                         message: "unknown_error")
+                
+                self.delegate?.onError(error)
                 
                 if !self.wasReady, !self.didFailToStart {
                     self.didFailToStart = true
                     self.delegate?.onFinishLoadingContent()
                     self.delegate?.onFailedToStart(SpiralError(type: SpiralErrorType.failedToStartFlow.rawValue,
-                                                               code: event.payload.code,
+                                                               code: error.code,
                                                                message: "Unable to start Spiral flow. Please try again later."))
                 }
             }
@@ -159,6 +172,13 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         print("didFinish")
+    }
+    
+    func handleEvent(event: SpiralEvent) {
+        let eventType = SpiralEventType(rawValue: event.eventName) ?? .error
+        self.delegate?.onEvent(name: eventType, event: event.payload)
+        
+        SpiralAnalyticsManager.shared.trackEvent(event: event.toAnalyticsEvent(flow: flow))
     }
     
     public override func loadView() {
@@ -212,17 +232,19 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
     }
     
     var initAuthParams: String {
-        if let proxyAuth = Spiral.shared.config()?.proxyAuth {
-            return """
-            authToken: "\(proxyAuth.authToken)",
-            proxyUrl: "\(proxyAuth.proxyUrl)",
-            """
-        } else if let clientSecretAuth = Spiral.shared.config()?.clientSecretAuth {
-            return """
-            customerId: "\(clientSecretAuth.customerId)",
-            clientId: "\(clientSecretAuth.clientId)",
-            clientSecret: "\(clientSecretAuth.secret)",
-            """
+        if let config = Spiral.shared.config() {
+            if let proxyAuth = config.proxyAuth {
+                return """
+                authToken: "\(proxyAuth.authToken)",
+                proxyUrl: "\(proxyAuth.proxyUrl)",
+                """
+            } else if let clientSecretAuth = config.clientSecretAuth {
+                return """
+                customerId: "\(clientSecretAuth.customerId)",
+                clientId: "\(clientSecretAuth.clientId)",
+                clientSecret: "\(clientSecretAuth.secret)",
+                """
+            }
         }
         return .empty
     }
@@ -260,11 +282,13 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
             }
             
             function generateUUID() {
-              let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-              });
-              return uuid;
+            //              let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            //                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            //                return v.toString(16);
+            //              });
+            //              return uuid;
+            
+            return '\(Spiral.shared.sessionId())';
             }
             
             function getUniqueUserId() {

@@ -69,9 +69,9 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
         navigationController?.delegate = self
         
         Spiral.shared.setup(config: SpiralConfig(mode: .sandbox,
-                                                 environment: .staging,
+                                                 environment: .integration,
                                                  proxyAuth: SpiralProxyAuth(proxyUrl: "https://staging-api.spiral.us/passthrough/sdk",
-                                                                            authToken: "e03eb892-e113-4507-bba7-c7acd3d76777")
+                                                                            authToken: "040593b2-7432-4662-bb57-1ff579b4c0ba")
                                                  ))
         
         refresh()
@@ -142,6 +142,8 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
                     self.tableView.endUpdates()
                     
                     self.currentlyLoadedImpactCard = impactView
+                    
+                    impactView.trackDisplayEvent()
                     
                 } failure: { error in
                     print("failure: " + (error?.localizedDescription ?? ""))
@@ -226,12 +228,12 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
     }
     
     @IBAction func handleGenericModalTap() {
-        Spiral.shared.showModalContent(type: "HOW_IT_WORKS", success: nil, failure: nil, delegate: self)
+//        Spiral.shared.showModalContent(type: "HOW_IT_WORKS", success: nil, failure: nil, delegate: self)
         
-//        guard let cardModel = GenericCardTestFacility.genericCardTestPayloadModel() else { return }
-//
-//        let vc = SpiralGenericCardModalViewController.create(with: cardModel, delegate: self)
-//        present(vc, animated: true)
+        guard let cardModel = GenericCardTestFacility.genericCardTestPayloadModel() else { return }
+
+        let vc = SpiralGenericCardModalViewController.create(with: cardModel, delegate: self)
+        present(vc, animated: true)
     }
     
     @IBAction func getTransactionImpact() {
@@ -240,7 +242,7 @@ class SpiralConfigTableViewController: UITableViewController, UINavigationContro
                 let alertController = UIAlertController(title: "Transaction Impact Results",
                                                         message: self.impactSummaryText(transactionReward: impact),
                                                         preferredStyle: .alert)
-                let okAction = UIAlertAction (title: "Ok", style: UIAlertActionStyle.cancel, handler: nil)
+                let okAction = UIAlertAction (title: "Ok", style: UIAlertAction.Style.cancel, handler: nil)
                 alertController.addAction(okAction)
                 self.present(alertController, animated: true)
             }

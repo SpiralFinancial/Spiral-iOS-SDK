@@ -24,3 +24,20 @@ extension SpiralEventPayload {
         return payloadString
     }
 }
+
+extension Encodable {
+    
+    func asCodableDictionary() -> [String: AnyCodable] {
+        do {
+            let data = try JSONEncoder().encode(self)
+            guard let dictionary = try? JSONDecoder().decode([String: AnyCodable].self, from: data) else {
+                return [:]
+            }
+            return dictionary
+        } catch {
+            print("Spiral Encodable asDictionary: \(error)")
+            return [:]
+        }
+    }
+    
+}

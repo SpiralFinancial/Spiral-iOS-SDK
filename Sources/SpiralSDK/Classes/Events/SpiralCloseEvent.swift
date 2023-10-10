@@ -7,8 +7,9 @@
 
 import Foundation
 
-public struct SpiralCloseEvent: Codable {
-    public init(type: String, eventName: String, payload: SpiralClosePayload) {
+public struct SpiralCloseEvent: SpiralEvent {
+        
+    public init(type: String, eventName: String, payload: SpiralEventPayload) {
         self.type = type
         self.eventName = eventName
         self.payload = payload
@@ -16,5 +17,5 @@ public struct SpiralCloseEvent: Codable {
     
     public var type: String
     public var eventName: String
-    public var payload: SpiralClosePayload
+    public var payload: SpiralEventPayload
 }

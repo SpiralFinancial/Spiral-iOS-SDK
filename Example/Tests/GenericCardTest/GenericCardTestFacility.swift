@@ -37,11 +37,11 @@ class GenericCardTestFacility {
     }
 
     static var testCardToDisplay: GenericCardTestModelType {
-        return .optInCard
+        return .impactSummaryCard
     }
 
     static var shouldReadFromJSON: Bool {
-        return false
+        return true
     }
     
     static func genericCardTestModel() -> SpiralCardModel? {

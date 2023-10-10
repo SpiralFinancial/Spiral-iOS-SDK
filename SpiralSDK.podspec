@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SpiralSDK'
-  s.version          = '0.2.4'
+  s.version          = '0.3.0'
   s.summary          = 'Spiral iOS SDK'
   s.swift_version    = '5.0'
 
@@ -15,7 +15,7 @@ The Spiral SDK is used to open up as a modal in your application. Through the mo
 
   s.ios.deployment_target = '12.0'
 
-  s.source_files = 'Sources/**/*.swift'
+  s.source_files = "Sources/**/*.swift", "Sources/**/*.h"
 
   s.resource_bundles = {
     'Resources' => ['Sources/SpiralSDK/Resources/*/*.*']

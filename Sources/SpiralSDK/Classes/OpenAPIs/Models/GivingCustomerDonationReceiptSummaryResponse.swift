@@ -12,22 +12,26 @@ import AnyCodable
 
 public struct GivingCustomerDonationReceiptSummaryResponse: Codable, JSONEncodable, Hashable {
 
-    /** List of years that donation receipt summary is available for */
-    public var years: [GivingCustomerDonationReceiptSummaryYear]
+    public var currentYear: DonationReceiptAnnualDetailedSummary
+    /** List of summaries for past years */
+    public var pastYears: [DonationReceiptAnnualSimpleSummary]
 
-    public init(years: [GivingCustomerDonationReceiptSummaryYear]) {
-        self.years = years
+    public init(currentYear: DonationReceiptAnnualDetailedSummary, pastYears: [DonationReceiptAnnualSimpleSummary]) {
+        self.currentYear = currentYear
+        self.pastYears = pastYears
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case years
+        case currentYear
+        case pastYears
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(years, forKey: .years)
+        try container.encode(currentYear, forKey: .currentYear)
+        try container.encode(pastYears, forKey: .pastYears)
     }
 }
 

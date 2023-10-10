@@ -17,15 +17,19 @@ public struct GivingCustomerDonationsSummaryItem: Codable, JSONEncodable, Hashab
     public var iconUrl: String?
     /** Amount donated */
     public var donatedAmount: Double
+    /** Amount processed for the requested period */
+    public var proccessedAmount: Double?
 
-    public init(iconUrl: String? = nil, donatedAmount: Double) {
+    public init(iconUrl: String? = nil, donatedAmount: Double, proccessedAmount: Double? = nil) {
         self.iconUrl = iconUrl
         self.donatedAmount = donatedAmount
+        self.proccessedAmount = proccessedAmount
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case iconUrl
         case donatedAmount
+        case proccessedAmount
     }
 
     // Encodable protocol methods
@@ -34,6 +38,7 @@ public struct GivingCustomerDonationsSummaryItem: Codable, JSONEncodable, Hashab
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(iconUrl, forKey: .iconUrl)
         try container.encode(donatedAmount, forKey: .donatedAmount)
+        try container.encodeIfPresent(proccessedAmount, forKey: .proccessedAmount)
     }
 }
 

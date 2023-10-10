@@ -195,6 +195,11 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
         super.init(coder: aDecoder)
     }
     
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        refreshDisplay()
+    }
+    
     public func configureWith(_ data: GenericCardDisplayModel) {
         self.data = data
         
@@ -274,6 +279,13 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
     public func refreshDisplay() {
         if let cardData = data {
             configureWith(cardData)
+        }
+    }
+    
+    public func trackDisplayEvent() {
+        FunctionCoalescer.coalesce(context: "track-\(fullSpiralAnalyticsIdentifier)", timeout: 0.5) { [weak self] in
+            guard let self = self else { return }
+            SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(self.fullSpiralAnalyticsIdentifier).view", properties: [:]))
         }
     }
 }

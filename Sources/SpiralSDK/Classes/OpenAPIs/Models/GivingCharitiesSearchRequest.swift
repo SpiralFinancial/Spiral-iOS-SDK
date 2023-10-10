@@ -13,6 +13,7 @@ import AnyCodable
 /** Filter for Charity a customer can donate to. */
 public struct GivingCharitiesSearchRequest: Codable, JSONEncodable, Hashable {
 
+    static let queryRule = StringRule(minLength: 3, maxLength: nil, pattern: nil)
     /** Search query term for a Charity lookup by ID, name or EIN. */
     public var query: String
 
