@@ -195,6 +195,11 @@ public class SpiralGenericCardView: SpiralBaseView, Configurable, UIGestureRecog
         super.init(coder: aDecoder)
     }
     
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        refreshDisplay()
+    }
+    
     public func configureWith(_ data: GenericCardDisplayModel) {
         self.data = data
         
