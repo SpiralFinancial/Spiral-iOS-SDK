@@ -72,11 +72,11 @@ extension UIView {
         return fullIdentifier
     }
     
-    @objc func handleAnalyticsTapEvent() {
+    @objc func handleSpiralAnalyticsTapEvent() {
         SpiralAnalyticsManager.shared.trackEvent(event: SpiralAnalyticsEvent(event: "\(fullSpiralAnalyticsIdentifier).click", properties: [:]))
     }
     
-    func addAnalyticsTapHandling(identifier: String? = nil) {
+    func addSpiralAnalyticsTapHandling(identifier: String? = nil) {
         if let identifier = identifier {
             spiralAnalyticsIdentifier = identifier
         }
@@ -86,7 +86,7 @@ extension UIView {
             return gr.name == Constants.spiralAnalyticsTapGestureRecognizerName
         })
         
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleAnalyticsTapEvent))
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleSpiralAnalyticsTapEvent))
         gestureRecognizer.name = Constants.spiralAnalyticsTapGestureRecognizerName
         gestureRecognizer.cancelsTouchesInView = false
         addGestureRecognizer(gestureRecognizer)
@@ -106,7 +106,7 @@ extension UIButton {
         }
         set {
             super.spiralAnalyticsIdentifier = newValue
-            addAnalyticsTapHandling()
+            addSpiralAnalyticsTapHandling()
         }
     }
     
