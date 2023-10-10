@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SpiralSDK'
-  s.version          = '0.2.9'
+  s.version          = '0.3.0'
   s.summary          = 'Spiral iOS SDK'
   s.swift_version    = '5.0'
 
