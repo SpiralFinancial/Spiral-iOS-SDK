@@ -48,7 +48,7 @@ class GenericCardButtonView: GenericCardComponentView {
         
         button.titleLabel?.font = textFont
         
-        addAnalyticsTapHandling()
+        addSpiralAnalyticsTapHandling()
     }
     
     override func applyFixedDimensions() {
