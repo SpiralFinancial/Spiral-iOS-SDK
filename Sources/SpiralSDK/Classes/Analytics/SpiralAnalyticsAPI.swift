@@ -19,6 +19,7 @@ class SpiralAnalyticsAPI: AnalyticsAPI {
      */
     
     class var basePath: String {
+        // TODO: remove after testing
         return "https://qa-analytics.spiral.us"
         
         switch Spiral.shared.config()?.environment {
