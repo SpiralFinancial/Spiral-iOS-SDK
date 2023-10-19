@@ -420,9 +420,22 @@ public class Spiral {
                                                                  eventDate: $0.time) }
         let batchRequest = CreateAnalyticsEventBatchRequest(events: apiEvents)
         
-        let requestBuilder = SpiralAnalyticsAPI.createAnalyticsEventsWithRequestBuilder(createAnalyticsEventBatchRequest: batchRequest)
+//        let requestBuilder = SpiralAnalyticsAPI.createAnalyticsEventsWithRequestBuilder(createAnalyticsEventBatchRequest: batchRequest)
+//        requestBuilder.addHeaders(_apiHeaders)
+//        requestBuilder.execute { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(_):
+//                    completion(true, nil)
+//                case let .failure(error):
+//                    completion(false, error)
+//                }
+//            }
+//        }
+        
+        let requestBuilder = AnalyticsAPI.createAnalyticsEventsWithRequestBuilder(createAnalyticsEventBatchRequest: batchRequest)
         requestBuilder.addHeaders(_apiHeaders)
-        requestBuilder.execute { result in
+        proxyRequestForBuilder(requestBuilder: requestBuilder).execute { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(_):
@@ -444,14 +457,38 @@ public class Spiral {
     private func proxyRequestForBuilder<T: Decodable>(requestBuilder: RequestBuilder<T>) -> RequestBuilder<T> {
         
         guard let proxyAuth = _config?.proxyAuth else { return requestBuilder }
+                
+        let (localVariableURLString, localVariableParameters, localVariableUrlComponents, localVariableHeaderParameters) =
+            untypedProxyBuilder(requestBuilder: requestBuilder, proxyAuth: proxyAuth)
         
+        let localVariableRequestBuilder: RequestBuilder<T>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+    
+    private func proxyRequestForBuilder(requestBuilder: RequestBuilder<Void>) -> RequestBuilder<Void> {
+        guard let proxyAuth = _config?.proxyAuth else { return requestBuilder }
+        
+        let (localVariableURLString, localVariableParameters, localVariableUrlComponents, localVariableHeaderParameters) =
+            untypedProxyBuilder(requestBuilder: requestBuilder, proxyAuth: proxyAuth)
+        
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+    
+    private func untypedProxyBuilder<T>(requestBuilder: RequestBuilder<T>, proxyAuth: SpiralProxyAuth) -> (String, [String: Any], URLComponents?, [String: String]) {
         let localVariableURLString = proxyAuth.proxyUrl
         
         let endpoint = String(requestBuilder.URLString.suffix(requestBuilder.URLString.count - OpenAPIClientAPI.basePath.count))
         
         var paramsData: Data? = nil
         if let parameters = requestBuilder.parameters {
-            paramsData = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+            if let data = parameters["jsonData"] as? Data {
+                paramsData = data
+            } else {
+                paramsData = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+            }
         }
         var bodyStr: String? = nil
         if let paramsData = paramsData {
@@ -471,10 +508,8 @@ public class Spiral {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
         let localVariableNillableHeaders: [String: Any?] = requestBuilder.headers
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<T>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+        
+        return (localVariableURLString, localVariableParameters, localVariableUrlComponents, localVariableHeaderParameters)
     }
 }
 
