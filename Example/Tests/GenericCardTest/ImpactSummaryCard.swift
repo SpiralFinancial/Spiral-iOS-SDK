@@ -99,13 +99,69 @@ struct ImpactSummaryCard: GenericCardTestModelProtocol {
                                                             snapToEdges: [.left, .right, .bottom],
                                                             content: separator)
         
-        
         let categoryContainer = SpiralGenericCardZComponentContainer(children: [categoryBlueCircleImageComponent, categoryImageComponent, categoryCountComponent, categoryDescriptionComponent, separatorComponent])
         let categoryContainerComponent = SpiralGenericCardComponent(type: .zContainer,
                                                                     content: categoryContainer)
         
+        // =======================================================
+        let nonProfitImage = SpiralGenericCardImageComponent(url: "https://res.cloudinary.com/spiral/image/upload/v1693343630/socially-responsible-rewards/money.png",
+                                                            fixedWidth: 40,
+                                                            fixedHeight: 40)
+        let nonProfitImageComponent = SpiralGenericCardComponent(type: .image,
+                                                                padding: SpiralGenericCardContentPadding(left: 15, right: 0, top: 12, bottom: 0),
+                                                                snapToEdges: [.left, .top],
+                                                                content: nonProfitImage)
         
-        let categoriesContainer = SpiralGenericCardComponentContainer(children: [categoryContainerComponent])
+        let nonProfitAmountText = SpiralGenericCardTextComponent(html:
+                                                """
+                                                <span style=\"font-family: SFProRounded-Light; font-size:32px; line-height: 40px; color:#414d54; text-align:center; dispay:block;\">$0.99</span>
+                                                """,
+                                                               alignment: .center
+        )
+        let nonProfitAmountComponent = SpiralGenericCardComponent(type: .text,
+                                                                padding: SpiralGenericCardContentPadding(left: 67, right: 0, top: 11, bottom: 0),
+                                                                snapToEdges: [.top, .left],
+                                                                content: nonProfitAmountText)
+        
+        let nonProfitPlusImage = SpiralGenericCardImageComponent(url: "https://res.cloudinary.com/spiral/image/upload/v1638470017/app/icons/plus-circle.svg",
+                                                            fixedWidth: 40,
+                                                            fixedHeight: 40)
+        let nonProfitPlusImageComponent = SpiralGenericCardComponent(type: .image,
+                                                                padding: SpiralGenericCardContentPadding(left: 0, right: 10, top: 18, bottom: 0),
+                                                                snapToEdges: [.right, .top],
+                                                                link: "/flow?type=customerSettings",
+                                                                content: nonProfitPlusImage)
+        
+        let nonProfitDescriptionText = SpiralGenericCardTextComponent(html:
+                                                """
+                                                <span style=\"font-family: SFProRounded-Regular; font-size:14px; line-height: 17px; color:black;\">Round up<br />to support</span>
+                                                """
+        )
+        let nonProfitDescriptionComponent = SpiralGenericCardComponent(type: .text,
+                                                                      padding: SpiralGenericCardContentPadding(left: 0, right: 80, top: 14, bottom: 0),
+                                                                      snapToEdges: [.top, .right],
+                                                                      content: nonProfitDescriptionText)
+        
+        let nonProfitNameText = SpiralGenericCardTextComponent(html:
+                                                """
+                                                <span style=\"font-family: SFProRounded-Light; font-size:24px; line-height: 30px; text-align: center; color:black;\">Zero Footprint</span>
+                                                """,
+                                                               alignment: .center
+        )
+        let nonProfitNameComponent = SpiralGenericCardComponent(type: .text,
+                                                                      padding: SpiralGenericCardContentPadding(left: 10, right: 10, top: 65, bottom: 15),
+                                                                snapToEdges: [.top, .left, .bottom, .right],
+                                                                      content: nonProfitNameText)
+        
+        let nonProfitContainer = SpiralGenericCardZComponentContainer(children: [nonProfitImageComponent, nonProfitAmountComponent, nonProfitPlusImageComponent, nonProfitDescriptionComponent, nonProfitNameComponent])
+        let nonProfitContainerComponent = SpiralGenericCardComponent(type: .zContainer,
+                                                                    content: nonProfitContainer)
+        
+        // =======================================================
+        
+        
+        
+        let categoriesContainer = SpiralGenericCardComponentContainer(children: [categoryContainerComponent, nonProfitContainerComponent])
         let categoriesContainerComponent = SpiralGenericCardComponent(type: .container,
                                                                     content: categoriesContainer)
         

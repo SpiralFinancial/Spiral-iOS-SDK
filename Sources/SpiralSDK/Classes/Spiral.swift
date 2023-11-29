@@ -15,6 +15,7 @@ public class Spiral {
     fileprivate static let sdkVersion = "1.0.0"
     
     static let apiVersion = "v2"
+    static let webVersion = "v2"
     
     private var _config: SpiralConfig?
     
@@ -602,7 +603,7 @@ public enum SpiralFlow: Codable {
     /// you can pass through required information here.
     case custom(type: String, params: String, url: String?)
     
-    static let defaultUrlStr = "v1/apps/web-sdk/index.html"
+    static let defaultUrlStr = "\(Spiral.webVersion)/apps/web-sdk/index.html"
     
     var url: String {
         let baseUrl = Spiral.shared.config()?.webBaseUrl ?? .empty
@@ -784,10 +785,12 @@ public struct SpiralConfig {
 public struct SpiralProxyAuth {
     public let proxyUrl: String
     public let authToken: String
+    public let sessionId: String
     
-    public init(proxyUrl: String, authToken: String) {
+    public init(proxyUrl: String, authToken: String, sessionId: String) {
         self.proxyUrl = proxyUrl
         self.authToken = authToken
+        self.sessionId = sessionId
     }
 }
 

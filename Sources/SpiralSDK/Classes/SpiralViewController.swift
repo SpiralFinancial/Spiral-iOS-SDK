@@ -237,6 +237,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
                 return """
                 authToken: "\(proxyAuth.authToken)",
                 proxyUrl: "\(proxyAuth.proxyUrl)",
+                sessionId: "\(proxyAuth.sessionId)",
                 """
             } else if let clientSecretAuth = config.clientSecretAuth {
                 return """
@@ -292,17 +293,19 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
             }
             
             function getUniqueUserId() {
-                const uuidKey = 'spiral-uuid';
-                if (!storageAvailable('localStorage')) {
-                  return generateUUID();
-                }
-
-                let uniqueUserId = localStorage.getItem(uuidKey);
-                if (!uniqueUserId) {
-                  uniqueUserId = generateUUID();
-                  localStorage.setItem(uuidKey, uniqueUserId);
-                }
-                return uniqueUserId;
+            //                const uuidKey = 'spiral-uuid';
+            //                if (!storageAvailable('localStorage')) {
+            //                  return generateUUID();
+            //                }
+            //
+            //                let uniqueUserId = localStorage.getItem(uuidKey);
+            //                if (!uniqueUserId) {
+            //                  uniqueUserId = generateUUID();
+            //                  localStorage.setItem(uuidKey, uniqueUserId);
+            //                }
+            //                return uniqueUserId;
+            
+                return generateUUID();
             };
             
             
@@ -353,10 +356,11 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
                 eventName: 'init',
                 payload: {
                     sdk: "ios",
+                    platform: "ios",
                     \(initAuthParams)
                     \(flowConfigParams)
                     uniqueUserId: uuid,
-                    initializationTimestamp: Date.now(),
+                    initializationTimestamp: Date.now().toString(),
                     version: {
                         major: \(version[0]),
                         minor: \(version.count > 1 ? version[1] : "0"),
@@ -382,7 +386,7 @@ public class SpiralViewController: UIViewController, WKUIDelegate, WKScriptMessa
             """
     }
 
-    deinit {        
+    deinit {
         guard let contentController = webView?.configuration.userContentController else {
             return
         }
